@@ -27,3 +27,13 @@ Correction:
         return true;
     }
 ```
+
+QA2. ``Market.setMarketConfig()`` will fail to set a new ``[_minLiquidatorReward, _maxLiquidatorReward]`` when such new range has no overlap with the default range ``[1e3, 1e4]``. By default, we have ``[minLiquidatorReward, maxLiquidatorReward]`` = ``[1e3, 1e4]``. However, if the new range has NO overlap with the existing default range, then ``Market.setMarketConfig()`` will always fail. For example, one cannot set a new range of ``[1e2, 1e3]`` or a new range of ``[1e4, 1.1e4]`` since they have no overlap with ``[1e3, 1e4]``. This is because we compare ``_minLiquidatorReward < maxLiquidatorReward`` not ``_minLiquidatorReward < _maxLiquidatorReward`` below: 
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L212C12-L215](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L212C12-L215)
+
+Similarly, we compare ``_maxLiquidatorReward > minLiquidatorReward`` instead of ``_maxLiquidatorReward > _minLiquidatorReward`` below: 
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L221-L224](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L221-L224)
+
+The correction should be only compare the new ``_minLiquidatorReward`` with the new ``_maxLiquidatorReward`` and to make sure that ``_minLiquidatorReward < _maxLiquidatorReward``.
