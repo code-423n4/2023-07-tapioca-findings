@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "casinad",
+  "risk": "3",
+  "title": "Unprotected Ether Transfer that may allow anyone to send Ether to unintended addresses",
+  "issueId": 6,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/6"
+}
