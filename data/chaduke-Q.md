@@ -15,12 +15,12 @@ Correction:
 
             uint256 srcBalance = balanceOf[msg.sender];
             require(srcBalance >= amount, "ERC20: balance too low");
-            if (msg.sender != to) {
+-            if (msg.sender != to) {
                 require(to != address(0), "ERC20: no zero address"); // Moved down so low balance calls safe some gas
 
                 balanceOf[msg.sender] = srcBalance - amount; // Underflow is checked
                 balanceOf[to] += amount;
-            }
+-            }
 +           emit Transfer(msg.sender, to, amount);
         }
 -        emit Transfer(msg.sender, to, amount);
