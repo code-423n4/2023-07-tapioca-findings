@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ziyou-",
+  "risk": "2",
+  "title": "The if statement condition within the depositAsset function is incorrect.",
+  "issueId": 11,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/11"
+}
