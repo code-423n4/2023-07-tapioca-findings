@@ -31,3 +31,14 @@ The problem is that 7200 is 2 hours, 28800 is 8 hours and 1 hours is 3600. Pleas
 
 ## Links
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L114
+
+## Title
+Invalid accrueInfo.interestPerSecond value
+
+## Decription
+The accrueInfo.interestPerSecond, according to the comment, should set to 1% APR, but the value is set to the minimumInterestPerSecond = 951293760 = 3% APR.
+
+## Links
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L117
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L115
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L112
