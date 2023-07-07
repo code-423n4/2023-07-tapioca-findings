@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SaeedAlipoor01988",
+  "risk": "3",
+  "title": "fullAssetAmount value, is updated with out of date _totalBorrow.elastic value",
+  "issueId": 16,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/16"
+}
