@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "casinad",
+  "risk": "3",
+  "title": "The refreshPenroseFees function allows the transfer of fees, However, it does not perform proper input validation",
+  "issueId": 19,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/19"
+}
