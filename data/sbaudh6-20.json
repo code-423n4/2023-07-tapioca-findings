@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "sbaudh6",
+  "risk": "3",
+  "title": "Missing Access Control checks in lock() function in TapiocaOptionLiquidityProvision.sol [ Smart Contract ] ",
+  "issueId": 20,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/20"
+}
