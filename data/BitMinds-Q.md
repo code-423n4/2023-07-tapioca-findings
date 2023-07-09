@@ -7,3 +7,8 @@ Check https://github.com/search?q=repo%3ATapioca-DAO%2Ftapioca-bar-audit%20_comp
 
 ## L-3 Using _computeMaxAndMinLTVInAsset but returning variables in order min, max is error prone
 Reading the _computeMaxAndMinLTVInAsset function, one could intuitively assume that max is returned first. This could lead to serious issues if mixed up. Change the function name to _computeMinAndMaxLTVInAsset, and while doing that, correct "LTV" to "TVL". See https://github.com/search?q=repo%3ATapioca-DAO%2Ftapioca-bar-audit%20_computeMaxAndMinLTVInAsset&type=code for all occurrences.
+
+## L-4 Redundant check in function _liquidateuser 
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L567
+The function _closedliquidate, which calls the function _liquidateuser, already checks for user solvency
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L668 
