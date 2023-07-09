@@ -4,3 +4,6 @@ In https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0
 ## L-2 Typo "_computeMaxAndMinLTVInAsset" across multiple files
 Should be named "_computeMaxAndMinTVLInAsset"
 Check https://github.com/search?q=repo%3ATapioca-DAO%2Ftapioca-bar-audit%20_computeMaxAndMinLTVInAsset&type=code
+
+## L-3 Using _computeMaxAndMinLTVInAsset but returning variables in order min, max is error prone
+Reading the _computeMaxAndMinLTVInAsset function, one could intuitively assume that max is returned first. This could lead to serious issues if mixed up. Change the function name to _computeMinAndMaxLTVInAsset, and while doing that, correct "LTV" to "TVL". See https://github.com/search?q=repo%3ATapioca-DAO%2Ftapioca-bar-audit%20_computeMaxAndMinLTVInAsset&type=code for all occurrences.
