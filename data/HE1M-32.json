@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "HE1M",
+  "risk": "2",
+  "title": "DoS attack with long payload during exiting a twTAP when lock is not expired",
+  "issueId": 32,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/32"
+}
