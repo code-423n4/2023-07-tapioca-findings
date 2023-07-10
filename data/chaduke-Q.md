@@ -37,3 +37,17 @@ Similarly, we compare ``_maxLiquidatorReward > minLiquidatorReward`` instead of 
 [https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L221-L224](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L221-L224)
 
 The correction should be only compare the new ``_minLiquidatorReward`` with the new ``_maxLiquidatorReward`` and to make sure that ``_minLiquidatorReward < _maxLiquidatorReward``.
+
+
+QA3. The contructor of LzApp does not specify an argument for the parent contract ownable: 
+
+[https://github.com/Tapioca-DAO/tapioca-sdk-audit/blob/90d1e8a16ebe278e86720bc9b69596f74320e749/src/contracts/lzApp/LzApp.sol#L31-L33](https://github.com/Tapioca-DAO/tapioca-sdk-audit/blob/90d1e8a16ebe278e86720bc9b69596f74320e749/src/contracts/lzApp/LzApp.sol#L31-L33)
+
+Correction: use msg.sender is the default owner for the contract, and pass ``msg.sender`` to ownerable: 
+
+```diff
+- constructor(address _endpoint) {
++ constructor(address _endpoint) Ownable(msg.sender){
+        lzEndpoint = ILayerZeroEndpoint(_endpoint);
+    }
+```
