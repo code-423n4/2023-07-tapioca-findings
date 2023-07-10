@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "2",
+  "title": "twTAP.participate() calcualtes the wrong new pool.averageMagnitude.",
+  "issueId": 45,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/45"
+}
