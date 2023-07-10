@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "twTAP.claimAndSendRewards() will claim the wrong amount for each reward token due to the use of wrong index.",
+  "issueId": 41,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/41"
+}
