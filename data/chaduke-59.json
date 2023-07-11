@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "TricryptoNativeStrategy.setTricryptoLPGetter() fails to remove liquidity from the old lpGetter when setting a new lpGetter, as a result, funds will be lost.",
+  "issueId": 59,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/59"
+}
