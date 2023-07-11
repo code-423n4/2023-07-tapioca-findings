@@ -52,3 +52,9 @@ Correction: use msg.sender is the default owner for the contract, and pass ``msg
     }
 ```
 
+QA4. BalancerStrategy.updateCache() tries to search for ``index`` as the index of the ``wrappedNative`` in the array of ``poolTokens``. However, it does not differentiate the case of zero index (the first token) and the case that ``wrappedNative`` cannot be found in the array of ``poolTokens``, which also results in index = 0 (by default). 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L271-L299](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L271-L299)
+
+The correction would be to initialize index = -1 so that the two cases can be differentiated. 
+
