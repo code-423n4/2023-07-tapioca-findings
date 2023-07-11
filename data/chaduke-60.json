@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "TricryptoLPStrategy.setTricryptoLPGetter() fails to set the new lptoken when setting a new lpGetter, as a result, the TricryptoLPStrategy will be in the wrong state and mulfunction.",
+  "issueId": 60,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/60"
+}
