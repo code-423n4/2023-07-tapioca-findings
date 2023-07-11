@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "2",
+  "title": "ConvexTricryptoStrategy will stop working after a new ``lpGetter`` is set by function setTricryptoLPGetter().",
+  "issueId": 52,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/52"
+}
