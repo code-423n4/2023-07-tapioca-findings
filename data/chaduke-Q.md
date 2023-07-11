@@ -58,3 +58,9 @@ QA4. BalancerStrategy.updateCache() tries to search for ``index`` as the index o
 
 The correction would be to initialize index = -1 so that the two cases can be differentiated. 
 
+QA5. BalancerStrategy._vaultWithdraw() initialize ``index`` to be -1 so that the function can differentiate the two cases: 1) index = 0; 2) the case that ``wrappedNative`` cannot be found in the array of ``poolTokens``. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L218-L269](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L218-L269)
+
+Unfortunately, the logic of the function does not deal with the case of index = -1 after the for-loop. The function should for example, does an explicit revert when index = -1. 
+
