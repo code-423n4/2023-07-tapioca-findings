@@ -6,4 +6,8 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 Here the calculation can be simplified as `uint256 toBurn = part;`
 
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L254
+
+The `_getAmountForBorrowPart` function is not used and should be deleted.
+
 (being continuously updated)
