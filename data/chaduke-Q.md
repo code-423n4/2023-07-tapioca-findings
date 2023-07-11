@@ -84,4 +84,21 @@ The correction would be as follows.
     }
 ```
 
-QA7. ConvexTricryptoStrategy.
+QA7. CompoundStrategy.emergencyWithdraw() calculates the wrong value for ``result``, which will always be zero. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L100-L108](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L100-L108)
+
+The correction would be the last two statements should be exchanged. The result should be the balance of the native tokens before the deposit occurs.
+
+```diff
+function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        compound("");
+
+        uint256 toWithdraw = cToken.balanceOf(address(this));
+        cToken.redeem(toWithdraw);
++       result = address(this).balance;
+        INative(address(wrappedNative)).deposit{value: address(this).balance}();
+
+-        result = address(this).balance;
+    }
+```
