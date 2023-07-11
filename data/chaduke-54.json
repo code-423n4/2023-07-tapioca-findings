@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "2",
+  "title": "A user cannot deposit asset using YieldBox.depositAsset() when the asset's strategy is LidoEthStrategy but staking in stEth is paused.",
+  "issueId": 54,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/54"
+}
