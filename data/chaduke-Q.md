@@ -64,3 +64,22 @@ QA5. BalancerStrategy._vaultWithdraw() initialize ``index`` to be -1 so that the
 
 Unfortunately, the logic of the function does not deal with the case of index = -1 after the for-loop. The function should for example, does an explicit revert when index = -1. 
 
+QA6. ``ConvexTricryptoStrategy.emergencyWithdraw()`` calculates the wrong ``minAmount``. As a result, the slippage control is not effective. The calculated ``minAmount`` is too small and less tokens might be withdrawn than expected. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L148-L156](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L148-L156)
+
+The correction would be as follows.
+
+```diff
+ function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        compound("");
+
+        uint256 lpBalance = rewardPool.balanceOf(address(this));
+        rewardPool.withdrawAndUnwrap(lpBalance, false);
+        uint256 calcWithdraw = lpGetter.calcLpToWeth(lpBalance);
+-        uint256 minAmount = (calcWithdraw * 50) / 10_000; //0.5%
++        uint256 minAmount = calcWithdraw - (calcWithdraw * 50) / 10_000; //0.5%
+
+        result = lpGetter.removeLiquidityWeth(lpBalance, minAmount);
+    }
+```
