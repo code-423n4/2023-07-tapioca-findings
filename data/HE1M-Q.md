@@ -32,7 +32,7 @@ So, 4 times this long data (almost 10kb) is externally passed to other contracts
 It means that at least 100k gas will be consumed inside the try-body:
 https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/tokens/BaseTapOFT.sol#L310-L318
 
-If this amount of gas is more that the `gasleft`, the body of try-statement will revert, and it is supposed to be caught by the `LzApp`. Since it must also store this long data, it is possible that it goes out of gas, so it will be caught by the `Endpoint`. This leads to blocking the next messages which is kind of DoS attack. 
+If this amount of gas is more that the `gasleft`, the body of try-statement will revert (it will not caught by the same try/catch), and it is supposed to be caught by the `LzApp`. Since it must also store this long data, it is possible that it goes out of gas, so it will be caught by the `Endpoint`. This leads to blocking the next messages which is kind of DoS attack. 
 
 The following PoC, shows the simplified version. To execute it, the contracts `Endpoint` should be deployed, and then the address of deployed `Endpoint` should be pass in the constructor of `LzApp` to be deployed:
  - `_srcChainId` = 0 it is not necessary for the PoC
