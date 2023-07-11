@@ -103,7 +103,7 @@ function emergencyWithdraw() external onlyOwner returns (uint256 result) {
     }
 ```
 
-QA8. CompoundStrategy._withdraw() uses rounding down to calculate ``toWithdraw``, as a result, the number of shares redeemed might be less than expected, and as a result, ``_withdraw()`` will likely fail due to insufficient balance at L156 (fails the check here)
+QA8. CompoundStrategy._withdraw() uses rounding down to calculate ``toWithdraw``, as a result, the number of shares redeemed might be less than expected, and as a result, ``_withdraw()`` will likely fail due to insufficient balance at L156 (fails the check here). similar problem occurs for YearnStrategy._withdraw().
 
 [https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L136C14-L162](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L136C14-L162)
 
