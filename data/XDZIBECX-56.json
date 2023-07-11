@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "XDZIBECX",
+  "risk": "3",
+  "title": "_addCollateral function does not properly initialize share variable, allowing attacker to borrow asset without providing collateral\"",
+  "issueId": 56,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/56"
+}
