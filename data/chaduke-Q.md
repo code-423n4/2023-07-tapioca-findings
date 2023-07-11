@@ -102,3 +102,17 @@ function emergencyWithdraw() external onlyOwner returns (uint256 result) {
 -        result = address(this).balance;
     }
 ```
+
+QA8. CompoundStrategy._withdraw() uses rounding down to calculate ``toWithdraw``, as a result, the number of shares redeemed might be less than expected, and as a result, ``_withdraw()`` will likely fail due to insufficient balance at L156 (fails the check here)
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L136C14-L162](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L136C14-L162)
+
+There are two cases: 1) there is sufficient balance of wrappedNative tokens for withdrawal; 2) there is not sufficient balance of wrappedNative tokens for withdrawal. For the later case, some shares need to be redeemed from ctoken. The number of shares is calculated as follows:
+
+```javascript
+         uint256 toWithdraw = (((amount - queued) * (10 ** 18)) /
+                pricePerShare);
+```
+
+It uses rounding down. As a result, even after the redeeming, there still not be sufficient balance of wrappedNative tokens to cover ``amount``. The correction should be using a rounding up instead.
+
