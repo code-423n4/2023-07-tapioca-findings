@@ -116,3 +116,9 @@ There are two cases: 1) there is sufficient balance of wrappedNative tokens for 
 
 It uses rounding down. As a result, even after the redeeming, there still not be sufficient balance of wrappedNative tokens to cover ``amount``. The correction should be using a rounding up instead.
 
+QA9. TricryptoNativeStrategy.compound() calls _addLiquidityAndStake(queued) without checking ``queued > depositThreshold``. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L151-L179](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L151-L179)
+
+This is inconsistent with the logic in _deposited(), which only performs _addLiquidityAndStake(queued) when ``queued > depositThreshold``. 
+
