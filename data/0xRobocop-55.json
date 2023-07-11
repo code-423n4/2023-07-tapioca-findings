@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "3",
+  "title": "BigBang Contract: If user A has approved yieldbox, any other user can drain user A funds.",
+  "issueId": 55,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/55"
+}
