@@ -153,3 +153,12 @@ This is because it calls _addLiquidityAndStake(queued) but deposit only occurs w
     }
 ```
 To mitigate this, one needs to put the emit statement in the if-block of ``_addLiquidityAndStake()``. 
+
+QA13. CompoundStrategy._deposited() is favor of small deposit amount over large deposit amount when ctoken is frozen. In the history, ceth was frozen for one week (https://beincrypto.com/bug-compound-finance-freeze-ceth-market-week/). 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L123-L133](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/compound/CompoundStrategy.sol#L123-L133)
+
+When the underlying ctoken contract is frozen, small deposit might go through as long as queued <= depositThreshold, but large deposit will fail due to the failure of mint. 
+
+Correction:  CompoundStrategy._deposited() can be reimplemented so that it will proceed regardless of the status of the underlying ctoken. When ctoken is not working, the deposit can be saved as wrappedNative tokens. 
+
