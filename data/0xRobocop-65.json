@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "Market Contract: _getCallerReward is implemented incorrectly and may return a value greater than maxLiquidatorReward",
+  "issueId": 65,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/65"
+}
