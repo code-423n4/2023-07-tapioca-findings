@@ -122,3 +122,9 @@ QA9. TricryptoNativeStrategy.compound() calls _addLiquidityAndStake(queued) with
 
 This is inconsistent with the logic in _deposited(), which only performs _addLiquidityAndStake(queued) when ``queued > depositThreshold``. 
 
+QA10. The logic of depositing only when  ``queued > depositThreshold`` is not implemented in 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/aave/AaveStrategy.sol#L138-L206](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/aave/AaveStrategy.sol#L138-L206)
+
+Although at L196, it says "//stake if > depositThreshold``, such logic is not implemented in the function. 
+
