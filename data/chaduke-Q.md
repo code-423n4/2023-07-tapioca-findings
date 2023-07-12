@@ -167,3 +167,9 @@ QA14. TricryptoNativeStrategy._addLiquidityAndStake() does not check and ensure 
 [https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L247C14-L252](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L247C14-L252)
 
 Mitigation: Add a require statement to ensure that ``lpAmount !=0``. 
+
+QA15. TricryptoLPStrategy._currentBalance() fails to include the balance of wrappedNative tokens in the calculation of the current balance. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoLPStrategy.sol#L210-L215](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoLPStrategy.sol#L210-L215)
+
+Correction: includes the balance of wrappedNative tokens in the calculation of the current balance. 
