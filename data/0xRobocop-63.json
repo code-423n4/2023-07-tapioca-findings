@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "BigBang Contract: If _debtStartPoint is greater than zero then getDebtRate may always fail",
+  "issueId": 63,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/63"
+}
