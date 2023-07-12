@@ -162,3 +162,8 @@ When the underlying ctoken contract is frozen, small deposit might go through as
 
 Correction:  CompoundStrategy._deposited() can be reimplemented so that it will proceed regardless of the status of the underlying ctoken. When ctoken is not working, the deposit can be saved as wrappedNative tokens. 
 
+QA14. TricryptoNativeStrategy._addLiquidityAndStake() does not check and ensure that lpAmount !=0. As a result for small amount of _addLiquidityAndStake(amount), it is possible that lpAmount = 0, which means zero lpTokens will be minted while ``amount`` of wrappedNative tokens are deposited, leading to loss of funds. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L247C14-L252](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L247C14-L252)
+
+Mitigation: Add a require statement to ensure that ``lpAmount !=0``. 
