@@ -128,3 +128,13 @@ QA10. The logic of depositing only when  ``queued > depositThreshold`` is not im
 
 Although at L196, it says "//stake if > depositThreshold``, such logic is not implemented in the function. 
 
+QA11. The AaveStrategy._withdraw() might withdraw more tokens than the specified ``amount`` in the argument. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/aave/AaveStrategy.sol#L250-L275](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/aave/AaveStrategy.sol#L250-L275)
+
+This is because at L269, ``amount`` might be incremented by some amount that depends on the the outcome of lendingPool.withdraw(). 
+
+Correction: do not change the value of argument ``amount``.
+
+
+
