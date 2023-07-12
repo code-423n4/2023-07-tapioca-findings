@@ -136,5 +136,20 @@ This is because at L269, ``amount`` might be incremented by some amount that dep
 
 Correction: do not change the value of argument ``amount``.
 
+QA12: ConvexTricryptoStrategy._deposited() might emit false  event AmountDeposited(queued). 
 
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L300-L308](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L300-L308)
 
+This is because it calls _addLiquidityAndStake(queued) but deposit only occurs when ``calcAmount >= 1e18``:
+
+```javascript
+ function _addLiquidityAndStake(uint256 amount) private {
+        uint256 calcAmount = lpGetter.calcWethToLp(amount);
+        if (calcAmount >= 1e18) {
+            uint256 minAmount = calcAmount - (calcAmount * 50) / 10_000; //0.5%
+            uint256 lpAmount = lpGetter.addLiquidityWeth(amount, minAmount);
+            booster.deposit(pid, lpAmount, true);
+        }
+    }
+```
+To mitigate this, one needs to put the emit statement in the if-block of ``_addLiquidityAndStake()``. 
