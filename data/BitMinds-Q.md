@@ -11,4 +11,7 @@ Reading the _computeMaxAndMinLTVInAsset function, one could intuitively assume t
 ## L-4 Redundant check in function _liquidateuser 
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L567
 The function _closedliquidate, which calls the function _liquidateuser, already checks for user solvency
-https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L668 
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L668
+
+## L-05 _getMasterContractLength function in Penrose.sol should not be public
+There is no reason why _getMasterContractLength should be available outside of Penrose.sol as it is only called from this contract. Also, the "_" prefix of the function name indicates that this should not be public by function naming convention.
