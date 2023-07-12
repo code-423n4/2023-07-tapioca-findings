@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "GlpStrategy._sellGmx() uses  fixed UNI_MIN_SQRT_RATIO/UNI_MAX_SQRT_RATIO as sqrtPriceLimitX96 for swap, which is subject to price manipuation.",
+  "issueId": 68,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/68"
+}
