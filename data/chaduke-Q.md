@@ -188,3 +188,13 @@ function emergencyWithdraw() external onlyOwner returns (uint256 result) {
         result = _vaultWithdraw(toWithdraw);
     }
 ```
+
+QA17. GlpStrategy.setFeeRecipient() lacks a zero address check for the new feeRecipient address. 
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L113-L115](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L113-L115)
+
+If the zero address is entered maliciously or by mistake, then fees will be lost to the zero address by 
+withdrawFees():
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L117C14-L127](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L117C14-L127)
+
