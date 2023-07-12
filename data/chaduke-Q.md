@@ -173,3 +173,18 @@ QA15. TricryptoLPStrategy._currentBalance() fails to include the balance of wrap
 [https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoLPStrategy.sol#L210-L215](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoLPStrategy.sol#L210-L215)
 
 Correction: includes the balance of wrappedNative tokens in the calculation of the current balance. 
+ 
+QA16. BalancerStrategy.emergencyWithdraw() decreased the value of ``toWithdraw`` by 5%, as a result, some funds will be left in the vault. This is not necessary.
+
+[https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L120-L125](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L120-L125)
+
+correction: No need to decrease ``toWithdraw`` so that all funds can be withdrawn from the vault.
+
+```diff
+function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        uint256 toWithdraw = updateCache();
+-        toWithdraw = toWithdraw - (toWithdraw * 50) / 10_000; //0.5%
+
+        result = _vaultWithdraw(toWithdraw);
+    }
+```
