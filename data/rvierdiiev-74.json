@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "YieldBox.depositETHAsset doesn't check that user sent more funds",
+  "issueId": 74,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/74"
+}
