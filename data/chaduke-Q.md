@@ -198,3 +198,12 @@ withdrawFees():
 
 [https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L117C14-L127](https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L117C14-L127)
 
+QA18. BaseUSDOStorage._getRevertMsg() uses assembly to decode the revert message. 
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/usd0/BaseUSDOStorage.sol#L87C22-L98](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/usd0/BaseUSDOStorage.sol#L87C22-L98)
+
+This can be accomplished by the lastest solidity functionality, see example here. 
+
+[https://github.com/code-423n4/2021-05-yield-findings/issues/15](https://github.com/code-423n4/2021-05-yield-findings/issues/15)
+
+
