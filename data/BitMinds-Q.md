@@ -15,3 +15,6 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 ## L-05 _getMasterContractLength function in Penrose.sol should not be public
 There is no reason why _getMasterContractLength should be available outside of Penrose.sol as it is only called from this contract. Also, the "_" prefix of the function name indicates that this should not be public by function naming convention. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L542
+
+## L-06 Small code asymmetry between _claimRewards and _claimRewardsOn functions in twTAP.sol
+Both functions utilize an unchecked block. _claimRewards performs the "uint256 len = ..." statement outside of the unchecked block. _claimRewardsOn performs the "uint256 len = ..." statement inside of the unchecked block. As both functions are very similar, keeping symmetry in the implementation, even on small details, increases consistency and auditability. Compare https://github.com/Tapioca-DAO/tap-token/blob/main/contracts/governance/twTAP.sol#L495 and https://github.com/Tapioca-DAO/tap-token/blob/main/contracts/governance/twTAP.sol#L515.
