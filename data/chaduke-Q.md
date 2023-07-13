@@ -206,4 +206,9 @@ This can be accomplished by the lastest solidity functionality, see example here
 
 [https://github.com/code-423n4/2021-05-yield-findings/issues/15](https://github.com/code-423n4/2021-05-yield-findings/issues/15)
 
+QA19. NativeTokenFactory.createToken(), when calling the _registerAsset(), the second argument should be ``address(this)`` instead of ``address(0)``. 
+
+[https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/NativeTokenFactory.sol#L90-L102](https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/NativeTokenFactory.sol#L90-L102)
+
+
 
