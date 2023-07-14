@@ -210,5 +210,17 @@ QA19. NativeTokenFactory.createToken(), when calling the _registerAsset(), the s
 
 [https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/NativeTokenFactory.sol#L90-L102](https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/NativeTokenFactory.sol#L90-L102)
 
+QA20. An attacker can steal funds from another user by front-running ``NativeTokenFactory.createToken()``.
+
+[https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/NativeTokenFactory.sol#L90C14-L102](https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/NativeTokenFactory.sol#L90C14-L102)
+
+The following scenario explains how this can happen: 
+1) Alice calls ``createToken("Alice", "ALI", 18, "alice.html")`` to create a token ID.
+2) Bob front-runs Alice's ``createToken()`` with another call ``createToken("Alice", "ALI", 18, "alice.html")``, and return a token ID 222.
+3) Bob calls ``mint(222, Bob, 1000e18)`` to mint 1000e18 amount of token 222 to himself. 
+4) Bob calls  ``transferOwnership(222, Alice, true, false)`` to transfer the ownership to Alice.
+5) Alice owns 222 and is tricked to think that she owns it in the first place, but Bob already stole 1000e18 from this token.
+
+Mitigation: store all the names of tokens and symbols to make sure that names and symbols cannot have duplicates. 
 
 
