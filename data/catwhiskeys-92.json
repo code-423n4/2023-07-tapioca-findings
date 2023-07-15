@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "catwhiskeys",
+  "risk": "2",
+  "title": "Absence of ownership check",
+  "issueId": 92,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/92"
+}
