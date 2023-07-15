@@ -28,3 +28,8 @@ The Tapioca documentation says that the borrowing/lending logic was licensed fro
 ## L-09 Setting owner directly in constructor of Penrose.sol (and other contracts) circumvents zero address check and emitting related event
 This may have been done to save gas, but a zero address could be relevant. Also, no event will be emitted that indicates the new contract owner. See this as an example: https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L94 but search the project globally to find all occurrences. BoringOwnable.sol itself emits this event: https://github.com/boringcrypto/BoringSolidity/blob/master/contracts/BoringOwnable.sol#L18. So for consistency reasons of always logging ownership changes, consider using "transferOwnership" with the direct parameter set to true instead of setting the owner state variable directly: https://github.com/boringcrypto/BoringSolidity/blob/master/contracts/BoringOwnable.sol#L26.
 
+## L-10 Misleading documentation about what skim does 
+. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L200
+compare with 
+ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L172
+
