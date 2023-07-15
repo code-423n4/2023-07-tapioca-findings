@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "The decimal in the BaseUSDOStorage contract is set incorrectly",
+  "issueId": 94,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/94"
+}
