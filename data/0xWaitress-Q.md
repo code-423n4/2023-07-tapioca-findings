@@ -100,3 +100,19 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 ### Recommendation 
 consider changing the function name to `computeClosingQuantiy` for more clarity.
+
+
+### [N-3] transfer in MarketERC20 has unnecessarily logic check.
+
+`|| msg.sender == to is unnecessary` . since `msg.sender!=to` is checked at the later part which only execute when the sender and receiver are two different addresses
+
+```solidity
+if (amount != 0 || msg.sender == to) {
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L140
+
+###Recommendation
+```solidity
+--- if (amount != 0 || msg.sender == to) {
++++ if (amount != 0) {
+```
