@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "erebus",
+  "risk": "3",
+  "title": "No check for singularity or bigBang parameters to NOT be zero",
+  "issueId": 107,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/107"
+}
