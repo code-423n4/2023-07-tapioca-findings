@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "addCollateral in SGLCollateral does not check the user `from`'s yieldBox balance when skim=true",
+  "issueId": 113,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/113"
+}
