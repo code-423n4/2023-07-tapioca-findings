@@ -1,4 +1,4 @@
-### [I-1] setMarketConfig would be reverted if new `_minLiquidatorReward` is larger than the old `maxLiquidatorReward`.
+### [L-1] setMarketConfig would be reverted if new `_minLiquidatorReward` is larger than the old `maxLiquidatorReward`.
 
 The setMarketConfig first ensure if the new _minLiquidatorReward is smaller than the old maxLiquidatorReward; this is unnecessary. 
 Consider it was 1(min), 5(max) and now the value pair is updated to 6(min) 10(max); the check would revert.
@@ -40,3 +40,19 @@ Just ensure the new _minLiquidatorReward is smaller than the NEW _maxLiquidatorR
                 (10 ** ratesPrecision));
 ```
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L283-L289
+
+### [N-2] computeClosingFactor is a mis-leading function name since `closing-factor` is well-interpreted as a ratio instead of the actual liquiditable amount.
+
+```solidity
+    /// @notice returns the maximum liquidatable amount for user
+    function computeClosingFactor(
+        uint256 borrowPart,
+        uint256 collateralPartInAsset,
+        uint256 borrowPartDecimals,
+        uint256 collateralPartDecimals,
+        uint256 ratesPrecision
+    )
+```
+
+### Recommendation 
+consider changing the function name to `computeClosingQuantiy` for more clarity.
