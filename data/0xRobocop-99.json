@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "3",
+  "title": "BigBang Contract: Liquidation does not burn the debt repayment",
+  "issueId": 99,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/99"
+}
