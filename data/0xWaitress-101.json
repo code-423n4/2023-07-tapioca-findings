@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "Market in SIngularity cannot disable using as a collateral (LTV=0) completely while being borrowable.",
+  "issueId": 101,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/101"
+}
