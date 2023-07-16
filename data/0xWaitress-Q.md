@@ -70,8 +70,36 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 +++        uint256 _quotient = ((_numerator / denominator) + 9) / 10;
 ```
 
+### [NA-1] liquidate in SLLiquidation does not ensure length of users is equal to length of maxBorrowParts
 
-### [N-1] liquidationStartsAt can be re-sued to remove redundant code
+liquidate takes an array of users and maxBorrowParts respectively, and iterate over them at an private function `_closedLiquidation`. However none of them checks length of users == maxBorrowParts.
+```solidity
+    function liquidate(
+        address[] calldata users,
+        uint256[] calldata maxBorrowParts,
+        ISwapper swapper,
+        bytes calldata collateralToAssetSwapData,
+        bytes calldata usdoToBorrowedSwapData
+    ) external notPaused {
+```
+
+_closedLiquidation
+```solidity
+    function _closedLiquidation(
+        address[] calldata users,
+        uint256[] calldata maxBorrowParts,
+        ISwapper swapper,
+        uint256 _exchangeRate,
+        bytes calldata swapData
+    ) private {
+        uint256 liquidatedCount = 0;
+        for (uint256 i = 0; i < users.length; i++) {
+```
+
+### Recommendation
+group the two arrays as a struct, or add checks on users == maxBorrowParts
+
+### [NA-2] liquidationStartsAt can be re-sued to remove redundant code
 
 `numerator` is equal to `borrowPartScaled - liquidationStartsAt`
 ```solidity
