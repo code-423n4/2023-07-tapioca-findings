@@ -45,3 +45,9 @@
 
 ## Private or modifiers only called once can be inlined 
 
+Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
+
+Using true and false will trigger gas-refunds, which after London are 1/5 of what they used to be, meaning using 1 and 2 (keeping the slot non-zero), will cost 5k per change (5k + 5k) vs 20k + 5k, saving you 15k gas per function which uses the modifier.
+
+## Caching global variables is more expensive than using the actual variable(use msg.sender instead of caching it)
+
