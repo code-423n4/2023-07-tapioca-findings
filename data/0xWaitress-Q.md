@@ -22,6 +22,11 @@ if (_minLiquidatorReward > 0) {
             maxLiquidatorReward = _maxLiquidatorReward;
         }
 ```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L158
+
+Same occurrence on `setSingularityConfig`:
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L523-L535
 
 ### Recommendation
 Just ensure the new _minLiquidatorReward is smaller than the NEW _maxLiquidatorReward
