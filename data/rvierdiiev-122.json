@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "BigBang.liquidate and SGLLiquidation.liquidate have only 1 swap data param for different swaps",
+  "issueId": 122,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/122"
+}
