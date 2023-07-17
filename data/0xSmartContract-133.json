@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xSmartContract",
+  "risk": "2",
+  "title": "USDO `maxFlashLoan` function u can call value higher than totalSupply and logic error occurs",
+  "issueId": 133,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/133"
+}
