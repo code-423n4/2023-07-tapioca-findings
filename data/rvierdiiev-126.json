@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "SGLLiquidation doesn't decrease totalCollateralShare, which leads to dos of adding collateral",
+  "issueId": 126,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/126"
+}
