@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "marcKn",
+  "risk": "2",
+  "title": "Airdrop phase duration in code has 48h which does not match 72 stated in the documentation and confirmed with twMatt",
+  "issueId": 125,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/125"
+}
