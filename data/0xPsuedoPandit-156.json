@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xPsuedoPandit",
+  "risk": "2",
+  "title": "approveBorrow function of MarketERC20.sol is subject to front-run attack.",
+  "issueId": 156,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/156"
+}
