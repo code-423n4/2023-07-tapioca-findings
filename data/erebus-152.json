@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "erebus",
+  "risk": "2",
+  "title": "Risk of reentrancy in rebalance function",
+  "issueId": 152,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/152"
+}
