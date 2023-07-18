@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "A malicious user can hijack approvals made by other users to add collateral on her account",
+  "issueId": 150,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/150"
+}
