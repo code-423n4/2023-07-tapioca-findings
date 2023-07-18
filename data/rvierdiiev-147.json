@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "3",
+  "title": "BigBang.buyCollateral can be used to steal users funds via sandwiching",
+  "issueId": 147,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/147"
+}
