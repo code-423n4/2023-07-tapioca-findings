@@ -23,3 +23,6 @@ Duplicated comments [here](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bc
 
 # Sixth 
 Commented import [here](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/tOFT/modules/BaseTOFTOptionsModule.sol#L11) when `ITapiocaOptionsBrokerCrossChain` is used in the code 8 times. Uncomment it
+
+# Seventh
+Some contracts like `Balancer.sol` in the `tapiocaz-audit` repo do use the function `swapETH` from `IStargateRouter` in functions like `_sendNative` (see [here](https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/interfaces/IStargateRouter.sol#L27) for the interface and [here](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L288) for the usage). However, there is no such function in the implementation from the Stargate protocol (see [here](https://github.com/stargate-protocol/stargate/blob/main/contracts/Router.sol)). So it shall revert because the signature does not exist in the `Router` contract. I am putting the severity as QA because it may be some Solidity fact I do not know yet BUT calling a function that does not exist is definitely a higher severity (up to the judges to increase my knowledge or let it be)
