@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "Accounts may be unliquidatable in singularity due to underflow",
+  "issueId": 141,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/141"
+}
