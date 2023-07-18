@@ -1,4 +1,4 @@
-QA1. MarketERC20.transfer() uses the wrong condition at L140. The correct condition should be ``amount != 0 && msg.sender != to``. In addition, the emit statement should be in the if-block so that false event will not be emitted. 
+QA1. MarketERC20.transfer() uses the wrong condition at L140. The correct condition should be ``amount != 0 && msg.sender != to``. In addition, the emit statement should be in the if-block so that false event will not be emitted.  The emit statement for MarketERC20.transferFrom should also be moved into the block of `` if (from != to)`` to avoid false emit. 
 
 [https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L135-L152](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L135-L152)
 
@@ -223,4 +223,6 @@ The following scenario explains how this can happen:
 
 Mitigation: store all the names of tokens and symbols to make sure that names and symbols cannot have duplicates. 
 
+QA21. The ``notPaused`` modifier for Market.setBorrowCap() can be bypassed by calling Market.setMarketConfig() which has no modifier of ``notPaused`` but also allows the owner to set a new borrowCap. 
 
+Correction: add ``noPaused`` to ``Market.setMarketConfig()``. 
