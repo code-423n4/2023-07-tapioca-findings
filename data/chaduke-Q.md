@@ -226,3 +226,8 @@ Mitigation: store all the names of tokens and symbols to make sure that names an
 QA21. The ``notPaused`` modifier for Market.setBorrowCap() can be bypassed by calling Market.setMarketConfig() which has no modifier of ``notPaused`` but also allows the owner to set a new borrowCap. 
 
 Correction: add ``noPaused`` to ``Market.setMarketConfig()``. 
+
+QA22. Market._getCallerReward() set callerReward to zero instead of ``maxLiquidatorReward`` when ``borrowed < startTVLInAsset``.  
+
+We know in the case of ``borrowed = startTVLInAsset``, we have ``rewardPercentage = 0`` and ``reward = maxLiquidatorReward``. To keep the continuity of the function, we should have ``reward = maxLiquidatorReward`` when ``borrowed < startTVLInAsset`` as well. 
+
