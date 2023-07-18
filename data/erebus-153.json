@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "erebus",
+  "risk": "2",
+  "title": "Sending tokens will always revert because no gas is forwarded",
+  "issueId": 153,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/153"
+}
