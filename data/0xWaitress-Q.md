@@ -75,6 +75,47 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 +++        uint256 _quotient = ((_numerator / denominator) + 9) / 10;
 ```
 
+### [L-3] buyCollateral in SGLLeverage does not deduce allowance from `_allowBorrow` first, which does not conform to CEI practice.
+
+```solidity
+        uint256 collateralShare;
+        (amountOut, collateralShare) = swapper.swap(
+            swapData,
+            minAmountOut,
+            from,
+            dexData
+        );
+        require(amountOut >= minAmountOut, "SGL: not enough");
+
+        _allowedBorrow(from, collateralShare);
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLeverage.sol#L175-L184
+
+On the contrary, the snippet at `multiHopBuyCollateral` has put _allowBorrow before calling swap/sendForLeverage, which is an external call. So they are not consistent here
+
+```solidity
+        _allowedBorrow(from, collateralShare);
+        _addCollateral(from, from, false, 0, collateralShare);
+
+        //borrow
+        (, uint256 borrowShare) = _borrow(from, from, borrowAmount);
+
+        //withdraw
+        yieldBox.withdraw(assetId, from, address(this), 0, borrowShare);
+
+        IUSDOBase(address(asset)).sendForLeverage{value: msg.value}(
+            borrowAmount,
+            from,
+            lzData,
+            swapData,
+            externalData
+        );
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLeverage.sol#L40-L55
+
+### Recommendation
+be consistent and use the workflow in `multiHopBuyCollateral` to put _allowBorrow before swap.
+
 ### [NA-1] liquidate in SLLiquidation does not ensure length of users is equal to length of maxBorrowParts
 
 liquidate takes an array of users and maxBorrowParts respectively, and iterate over them at an private function `_closedLiquidation`. However none of them checks length of users == maxBorrowParts.
