@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "A malicious liquidator can extract all collateral when liquidating a user instead of due `callerShare`",
+  "issueId": 140,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/140"
+}
