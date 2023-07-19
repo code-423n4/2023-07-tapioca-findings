@@ -236,3 +236,26 @@ QA23. BigBang.SetBigBangConfig() fails to check and make sure that ``_debtRateAg
 [https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/bigBang/BigBang.sol#L180-L201](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/bigBang/BigBang.sol#L180-L201)
 
 Correction: add the check to make sure ``_debtRateAgainstEthMarket <= 1e18``.
+
+QA24. Market._computeMaxBorrowableAmount() has a division-before-multiply rounding error. As a result, the maxBorrowableAmount might not calculated accurately and a user might borrow more than allowed.
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L385-L398](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L385-L398)
+
+Correction:
+```diff
+ function _computeMaxBorrowableAmount(
+        address user,
+        uint256 _exchangeRate
+    ) internal view returns (uint256 collateralAmountInAsset) {
+        collateralAmountInAsset =
+            yieldBox.toAmount(
+                collateralId,
+                (userCollateralShare[user] *
+-                    (EXCHANGE_RATE_PRECISION / FEE_PRECISION) *
+-                    collateralizationRate),
++              EXCHANGE_RATE_PRECISION  * collateralizationRate / FEE_PRECISION) 
+                false
+            ) /
+            _exchangeRate;
+    }
+```
