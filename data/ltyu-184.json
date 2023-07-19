@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ltyu",
+  "risk": "3",
+  "title": "addCollateral does not validate borrow allowance for input amount",
+  "issueId": 184,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/184"
+}
