@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "all deposit and withdraw function in Convex and Curve LP Strategy, apply slippage on internal pricing; which call real-time on chain price from Curve directly and subject to MEV",
+  "issueId": 163,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/163"
+}
