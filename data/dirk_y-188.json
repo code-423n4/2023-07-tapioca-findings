@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "2",
+  "title": "Option brokers don't handle oracle decimals correctly when calculating payment amounts",
+  "issueId": 188,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/188"
+}
