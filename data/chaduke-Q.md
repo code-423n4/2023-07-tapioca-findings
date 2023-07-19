@@ -267,3 +267,9 @@ QA25. SGLLendingCommon._borrow() checks and make sure that ``totalBorrow.base <=
 [https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L742-L767](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L742-L767)
 
 Correction: make them consistent in terms of how to check ``totalBorrowCap``. 
+
+QA26. Penrose.setFeeTo() fails to perform a zero address check for the input ``feeTo_``. As a result, protocol fee might be lost if ``feeTo_`` is set to zero by mistake or maliciously. 
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L455C14-L458](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L455C14-L458)
+
+Correction: perform a zero address check for ``feeTo_``. 
