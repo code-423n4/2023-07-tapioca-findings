@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "emergencyWithdraw in AaveStrategy would not work if Aave pause incentiveController but still operate core lending",
+  "issueId": 160,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/160"
+}
