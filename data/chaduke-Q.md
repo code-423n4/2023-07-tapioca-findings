@@ -231,3 +231,8 @@ QA22. Market._getCallerReward() set callerReward to zero instead of ``maxLiquida
 
 We know in the case of ``borrowed = startTVLInAsset``, we have ``rewardPercentage = 0`` and ``reward = maxLiquidatorReward``. To keep the continuity of the function, we should have ``reward = maxLiquidatorReward`` when ``borrowed < startTVLInAsset`` as well. 
 
+QA23. BigBang.SetBigBangConfig() fails to check and make sure that ``_debtRateAgainstEthMarket <= 1e18``.
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/bigBang/BigBang.sol#L180-L201](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/bigBang/BigBang.sol#L180-L201)
+
+Correction: add the check to make sure ``_debtRateAgainstEthMarket <= 1e18``.
