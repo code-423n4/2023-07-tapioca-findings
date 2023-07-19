@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "3",
+  "title": "Malicious user can burn any other user's TAP/reward tokens when unlocking/redeeming cross-chain",
+  "issueId": 165,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/165"
+}
