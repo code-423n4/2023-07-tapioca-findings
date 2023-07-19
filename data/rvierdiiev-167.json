@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "TapiocaOptionLiquidityProvision.lock allows to lock SGL shares for period that is less than 1 week",
+  "issueId": 167,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/167"
+}
