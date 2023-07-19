@@ -259,3 +259,11 @@ Correction:
             _exchangeRate;
     }
 ```
+
+QA25. SGLLendingCommon._borrow() checks and make sure that ``totalBorrow.base <= totalBorrowCap`` but BigBang._borrow() checks and make sures that ``totalBorrow.elastic <= totalBorrowCap``. Therefore, the check for ``totalBorrowCap`` is not consistent. 
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLendingCommon.sol#L58-L80](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLendingCommon.sol#L58-L80)
+
+[https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L742-L767](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L742-L767)
+
+Correction: make them consistent in terms of how to check ``totalBorrowCap``. 
