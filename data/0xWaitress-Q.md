@@ -190,3 +190,32 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 --- if (amount != 0 || msg.sender == to) {
 +++ if (amount != 0) {
 ```
+
+### [N-4] _currentBalance in TricryptoNativeStrategy does not count CRV claimable which is not consistent with all other strategies
+
+```solidity
+    function _currentBalance() internal view override returns (uint256 amount) {
+        uint256 lpBalance = lpGauge.balanceOf(address(this));
+        uint256 assetAmount = lpGetter.calcLpToWeth(lpBalance);
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        // uint256 compoundAmount = compoundAmount();//TODO: not view
+        return assetAmount + queued; //+ compoundAmount;
+    }
+```
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L197-L202
+
+say for example this is _currentBalance for ConvexTricryptoStrategy
+
+```solidity
+    function _currentBalance() internal view override returns (uint256 amount) {
+        uint256 lpBalance = rewardPool.balanceOf(address(this));
+        uint256 assetAmount = lpGetter.calcLpToWeth(lpBalance);
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        uint256 _compoundAmount = compoundAmount();
+        return assetAmount + queued + _compoundAmount;
+    }
+```
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L291-L297
+
+### Recommendation
+consider adding compountAmount() back for _currentBalance()
