@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "ConvexTricryptoStrategy does not count CVX reward into compoundAmount and thus _currentBalance leading to an under-estimate of TVL",
+  "issueId": 162,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/162"
+}
