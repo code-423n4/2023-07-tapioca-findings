@@ -237,7 +237,7 @@ QA23. BigBang.SetBigBangConfig() fails to check and make sure that ``_debtRateAg
 
 Correction: add the check to make sure ``_debtRateAgainstEthMarket <= 1e18``.
 
-QA24. Market._computeMaxBorrowableAmount() has a division-before-multiply rounding error. As a result, the maxBorrowableAmount might not calculated accurately and a user might borrow more than allowed.
+QA24. Market._computeMaxBorrowableAmount() has a division-before-multiply rounding error. As a result, the maxBorrowableAmount might not calculated accurately and a user might borrow more than allowed. There is a similar problem for function Market._isSolvent().
 
 [https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L385-L398](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L385-L398)
 
