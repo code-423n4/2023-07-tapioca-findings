@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "BigBang.getDebtRate() does not work for the case of _currentDebt < debtStartPoint. ",
+  "issueId": 168,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/168"
+}
