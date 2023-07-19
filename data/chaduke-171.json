@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "SGLCommon._addTokens() fails to debit the yieldBox balance of the ``from`` account, as a result, a malicous user can steal funds from the BigBang account.",
+  "issueId": 171,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/171"
+}
