@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "yeatsdai",
+  "risk": "3",
+  "title": "DoS Attack: _getMasterContractLength",
+  "issueId": 195,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/195"
+}
