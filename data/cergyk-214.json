@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "Liquidation reward does not guarantee flat base reward to liquidator as per docs",
+  "issueId": 214,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/214"
+}
