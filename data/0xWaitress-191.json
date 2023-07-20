@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "emergencyWithdraw in LidoEthStrategy is wrongly using slippage quantity as minAmount leading to potentially massive MEV and fund loss",
+  "issueId": 191,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/191"
+}
