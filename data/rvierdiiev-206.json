@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "Magnetar.burst doesn't allow to wrap native token into tOFT",
+  "issueId": 206,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/206"
+}
