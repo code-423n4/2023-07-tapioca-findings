@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BitMinds",
+  "risk": "3",
+  "title": "Unneeded allowedborrow function can prevent users from repaying their debt ",
+  "issueId": 225,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/225"
+}
