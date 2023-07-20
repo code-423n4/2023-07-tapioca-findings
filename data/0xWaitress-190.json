@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "_glpRewardRouter.gmx is wrongly validated to be address 0 in constructor",
+  "issueId": 190,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/190"
+}
