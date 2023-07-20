@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "In case of native token wrapping to tOFT msg.value is incremented",
+  "issueId": 207,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/207"
+}
