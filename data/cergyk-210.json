@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "buyCollateral in Singularity and BigBang can be abused to steal users collateral",
+  "issueId": 210,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/210"
+}
