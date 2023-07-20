@@ -1,3 +1,4 @@
+## Singularity
 ### [L-1] setMarketConfig would be reverted if new `_minLiquidatorReward` is larger than the old `maxLiquidatorReward`.
 
 The setMarketConfig first ensure if the new _minLiquidatorReward is smaller than the old maxLiquidatorReward; this is unnecessary. 
@@ -185,12 +186,13 @@ if (amount != 0 || msg.sender == to) {
 ```
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L140
 
-###Recommendation
+### Recommendation
 ```solidity
 --- if (amount != 0 || msg.sender == to) {
 +++ if (amount != 0) {
 ```
 
+## StrategyBox
 ### [N-4] _currentBalance in TricryptoNativeStrategy does not count CRV claimable which is not consistent with all other strategies
 
 ```solidity
@@ -219,3 +221,22 @@ https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a8
 
 ### Recommendation
 consider adding compountAmount() back for _currentBalance()
+
+
+## YieldBox
+### [NA-5] depositETHAsset is unnecessarily converting share into amount since 1 share is always equal to 1 amount according to how the function toAmount is encoded.
+
+depositETHAsset can only be called with the asset.contractAddress is of wrappedNative.
+```solidity
+    function depositETHAsset(
+        uint256 assetId,
+        address to,
+        uint256 amount
+    ) public payable returns (uint256 amountOut, uint256 shareOut) {
+        // Checks
+        Asset storage asset = assets[assetId];
+        require(asset.tokenType == TokenType.ERC20 && asset.contractAddress == address(wrappedNative), "YieldBox: not wrappedNative");
+
+        // Effects
+        uint256 share = amount._toShares(totalSupply[assetId], _tokenBalanceOf(asset), false);
+```
