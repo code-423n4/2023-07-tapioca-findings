@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "3",
+  "title": "A user with a TapiocaOFT allowance >0 could steal all the underlying ERC20 tokens of the owner",
+  "issueId": 219,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/219"
+}
