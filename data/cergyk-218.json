@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "BaseUSDO.exerciseOption can be hijacked by user not owning oTapTokenID",
+  "issueId": 218,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/218"
+}
