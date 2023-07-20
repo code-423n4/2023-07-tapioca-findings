@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "3",
+  "title": "Lack of method to harvest the minted GLP in GlpStragety.sol, result in loss of WETH reward",
+  "issueId": 221,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/221"
+}
