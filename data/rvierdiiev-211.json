@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "MagnetarV2 MARKET_MULTIHOP_BUY and TAP_EXERCISE_OPTION will not work, as no value is passed with a call",
+  "issueId": 211,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/211"
+}
