@@ -224,7 +224,7 @@ consider adding compountAmount() back for _currentBalance()
 
 
 ## YieldBox
-### [NA-5] depositETHAsset is unnecessarily converting share into amount since 1 share is always equal to 1 amount according to how the function toAmount is encoded.
+### [N-5] depositETHAsset is unnecessarily converting share into amount since 1 share is always equal to 1 amount according to how the function toAmount is encoded.
 
 depositETHAsset can only be called with the asset.contractAddress is of wrappedNative.
 ```solidity
@@ -239,4 +239,34 @@ depositETHAsset can only be called with the asset.contractAddress is of wrappedN
 
         // Effects
         uint256 share = amount._toShares(totalSupply[assetId], _tokenBalanceOf(asset), false);
+```
+
+
+[L-4] transferMultiple in yieldBox introduces higher than necessary allowance requirement only to avoid calculation.
+
+requiring `type(uint256).max`; while it's nice to save the use of argument by calculating totalShare by just suming shares, this simply add higher-than-necessary requirement on operator's allowance to conduct transferMultiple.
+
+```solidity
+    function transferMultiple(
+        address from,
+        address[] calldata tos,
+        uint256 assetId,
+        uint256[] calldata shares
+    ) public allowed(from, type(uint256).max) {
+```
+
+### Recommendation 
+use the correct allowance requirement
+```solidity
+    function transferMultiple(
+        address from,
+        address[] calldata tos,
+        uint256 assetId,
+        uint256[] calldata shares,
+        uint256 totalShares;
+---    ) public allowed(from, type(uint256).max) {
++++    ) public allowed(from, totalShares) {
+....
++++ require(totalAmount <= totalShares);
+}
 ```
