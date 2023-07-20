@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "AaveStragety.sol#compound will not work if the swapper contract is changed because lack of reward token approval",
+  "issueId": 222,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/222"
+}
