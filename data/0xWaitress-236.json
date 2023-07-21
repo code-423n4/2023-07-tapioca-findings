@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "exerciseOption relies on an oracle price for the paymentToken to decide the final TAP output but lack slippage protection for user to express maximum acceptable input",
+  "issueId": 236,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/236"
+}
