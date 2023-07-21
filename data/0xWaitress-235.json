@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "newEpoch time in OptionBroker would gradually turn out of sync with emission in TapOFT",
+  "issueId": 235,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/235"
+}
