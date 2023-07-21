@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "anyone can exitPosition for others in TapiocaOptionBroker, coupled with overlapping condition in isPositionActive on exerciseOption, leads to potential frontrun of user",
+  "issueId": 234,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/234"
+}
