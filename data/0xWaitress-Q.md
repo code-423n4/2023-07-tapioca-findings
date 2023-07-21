@@ -277,5 +277,17 @@ return dso_supply * pow(week, decay_rate);
 }
 ```
 
+### [L-6] addRewardToken in twTAP does not protect from adding duplicate
 
+```solidity
+    function addRewardToken(IERC20 token) external onlyOwner returns (uint256) {
+        uint256 i = rewardTokens.length;
+        rewardTokens.push(token);
+        rewardTokenIndex[token] = i;
+        return i;
+    }
+
+```
+### Recommendation
+add a duplicate check to avoid updating existing token's index.
 
