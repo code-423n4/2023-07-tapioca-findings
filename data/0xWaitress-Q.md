@@ -240,3 +240,39 @@ depositETHAsset can only be called with the asset.contractAddress is of wrappedN
         // Effects
         uint256 share = amount._toShares(totalSupply[assetId], _tokenBalanceOf(asset), false);
 ```
+
+## Tap-Token
+[L-5] emitForWeek in TapOFT only accrue 1 week unclaimed; leading to potential emission loss if emitForWeek is not called on 2 consecutive weeks.
+
+While this is highly unlikely since emitForWeek is a permissionless call, this could technically happen.
+```solidity
+    function emitForWeek() external notPaused returns (uint256) {
+        require(_getChainId() == governanceChainIdentifier, "chain not valid");
+
+        uint256 week = _timestampToWeek(block.timestamp);
+        if (emissionForWeek[week] > 0) return 0;
+
+        // Update DSO supply from last minted emissions
+        dso_supply -= mintedInWeek[week - 1];
+
+        // Compute unclaimed emission from last week and add it to the current week emission
+        uint256 unclaimed = emissionForWeek[week - 1] - mintedInWeek[week - 1];
+        uint256 emission = uint256(_computeEmission());
+        emission += unclaimed;
+        emissionForWeek[week] = emission;
+
+        emit Emitted(week, emission);
+
+        return emission;
+    }
+```
+
+### Recommendation
+Consider harden the algorithm by using a function that pre-computes the dso_supply_target, using the emission_decay, then each week emission is the difference between dso_supply_target and total_emitted 
+
+This is just a psuedo code we would need to pick a library that calculates exponential. 
+```solidity
+function dso_supply_target(uint256 week) public pure {
+return dso_supply * pow(week, decay_rate);
+}
+```
