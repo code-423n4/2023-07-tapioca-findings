@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "2",
+  "title": "Malicious user can withdraw market fees at a massive loss in turbulent DEX market environments",
+  "issueId": 266,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/266"
+}
