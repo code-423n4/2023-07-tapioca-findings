@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BitMinds",
+  "risk": "2",
+  "title": "Too high slippage leads to higher than expected losses for (standard) withdrawals from LidoEthStrategy.sol and BalancerStrategy.sol strategies",
+  "issueId": 263,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/263"
+}
