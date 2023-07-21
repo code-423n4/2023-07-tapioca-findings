@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "Unchecked 'user' parameter on MagnetarV2 enables hijack borrows or lock funds",
+  "issueId": 249,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/249"
+}
