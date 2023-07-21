@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Darwin",
+  "risk": "2",
+  "title": "Missing deadline checks allow pending transactions to be maliciously executed",
+  "issueId": 259,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/259"
+}
