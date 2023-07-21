@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "Slippage protection in AaveStrategy::compound is useless with some swappers",
+  "issueId": 245,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/245"
+}
