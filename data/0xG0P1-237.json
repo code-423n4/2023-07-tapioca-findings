@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xG0P1",
+  "risk": "3",
+  "title": "An attacker can increase their collateral by depositing collateral assets from another user without authorization.",
+  "issueId": 237,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/237"
+}
