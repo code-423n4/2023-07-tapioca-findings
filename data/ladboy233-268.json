@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "compound and deposit and withdraw and emergencyWithdraw in StargateStragety.sol will keep reverting and lock user fund if there are not enough reward token in Stargate LP staking contract",
+  "issueId": 268,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/268"
+}
