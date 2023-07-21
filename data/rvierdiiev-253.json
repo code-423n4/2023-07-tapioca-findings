@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "LidoEthStrategy.emergencyWithdraw may not work because of hardcoded slippage",
+  "issueId": 253,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/253"
+}
