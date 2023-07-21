@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ltyu",
+  "risk": "2",
+  "title": "Swap functions may revert for non-ERC20 tokens due to approval to non-zero",
+  "issueId": 262,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/262"
+}
