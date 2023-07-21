@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BitMinds",
+  "risk": "2",
+  "title": "YearnStrategy may not be able to withdraw in emergency (and standard) withdrawal scenario which can its funds at risk",
+  "issueId": 265,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/265"
+}
