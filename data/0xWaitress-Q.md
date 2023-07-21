@@ -278,16 +278,4 @@ return dso_supply * pow(week, decay_rate);
 ```
 
 
-### [N-6] participate in twTAP has a redundant computation of multiplier:
 
-multiplier is not really used hereAfter so can be deleted
-```solidity
-        uint256 multiplier = computeTarget(
-            dMIN,
-            dMAX,
-            magnitude,
-            pool.cumulative
-        );
-```
-
-https://github.com/Tapioca-DAO/tap-token-audit/blob/main/contracts/governance/twTAP.sol#L267-L272
