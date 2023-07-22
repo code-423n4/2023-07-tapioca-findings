@@ -135,6 +135,47 @@ FILE: tapioca-bar-audit/contracts/Penrose.sol
 
 ```
 
+### ``TapiocaOptionBrok`` : ``lastEpochUpdate``,``epoch``,``epochTAPValuation`` can be packed with same 
+SLOT : Saves ``4000 GAS``,``2 SLOT``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionBroker.sol#L60-L62
+
+``epochTAPValuation`` can be uint128, ``lastEpochUpdate`` can be uint64, ``epoch`` can be uint64 as per [AirdropBroker.sol](https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L50-L52) contract . So this down casting is perfectly safe. This down casting not affect the protocol  
+
+
+```diff
+FILE: tap-token-audit/contracts/options/TapiocaOptionBroker.sol
+
+- 60:  uint256 public lastEpochUpdate; // timestamp of the last epoch update
++ 60:  uint64 public lastEpochUpdate; // timestamp of the last epoch update
++ 62:  uint64 public epoch; // Represents the number of weeks since the start of the contract
+- 61:  uint256 public epochTAPValuation; // TAP price for the current epoch
++ 61:  uint128 public epochTAPValuation; // TAP price for the current epoch
+- 62:  uint256 public epoch; // Represents the number of weeks since the start of the contract
+
+```
+
+### ``twTAP.sol`` : ``mintedTWTap``,``lastProcessedWeek`` can be packed with same SLOT : Saves ``2000 GAS``,``1 SLOT``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/governance/twTAP.sol#L106-L108
+
+``uint128`` is more than enough for ``mintedTWTap``,``lastProcessedWeek`` state variables. 
+
+  - ``mintedTWTap`` is incremented always by 1
+  - ``lastProcessedWeek`` is dealing timestamp 
+
+
+```diff
+FILE: tap-token-audit/contracts/governance/twTAP.sol
+
+- 106:    uint256 public mintedTWTap;
++ 106:    uint128 public mintedTWTap;
++ 108:    uint128 public lastProcessedWeek;
+107:    uint256 public creation; // Week 0 starts here
+- 108:    uint256 public lastProcessedWeek;
+
+```
+
 ## [G-2] State variables only set in the constructor should be declared ``immutable``
 
 Avoids a Gsset (20000 gas) in the constructor, and replaces the first access in each transaction (Gcoldsload - 2100 gas) and each access thereafter (Gwarmacces - 100 gas) with a PUSH32 (3 gas).
