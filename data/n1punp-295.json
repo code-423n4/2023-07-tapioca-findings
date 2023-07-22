@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "3",
+  "title": "LidoEthStrategy `emergencyWithdraw` will revert when stETH price is less than 99.5% of ETH price.",
+  "issueId": 295,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/295"
+}
