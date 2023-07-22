@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "3",
+  "title": "AaveStrategy's `compound` function can get MEV sandwich attacked (bad slippage control)",
+  "issueId": 277,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/277"
+}
