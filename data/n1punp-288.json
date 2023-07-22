@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "3",
+  "title": "ConvexTriCryptoStrategy `_withdraw` is prone to MEV sandwich attack (bad slippage control) -- users who want to withdraw can get 0 value out of it.",
+  "issueId": 288,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/288"
+}
