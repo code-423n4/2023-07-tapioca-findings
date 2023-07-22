@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "AaveStragety#withdraw and emergecyWithdraw can revert if the supply cap is reached or isFrozen flag is on when compounding",
+  "issueId": 283,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/283"
+}
