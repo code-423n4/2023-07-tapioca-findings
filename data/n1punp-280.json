@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "2",
+  "title": "BalancerStrategy `updateCache` function can be manipulated --> leading to grievance for withdrawers",
+  "issueId": 280,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/280"
+}
