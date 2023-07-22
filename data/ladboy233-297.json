@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Compound is not called properly before Withdraw in Convex Stragety, result in either loss of reward or revert when withdrawal",
+  "issueId": 297,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/297"
+}
