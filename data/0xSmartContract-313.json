@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xSmartContract",
+  "risk": "3",
+  "title": "APR rate lower than `minimumInterestPerSecond` and higher than `maximumInterestPerSecond` can be defined",
+  "issueId": 313,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/313"
+}
