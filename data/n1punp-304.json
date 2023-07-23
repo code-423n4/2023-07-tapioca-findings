@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "3",
+  "title": "LidoETHStrategy `_withdraw` is prone to MEV sandwich attack",
+  "issueId": 304,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/304"
+}
