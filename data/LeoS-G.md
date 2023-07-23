@@ -3,8 +3,8 @@
 |--------|-------|-----------|-----------|
 |[G-01]|Correction/Addition to  automated findings [G-09]|7|-16 164|
 |[G-02|Use `calldata` instead of `memory`|23|-8 334|
-|[G-03|Change compiler version + [G01] automated finding criticism|-|-7329|
-|[G-04|Change the optimizer runs number|-|-|
+|[G-03|Change compiler version + [G01] automated finding criticism|-|-7 329|
+|[G-04|Change the optimizer runs number|-|-89 552|
 
 The gas saved column simply adds up the evolution in the gas reports, excluding deployments and using the method described in the next section.
 # Benchmark
@@ -23,7 +23,7 @@ A benchmark is performed on each optimization, using the gas report provided by 
 The optimization proposed in the automatic report ([G-09] Using `storage` instead of `memory` for structs/arrays saves gas) can be commented and criticized.
 
 ## Additional instance
-These instances do not seem to have been identified.
+These instances do not seem to have been identified. Only instances compilable with a simple type swap are considered valid
 **tap-token-audit**
 *3 instances*
 - [TapiocaOptionLiquidityProvision.sol#L349](https://github.com/Tapioca-DAO/tap-token-audit/blob/main/contracts/options/TapiocaOptionLiquidityProvision.sol#L349)
@@ -139,7 +139,7 @@ During the verification, some other instances were tested, although there's noth
 *Gas: not taken into account in the final addition*
 
 # [G-02] Use `calldata` instead of `memory`
-Using `calldata` instead of `memory` for function parameters can save gas if the argument is only read in the function
+Using `calldata` instead of `memory` for function parameters can save gas if the argument is only read in the function. Only instances compilable with a simple type swap are considered valid.
 **tapioca-bar-audit**
 *16 instances*
 - [USDOMarketModule.sol#L137](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/usd0/modules/USDOMarketModule.sol#L137)
@@ -278,60 +278,267 @@ By compiling Yieldbox contracts with 0.8.11 (using the hardhat configuration fil
 *Gas saved: -7329*
 
 # [G-04] Change the optimizer runs number
-The number of setup runs in the optmizer mean how many times the contracts are meant to be used. A huge number of runs improves the running cost, but penalizes the deployment cost, and inversely. 
-This depends on the deploier's vision and can therefore be widely discussed. It's not 100% relevant to optimize this through gas report, as it doesn't always represent a normal use of contracts. However, it is the only readily available metric and will therefore be used. With this in mind, the purpose of this optimization is simply to show the possible variations and thus highlight the importance of correctly setting up the number of runs.
+The number of setup runs in the optmizer mean how many times the contracts are meant to be used. It can be set individually. A huge number of runs improves the running cost, but penalizes the deployment cost, and inversely. 
+This depends on the deploier's vision and can therefore be widely discussed. It's not 100% relevant to optimize this through gas report, as it doesn't always represent a normal use of contracts. However, it is the only readily available metric and will therefore be used. With this in mind, the purpose of this optimization is simply to show the possible variations and thus highlight the importance of correctly setting up the number of runs for the differents contracts
 
-To shorten the report, only the percentage of total variations (always excluding certain contracts) are shown.
 *Changes are made using hardhat configuration files*
+
+The easiest way to adjust is by trial and error. Here some rules are applied:
+- Deployment costs are not increased by more than 10%. 
+- Contracts do not exceed the deployment size limit. 
+- Only contracts clearly visible in the gas report are modified, all others have the default value applied.
+- Only in-scope contracts are considered.
+
 **tapioca-bar-audit** 
-By default, it is set to 10, and it evolves in the following way:
-|Runs:| 1| 100| 200| 500| 1000| 5000| 10000| 20000| 50000| 100000|
-|-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|Usage:| +0.003%| -0.120%| -0.153%| -0.194%| +0.131%| +1.453%| +1.445%| +2.490%| +2.372%| +2.369%|
-|Deployment:| 0.000%| +1.030%| +1.844%| +3.237%| +6.613%| +10.516%| +12.525%| +16.654%| +12.400%| +13.408%|
 
-500 runs seems like a good compromise.
+    default:10 runs
+    USDO.sol: 75 runs
+    SGLLeverage.sol: 5000 runs
+    SGLLiquidation.sol: 10000 runs
+    Penrose.sol: 500 runs
+    Singularity.sol: 800 runs
+    BigBang.sol: 750 runs
+
+Applying these changes, gas report evolves as follows :
+
+||avg before|avg after|difference|
+|-|:-:|:-:|:-:|
+|BigBang: accrue|70794|70333|-461|
+|BigBang: addCollateral|119478|119420|-58|
+|BigBang: borrow|238423|237833|-590|
+|BigBang: buyCollateral|278366|276989|-1377|
+|BigBang: execute|237909|237303|-606|
+|BigBang: liquidate|499020|496812|-2208|
+|BigBang: removeCollateral|118944|118675|-269|
+|BigBang: repay|155766|155118|-648|
+|BigBang: sellCollateral|243889|242534|-1355|
+|BigBang: updateExchangeRate|39544|39522|-22|
+|BigBang: updateOperator|47554|47542|-12|
+|ERC20WithSupply: permit|78955|78922|-33|
+|MarketERC20: approveBorrow|45218|45207|-11|
+|MarketERC20: permitBorrow|77579|77558|-21|
+|Penrose: executeMarketFn|70163|69873|-290|
+|Penrose: registerBigBang|642580|641998|-582|
+|Penrose: registerBigBangMasterContract|93519|93405|-114|
+|Penrose: registerSingularity|825605|825380|-225|
+|Penrose: registerSingularityMasterContract|86800|86686|-114|
+|Penrose: setBigBangEthMarket|38557|38551|-6|
+|Penrose: setConservator|48610|48583|-27|
+|Penrose: setFeeTo|47908|47902|-6|
+|Penrose: setSwapper|47839|47833|-6|
+|Penrose: setUsdoToken|500985|501671|+686|
+|Penrose: updatePause|31794|31785|-9|
+|Penrose: withdrawAllMarketFees|317314|316521|-793|
+|SGLLeverage: multiHopBuyCollateral|1009039|1007769|-1270|
+|SGLLeverage: multiHopSellCollateral|842239|841288|-951|
+|SGLLiquidation: liquidate|521910|519982|-1928|
+|Singularity: addAsset|167554|166879|-675|
+|Singularity: removeAsset|126112|125164|-948|
+|USDO: approve|44401|44383|-18|
+|USDO: burn|37224|37222|-2|
+|USDO: mint|63606|63603|-3|
+|USDO: setBurnerStatus|54152|54149|-3|
+|USDO: setMinterStatus|51346|51343|-3|
+|USDO: setTrustedRemote|95703|95661|-42|
+|YieldBox: depositAsset|101076|101051|-25|
+|YieldBox: registerAsset|111345|111351|+6|
+|||||
+|Deployment: BigBang|5115971|5475477|+359506|
+|Deployment: Penrose|3973361|4038587|+65226|
+|Deployment: SGLLeverage|4407614|4870213|+462599|
+|Deployment: SGLLiquidation|4339490|4888947|+549457|
+|Deployment: Singularity|5248515|5510432|+261917|
+|Deployment: USDO|5603853|5611998|+8145|
+
+*Gas saved: -15598*
+
 **tapioca-periph-audit** 
-By default, it is set to 300, and it evolves in the following way:
-|Runs:| 1| 10| 100| 500| 1000| 5000| 10000| 20000| 50000| 100000|
-|-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|Usage:| +0.105%| +0.105%| +0.070%| 0.000%| -0.010%| -0.031%| -0.050%| -0.056%| -0.107%| -0.107%|
-|Deployment:| -1.688%| -1.686%| -1.319%| +0.430%| +3.555%| +10.929%| +15.589%| +19.578%| +24.416%| +25.947%|
 
-Change doesn't seem necessary
+    default: 300 runs
+    CurveSwapper.sol: 5000 runs
+    UniswapV2Swapper.sol: 5000 runs
+    UniswapV3Swapper.sol: 5000 runs
+    MagnetarV2.sol: 500 runs
+
+Applying these changes, gas report evolves as follows :
+
+||avg before|avg after|difference|
+|-|:-:|:-:|:-:|
+|CurveSwapper: swap|281471|281414|-57|
+|MagnetarV2: burst|275827|275816|-11|
+|UniswapV2Swapper: swap|230085|229975|-110|
+|UniswapV3Swapper: swap|225984|225955|-29|
+|||||
+|Deployment: CurveSwapper|1350630|1492559|+141929|
+|Deployment: MagnetarV2|5362407|5364351|+1944|
+|Deployment: UniswapV2Swapper|1366250|1550209|+183959|
+|Deployment: UniswapV3Swapper|2171082|2335795|+164713|
+
+*Gas saved: -207*
 
 **tapioca-yieldbox-strategies-audit** 
-By default, it is set to 200, and it evolves in the following way:
-|Runs:| 1| 10| 100| 500| 1000| 5000| 10000| 20000| 50000| 100000|
-|-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|Usage:| +0.157%| +0.157%| +0.058%| -0.049%| -0.063%| -0.133%| -0.177%| -0.182%| -0.201%| -0.207%|
-|Deployment:| -0.888%| -0.888%| -0.517%| +0.658%| +4.437%| +11.935%| +17.561%| +20.758%| +23.568%| +29.543%|
 
-50000 runs seems like a good compromise.
+    default: 200 runs
+    YearnStrategy.sol: 5000 runs
+    CompoundStrategy.sol: 5000 runs
+    LidoEthStrategy.sol: 5000 runs
+    TricryptoLPStrategy.sol: 5000 runs
+    AaveStrategy.sol: 5000 runs
+    ConvexTricryptoStrategy.sol: 5000 runs
+
+Applying these changes, gas report evolves as follows :
+
+||avg before|avg after|difference|
+|-|:-:|:-:|:-:|
+|AaveStrategy: compound|164651|164592|-59|
+|CompoundStrategy: setDepositThreshold|47143|47131|-12|
+|ConvexTricryptoStrategy: compound|699846|699047|-799|
+|ConvexTricryptoStrategy: setMultiSwapper|38596|38542|-54|
+|ConvexTricryptoStrategy: setTricryptoLPGetter|61450|61396|-54|
+|LidoEthStrategy: setDepositThreshold|47140|47128|-12|
+|TricryptoLPStrategy: emergencyWithdraw|371296|371172|-124|
+|TricryptoLPStrategy: setTricryptoLPGetter|61382|61349|-33|
+|YearnStrategy: setDepositThreshold|47143|47131|-12|
+|YieldBox: depositAsset|178634|178584|-50|
+|YieldBox: registerAsset|111415|111411|-4|
+|YieldBox: withdraw|150249|150164|-85|
+|||||
+|Deployment: AaveStrategy|2746846|3060844|+313998|
+|Deployment: CompoundStrategy|1158728|1294060|+135332|
+|Deployment: ConvexTricryptoStrategy|2612712|2811562|+198850|
+|Deployment: LidoEthStrategy|1219565|1351675|+132110|
+|Deployment: TricryptoLPStrategy|2606494|2953777|+347283|
+|Deployment: YearnStrategy|1121992|1254641|+132649|
+
+*Gas saved: -1298*
+
 **tapiocaz-audit** 
-By default, it is set to 300, and it evolves in the following way:
-|Runs:| 1| 10| 100| 500| 1000| 5000| 10000| 20000| 50000| 100000|
-|-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|Usage:| +0.108%| +0.108%| +0.052%| -0.004%| -0.149%| -0.151%| -0.151%| -0.201%| -0.317%| -0.317%|
-|Deployment:| -2.286%| -2.289%| -1.624%| +0.288%| +5.179%| +7.830%| +9.296%| +12.447%| +21.049%| +21.049%|
 
-100000 runs seems suitable.
+    default: 300 runs
+    TapiocaOFT.sol: 10 runs
+    TapiocaWrapper.sol: 10 runs
+    Balancer.sol: 1000 runs
+
+Applying these changes, gas report evolves as follows :
+
+||avg before|avg after|difference|
+|-|:-:|:-:|:-:|
+|Balancer: initConnectedOFT|111608|111572|-36|
+|Balancer: rebalance|143242|143204|-38|
+|BaseTOFT: sendFrom|220527|220773|+246|
+|BaseTOFT: sendToStrategy|339476|339632|+156|
+|ERC20: approve|46037|46038|+1|
+|ERC20: transfer|42938|42967|+29|
+|TapiocaOFT: unwrap|58783|58816|+33|
+|TapiocaOFT: wrap|93861|93893|+32|
+|TapiocaWrapper: createTOFT|5486792|5431196|-55596|
+|TapiocaWrapper: executeTOFT|72012|72046|+34|
+|||||
+|Deployment: Balancer|1006081|1096222|+90141|
+|Deployment: TapiocaOFT|5313127|5232067|-81060|
+|Deployment: TapiocaWrapper|814960|787868|-27092|
+
+*Gas saved: -55139*
+
 **tap-token-audit** 
-By default, it is set to 100, and it evolves in the following way:
-|Runs:| 1| 10| 200| 500| 1000| 5000| 10000| 20000| 50000| 100000|
-|-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|Usage:| +0.105%| +0.091%| -0.036%| -0.058%| -0.111%| -0.141%| -0.158%| -0.225%| -0.234%| -0.236%|
-|Deployment:| -1.197%| -1.128%| +1.123%| +2.428%| +6.038%| +10.122%| +13.213%| +19.267%| +24.477%| +28.270%|
 
-20000 runs seems like a good compromise.
+    default: 100 runs
+    oTAP.sol: 5000 runs
+    Vesting.sol: 5000 runs
+    TapOFT.sol: 1500 runs
+    TapiocaOptionLiquidityProvision.sol: 1000 runs
+    AirdropBroker.sol: 1000 runs
+    TapiocaOptionBroker.sol: 5000 runs
+
+Applying these changes, gas report evolves as follows :
+
+||avg before|avg after|difference|
+|-|:-:|:-:|:-:|
+|AirdropBroker: aoTAPBrokerClaim|46652|46634|-18|
+|AirdropBroker: collectPaymentTokens|56460|56417|-43|
+|AirdropBroker: newEpoch|47694|47589|-105|
+|AirdropBroker: participate|135616|135735|+119|
+|AirdropBroker: registerUserForPhase|631464|621530|-9934|
+|AirdropBroker: setPaymentToken|57369|57336|-33|
+|AirdropBroker: setTapOracle|71015|70994|-21|
+|OTAP: approve|48673|48658|-15|
+|OTAP: batch|94499|94379|-120|
+|OTAP: permit|76762|76705|-57|
+|TapiocaOptionBroker: collectPaymentTokens|56224|56176|-48|
+|TapiocaOptionBroker: exerciseOption|163739|163286|-453|
+|TapiocaOptionBroker: exitPosition|110233|109687|-546|
+|TapiocaOptionBroker: newEpoch|210458|210054|-404|
+|TapiocaOptionBroker: oTAPBrokerClaim|46587|46554|-33|
+|TapiocaOptionBroker: participate|290389|289696|-693|
+|TapiocaOptionBroker: setPaymentToken|59695|59656|-39|
+|TapiocaOptionBroker: setPaymentTokenBeneficiary|29397|29382|-15|
+|TapiocaOptionBroker: setTapOracle|70960|70921|-39|
+|TapiocaOptionLiquidityProvision: batch|94755|94654|-101|
+|TapiocaOptionLiquidityProvision: lock|199906|200019|+113|
+|TapiocaOptionLiquidityProvision: permit|76852|76786|-66|
+|TapiocaOptionLiquidityProvision: registerSingularity|150368|150199|-169|
+|TapiocaOptionLiquidityProvision: setSGLPoolWEight|52846|52724|-122|
+|TapiocaOptionLiquidityProvision: unlock|92311|92256|-55|
+|TapiocaOptionLiquidityProvision: unregisterSingularity|52191|52028|-163|
+|TapOFT: claimRewards|375305|374192|-1113|
+|TapOFT: extractTAP|65453|65417|-36|
+|TapOFT: lockTwTapPosition|386935|386424|-511|
+|TapOFT: permit|75719|75712|-7|
+|TapOFT: removeTAP|37457|37433|-24|
+|TapOFT: setMinter|49209|49200|-9|
+|TapOFT: setTrustedRemote|95554|95518|-36|
+|TapOFT: setTwTap|47157|47130|-27|
+|TapOFT: transfer|52562|52526|-36|
+|TapOFT: unlockTwTapPosition|220699|219931|-768|
+|TwTAP: distributeReward|86887|86885|-2|
+|Vesting: claim|111148|111109|-39|
+|Vesting: init|98222|98180|-42|
+|Vesting: registerUser|65303|65273|-30|
+|||||
+|Deployment: OTAP|1854373|2067897|+213524|
+|Deployment: TapiocaOptionBroker|2844098|3135305|+291207|
+|Deployment: TapiocaOptionLiquidityProvision|2861468|3102873|+241405|
+|Deployment: TapOFT|5252762|5546896|+294134|
+|Deployment: Vesting|838851|960779|+121928|
+
+*Gas saved: -15740*
 
 **YieldBox** 
-By default, it is set to 200, and it evolves in the following way:
-|Runs:| 1| 10| 100| 500| 1000| 5000| 10000| 20000| 50000| 100000|
-|-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|Usage:| +0.691%| +0.691%| +0.113%| -0.042%| -0.055%| -0.105%| -0.155%| -0.163%| -0.276%| -0.276%|
-|Deployment:| -1.509%| -1.509%| -1.183%| +2.180%| +5.039%| +11.199%| +14.833%| +17.594%| +20.734%| +20.733%|
 
-100000 runs seems suitable.
+    default: 200 runs
+    NativeTokenFactory.sol: 3125 runs
+    YieldBox.sol: 6250 runs
 
-**This optimisations is only intended to show the potential for better cases.** Because the gas evolution it enables vastly surpass all other conceivable optimizations.
+Applying these changes, gas report evolves as follows :
+
+||avg before|avg after|difference|
+|-|:-:|:-:|:-:|
+|MasterContractFullCycleMock: run|606991|606538|-453|
+|NativeTokenFactory: burn|39544|39534|-10|
+|NativeTokenFactory: claimOwnership|29240|29228|-12|
+|NativeTokenFactory: createToken|184232|184177|-55|
+|NativeTokenFactory: mint|64213|64203|-10|
+|NativeTokenFactory: transferOwnership|37680|37624|-56|
+|YieldBox: batchTransfer|122280|122202|-78|
+|YieldBox: createToken|183427|183295|-132|
+|YieldBox: deposit|154547|154466|-81|
+|YieldBox: depositAsset|128097|127984|-113|
+|YieldBox: depositETH|202190|202091|-99|
+|YieldBox: depositNFTAsset|133159|133114|-45|
+|YieldBox: mint|71592|71582|-10|
+|YieldBox: registerAsset|123417|123387|-30|
+|YieldBox: safeBatchTransferFrom|123629|123571|-58|
+|YieldBox: safeTransferFrom|56154|56097|-57|
+|YieldBox: transfer|55345|55268|-77|
+|YieldBox: transferMultiple|109823|109670|-153|
+|YieldBox: transferOwnership|27241|27226|-15|
+|YieldBox: withdraw|62079|62053|-26|
+|||||
+|Deployment: NativeTokenFactory|2375846|2549337|+173491|
+|Deployment: YieldBox|5038198|5383625|+345427|
+
+*Gas saved: -1570*
+
+
+
+**This optimisations is only intended to show the potential for better cases and to provide a starting point as it can be vastly discussed** 
