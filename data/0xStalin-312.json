@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xStalin",
+  "risk": "3",
+  "title": "Attackers can steal all user's collateral that is deposited in the YieldBox vault ",
+  "issueId": 312,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/312"
+}
