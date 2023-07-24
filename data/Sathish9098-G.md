@@ -175,6 +175,33 @@ FILE: tap-token-audit/contracts/governance/twTAP.sol
 - 108:    uint256 public lastProcessedWeek;
 
 ```
+### ``Vesting.sol`` : ``token,start``,``cliff,duration`` can be packed in same SLOT : Saves ``4000 GAS``, ``2 SLOT``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/Vesting.sol#L17-L26
+
+- ``start`` only initialized once in init() function. So ``uint96`` alone more than enough instead of ``uint256``
+
+- For handing time uint128 is is more than enough ``4.2 million`` times more years than the current Unix time.
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
+
+16:  /// @notice the vested token
+17:    IERC20 public token;
++ 20:    uint96 public start;
+18:
+19:    /// @notice returns the start time for vesting
+- 20:    uint256 public start;
+21:
+22:    /// @notice returns the cliff period
+- 23:    uint256 public cliff;
++ 23:    uint128 public cliff;
+24:
+25:    /// @notice returns total vesting duration
+- 26:    uint256 public duration;
++ 26:    uint128 public duration;
+```
+
 
 ## [G-2] State variables only set in the constructor should be declared ``immutable``
 
@@ -201,6 +228,54 @@ FILE: tapioca-bar-audit/contracts/usd0/BaseUSDOStorage.sol
 
 ```
 
+##
+
+##
+
+## [G-3] Structs can be packed into fewer storage slots
+
+Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
+
+### ``Vesting.sol`` :``latestClaimTimestamp`` and ``revoked`` can be packed same ``SLOT`` . Saves ``2000 ``, ``1 SLOT``
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
+
+``latestClaimTimestamp`` can be ``uint248 `` to accommodate  ``revoked`` in same SLOT. Down casting is not affect protocol in any way . This way followed many of the protocols to avoid extra ``SLOT`` and ``GAS ``
+
+31: /// @notice user vesting data
+32:    struct UserData {
+33:        uint256 amount;
+34:        uint256 claimed;
+- 35:        uint256 latestClaimTimestamp;
++ 35:        uint248 latestClaimTimestamp;
+36:        bool revoked;
+37:    }
+
+```
+
+## [G-3] Don't initialize the default values to state or local variables for saving gas  
+
+When you initialize a variable with its default value, the Solidity compiler has to store the default value in storage, which costs gas. If you don't initialize the variable, the compiler can optimize it out, which saves gas.
+
+### ``Vesting.sol``: ``seeded`` variable is initialized in ``init()`` function. So assigning default value is waste of gas : Saves ``2000 GAS``,``SSTORE``
+
+```diff
+FILE: tap-token-audit/contracts/Vesting.sol
+
+28: /// @notice returns total available tokens
+- 29:    uint256 public seeded = 0;
++ 29:    uint256 public seeded;
+
+```
+
+##
+
+## [G-4] Optimizing gas usage Order your checks correctly
+
+Checks that involve constants should come before checks that involve state variables, function calls, and calculations. By doing these checks first, the function is able to revert before wasting a Gcoldsload (2100 gas) in a function that may ultimately revert in the unhappy case.
+
+
 
 
 
@@ -214,7 +289,6 @@ FILE: tapioca-bar-audit/contracts/usd0/BaseUSDOStorage.sol
 
 ## remove multiple emit use combined emit 
 
-## Don't initialize the variable 
 
 ## Use immutables for unchanged values instead of external calls 
 
@@ -229,12 +303,6 @@ FILE: tapioca-bar-audit/contracts/usd0/BaseUSDOStorage.sol
 ## A mapping is more efficient than an array
 
 ## Using storage instead of memory for structs/arrays saves gas
-
-## Structs can be packed in fewer slots 
-
-## State variables can be packed in fewer slots 
-
-## State variable only set in constructor can be immutable 
 
 ## State variable can be chached with stack varibale 
 
