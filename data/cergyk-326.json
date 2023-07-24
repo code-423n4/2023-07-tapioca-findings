@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "Payment amount for options can be heavily reduced due to division rounding",
+  "issueId": 326,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/326"
+}
