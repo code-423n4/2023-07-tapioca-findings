@@ -1,4 +1,4 @@
-## uint i defaults to 0, no need to reassign
+## uint256 i defaults to 0, no need to reassign
 
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLiquidation.sol#L45
 
