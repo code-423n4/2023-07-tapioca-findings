@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Oxsadeeq",
+  "risk": "3",
+  "title": "Malicious Actors could drain the USDOoptionsModule contract  of any ERC20 token being stored in the contract",
+  "issueId": 325,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/325"
+}
