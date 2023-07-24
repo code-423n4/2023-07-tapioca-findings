@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BitMinds",
+  "risk": "2",
+  "title": "StargateStrategy calls unsupported functions on StargateSwapperV3 which breaks the strategy",
+  "issueId": 330,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/330"
+}
