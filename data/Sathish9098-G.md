@@ -201,7 +201,7 @@ FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
 - 26:    uint256 public duration;
 + 26:    uint128 public duration;
 ```
-
+##
 
 ## [G-2] State variables only set in the constructor should be declared ``immutable``
 
