@@ -276,13 +276,80 @@ FILE: tap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
 
 ```
 
+
+##
+
+## [G-5] Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas
+
+When a function with a memory array is called externally, the abi.decode() step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. Note that even if an interface defines a function as having memory arguments, it’s still valid for implementation contracs to use calldata arguments instead.
+
+If the array is passed to an internal function which passes the array to another internal function where the array is modified and therefore memory is used in the external call, it’s still more gass-efficient to use calldata when the external function uses modifiers, since the modifiers may prevent the internal functions from being called. Structs have the same overhead as an array of length one
+
+Note that I’ve also flagged instances where the function is public but can be marked as external since it’s not called by the contract, and cases where a constructor is involved.
+
+### ``Penrose.sol`` : ``data`` can be ``calldata`` instead of ``memory`` : Saves ``282 GAS ``
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L424-L428
+
+```diff
+FILE: Breadcrumbstapioca-bar-audit/contracts/Penrose.sol
+
+424: function executeMarketFn(
+425:        address[] calldata mc,
+- 426:        bytes[] memory data,
++ 426:        bytes[] calldata data,
+427:        bool forceSuccess
+428:    )
+429:        external
+
+```
+
+### ``BaseUSDO.sol`` : ``approvals`` can be calldata instead of memory : Saves ``282 GAS ``
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/usd0/BaseUSDO.sol#L223
+
+
+```diff
+FILE: tapioca-bar-audit/contracts/usd0/BaseUSDO.sol
+
+215: function initMultiHopBuy(
+216:        address from,
+217:        uint256 collateralAmount,
+218:        uint256 borrowAmount,
+219:        IUSDOBase.ILeverageSwapData calldata swapData,
+220:        IUSDOBase.ILeverageLZData calldata lzData,
+221:        IUSDOBase.ILeverageExternalContractsData calldata externalData,
+222:        bytes calldata airdropAdapterParams,
+- 223:        ICommonData.IApproval[] memory approvals
++ 223:        ICommonData.IApproval[] calldata approvals
+224:    ) external payable {
+
+
+```
+
+
+
+
+##
+
+## [G-12] Using storage instead of memory for structs/arrays saves gas
+
+When fetching data from a storage location, assigning the data to a memory variable causes all fields of the struct/array to be read from storage, which incurs a Gcoldsload (2100 gas) for each field of the struct/array. If the fields are read from the new memory variable, they incur an additional MLOAD rather than a cheap stack read. Instead of declearing the variable with the memory keyword, declaring the variable with the storage keyword and caching any fields that need to be re-read in stack variables, will be much cheaper, only incuring the Gcoldsload for the fields actually read. The only time it makes sense to read the whole struct/array into a memory variable, is if the full struct/array is being returned by the function, is being passed to a function that requires memory, or if the array/struct is being read from another memory array/struct
+
+##
+
+## [G-6] Calldata pointer is used instead of memory pointer for loops or not modified
+
+If our function parameter is specified as ``calldata``, using a memory pointer will copy that ``calldata`` value into memory, which can result in memory expansion costs. To avoid this, we should use a calldata pointer to read from ``calldata`` directly.
+
+
 ##
 
 ## [G-3] Don't initialize the default values to state or local variables for saving gas  
 
 When you initialize a variable with its default value, the Solidity compiler has to store the default value in storage, which costs gas. If you don't initialize the variable, the compiler can optimize it out, which saves gas.
 
-### ``Vesting.sol``: ``seeded`` variable is initialized in ``init()`` function. So assigning default value is waste of gas : Saves ``2000 GAS``,``SSTORE``
+### ``Vesting.sol``: ``seeded`` variable is initialized in ``init()`` function. So assigning default value is waste of gas : Saves ``2206 GAS``,``SSTORE``
 
 ```diff
 FILE: tap-token-audit/contracts/Vesting.sol
@@ -292,59 +359,41 @@ FILE: tap-token-audit/contracts/Vesting.sol
 + 29:    uint256 public seeded;
 
 ```
-##
 
-## [G-5] Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas
+```solidity
+FILE: Breadcrumbstapioca-bar-audit/contracts/markets/Market.sol
 
-When a function with a memory array is called externally, the abi.decode() step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. Note that even if an interface defines a function as having memory arguments, it’s still valid for implementation contracs to use calldata arguments instead.
+666: for (uint256 i = 0; i < users.length; i++) {
 
-If the array is passed to an internal function which passes the array to another internal function where the array is modified and therefore memory is used in the external call, it’s still more gass-efficient to use calldata when the external function uses modifiers, since the modifiers may prevent the internal functions from being called. Structs have the same overhead as an array of length one
+215: for (uint256 i = 0; i < calls.length; i++) {
 
-Note that I’ve also flagged instances where the function is public but can be marked as external since it’s not called by the contract, and cases where a constructor is involved
+FILE: tapioca-bar-audit/contracts/markets/singularity/Singularity.sol
 
+187: for (uint256 i = 0; i < calls.length; i++) {
 
-##
+FILE: Breadcrumbstapioca-bar-audit/contracts/Penrose.sol
 
-## [G-12] Using storage instead of memory for structs/arrays saves gas
+437: for (uint256 i = 0; i < len; ) {
 
-When fetching data from a storage location, assigning the data to a memory variable causes all fields of the struct/array to be read from storage, which incurs a Gcoldsload (2100 gas) for each field of the struct/array. If the fields are read from the new memory variable, they incur an additional MLOAD rather than a cheap stack read. Instead of declearing the variable with the memory keyword, declaring the variable with the storage keyword and caching any fields that need to be re-read in stack variables, will be much cheaper, only incuring the Gcoldsload for the fields actually read. The only time it makes sense to read the whole struct/array into a memory variable, is if the full struct/array is being returned by the function, is being passed to a function that requires memory, or if the array/struct is being read from another memory array/struct
+492: for (uint256 i = 0; i < length; ) {
 
+550: for (uint256 i = 0; i < _masterContractLength; ) {
 
+564: for (uint256 i = 0; i < _masterContractLength; ) {
 
+569: for (uint256 j = 0; j < clonesOfLength; ) {
 
-##
+FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 
-## [G-4] Optimizing gas usage Order your checks correctly
+383:  uint256 liquidatedCount = 0;
 
-FAIL CHEEPLY INSTEAD OF COSTLY
+384:for (uint256 i = 0; i < users.length; i++) {
 
-Checks that involve constants should come before checks that involve state variables, function calls, and calculations. By doing these checks first, the function is able to revert before wasting a Gcoldsload (2100 gas) in a function that may ultimately revert in the unhappy case. 
+45: for (uint256 i = 0; i < maxBorrowParts.length; i++) {
 
+107: for (uint256 i = 0; i < users.length; i++) {
 
-##
-
-## [G-6] Calldata pointer is used instead of memory pointer for loops or not modified
-
- ``calldata`` pointer should be used instead of ``memory`` pointer inside the loops that do not modify the data. This is because ``calldata`` is a read-only data location, so it cannot be modified by the contract code.
-
-##
-
-## [G-7] Don't ``emit`` ``state`` variables when ``stack`` variable available 
-
-When you emit a ``state`` variable, it is stored on the blockchain permanently. This means that it takes gas to store the variable, and it also takes gas to access the variable. If you have a stack variable that is available, you can use that variable instead of emitting a state variable. This will save you gas because you will not need to store the variable on the blockchain
-
-
-##
-
-## [G-8] Combine events to save 2 Glogtopic (375 gas)
-
- We can combine the events into one singular event to save two Glogtopic (375 gas) that would otherwise be paid for the additional two events.
-
-##
-
-## [G-9] Use immutable for unchanged values instead of external calls 
-
-It is a good practice to use immutable for unchanged values instead of external calls. This is because external calls can be gas-intensive, especially if the contract is calling a contract on another blockchain
+```
 
 ##
 
@@ -358,9 +407,234 @@ Tt is a good practice to cache state variables outside of loop to avoid reading/
 
 It is a good practice to cache external calls outside the loop. This is because calling an external contract can be gas-intensive, especially if the contract is calling a contract on another blockchain
 
+##
 
 
-## Multiple access of mapping/array can be cached 
+
+
+
+
+
+
+##
+
+## [G-4] Optimizing gas usage Order your checks correctly
+
+FAIL CHEEPLY INSTEAD OF COSTLY
+
+Checks that involve constants should come before checks that involve state variables, function calls, and calculations. By doing these checks first, the function is able to revert before wasting a Gcoldsload (2100 gas) in a function that may ultimately revert in the unhappy case. 
+
+###  ``Singularity.sol`` : ``require`` check should be top of the function : Saves around ``12000 GAS`` 
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L92-L104
+
+If any revert after storage write this cost more volume of gas . So the conditions should be checked first the values should be write in storage variables. 
+
+
+```diff
+FILE: tapioca-bar-audit/contracts/markets/singularity/Singularity.sol
+
+function init(bytes calldata data) external onlyOnce {
+        (
+            address _liquidationModule,
+            address _borrowModule,
+            address _collateralModule,
+            address _leverageModule,
+            IPenrose tapiocaBar_,
+            IERC20 _asset,
+            uint256 _assetId,
+            IERC20 _collateral,
+            uint256 _collateralId,
+            IOracle _oracle,
+            uint256 _exchangeRatePrecision
+        ) = abi.decode(
+                data,
+                (
+                    address,
+                    address,
+                    address,
+                    address,
+                    IPenrose,
+                    IERC20,
+                    uint256,
+                    IERC20,
+                    uint256,
+                    IOracle,
+                    uint256
+                )
+            );
+
++         require(
++            address(_collateral) != address(0) &&
++                address(_asset) != address(0) &&
++                address(_oracle) != address(0),
++            "SGL: bad pair"
++        );
+
+        liquidationModule = SGLLiquidation(_liquidationModule);
+        collateralModule = SGLCollateral(_collateralModule);
+        borrowModule = SGLBorrow(_borrowModule);
+        leverageModule = SGLLeverage(_leverageModule);
+        penrose = tapiocaBar_;
+        yieldBox = YieldBox(tapiocaBar_.yieldBox());
+        owner = address(penrose);
+
+-         require(
+-            address(_collateral) != address(0) &&
+-                address(_asset) != address(0) &&
+-                address(_oracle) != address(0),
+-            "SGL: bad pair"
+-        );
+
+```
+
+
+##
+
+## [G-7] Don't ``emit`` ``state`` variables when ``stack`` variable available 
+
+When you emit a ``state`` variable, it is stored on the blockchain permanently. This means that it takes gas to store the variable, and it also takes gas to access the variable. If you have a stack variable that is available, you can use that variable instead of emitting a state variable. This will save you gas because you will not need to store the variable on the blockchain
+
+
+
+
+##
+
+## [G-8] Combine events to save Glogtopic (375 gas)
+
+ We can combine the events into one singular event to save two Glogtopic (375 gas) that would otherwise be paid for the additional two events.
+
+### ``BigBang.sol`` : ``LogRemoveCollateral``,``LogRepay`` events can be combined  : Saves ``Glogtopic (375 gas)``
+
+
+```diff
+FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
+
+- 587: emit LogRemoveCollateral(user, address(swapper), collateralShare);
+- 588: emit LogRepay(address(swapper), user, borrowAmount, borrowPart);
+
++ emit LogRemoveCollateralAndRepay(
++    user,
++    address(swapper),
++    collateralShare,
++    borrowAmount,
++    borrowPart
++ );
+
+```
+
+### ``Singularity.sol`` : ``Transfer``,``LogWithdrawFees`` events can be combined  : Saves ``Glogtopic (375 gas)``
+
+
+```diff
+FILE: Breadcrumbstapioca-bar-audit/contracts/markets/singularity/Singularity.sol
+
+465:  balanceOf[_feeTo] += _feesEarnedFraction;
+- 466:  emit Transfer(address(0), _feeTo, _feesEarnedFraction);
+467:  accrueInfo.feesEarnedFraction = 0;
+- 468:  emit LogWithdrawFees(_feeTo, _feesEarnedFraction);
+
++ emit LogTransferAndWithdrawFees(address(0),
++     _feeTo,
++     _feesEarnedFraction,
++ );
+
+```
+### ``Singularity.sol`` : ``LogRemoveCollateral``,``LogRepay`` events can be combined  : Saves ``Glogtopic (375 gas)``
+
+
+```diff
+FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
+
+- 134:  emit LogRemoveCollateral(
+- 135:                    user,
+- 136:                    address(liquidationQueue),
+- 137:                    collateralShare
+- 138:                );
+- 139:                emit LogRepay(
+- 140:
+- 141:                    address(liquidationQueue),
+- 142:                    user,
+- 143:                    borrowAmount,
+- 144:                    borrowPart
+- 145:                );
+
++ emit LogRemoveCollateralAndRepay(
++            user,
++            address(liquidationQueue),
++            collateralShare,borrowAmount,      
++            borrowPart
++              );
+            
+```
+
+### ``Singularity.sol`` : ``Transfer``,``LogWithdrawFees`` and ``LogRemoveCollateral``,``LogRepay`` events can be combined  : Saves ``2 Glogtopic (750 gas)``
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLiquidation.sol#L134-L144
+
+
+```diff
+FILE: Breadcrumbstapioca-bar-audit/contracts/markets/singularity/Singularity.sol
+
+465:  balanceOf[_feeTo] += _feesEarnedFraction;
+- 466:  emit Transfer(address(0), _feeTo, _feesEarnedFraction);
+467:  accrueInfo.feesEarnedFraction = 0;
+- 468:  emit LogWithdrawFees(_feeTo, _feesEarnedFraction);
+
++ emit LogTransferAndWithdrawFees(address(0),
++     _feeTo,
++     _feesEarnedFraction,
++ );
+
+
+
+- 321: emit LogRemoveCollateral(user, address(swapper), collateralShare);
+- 322: emit LogRepay(address(swapper), user, borrowAmount, borrowPart);
+
++ emit LogRemoveCollateralAndRepay(
++    user,
++    address(swapper),
++    collateralShare,
++    borrowAmount,
++    borrowPart
++ );
+
+```
+
+### ``SGLCommon.sol`` : ``Transfer``,``LogRemoveAsset`` and ``Transfer`` ,``LogAddAsset`` events can be combined  : Saves ``2 Glogtopic (750 gas)``
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L237
+
+```diff
+FILE: tapioca-bar-audit/contracts/markets/singularity/SGLCommon.sol
+
+- 237:  emit Transfer(from, address(0), fraction);
+238:        _totalAsset.elastic -= uint128(share);
+239:        _totalAsset.base -= uint128(fraction);
+240:        require(_totalAsset.base >= 1000, "SGL: min limit");
+242:        totalAsset = _totalAsset;
+- 243:        emit LogRemoveAsset(from, to, share, fraction);
++    emit LogTransferAndRemoveAsset(from, address(0), fraction, to, share);
+
+
+215: emit Transfer(address(0), to, fraction);
+216:
+217:        _addTokens(from, to, assetId, share, totalAssetShare, skim);
+218:        emit LogAddAsset(skim ? address(yieldBox) : from, to, share, fraction);
++    emit LogTransferAndAddAsset(address(0), to, fraction, skim ? address(yieldBox) : from, share);
+
+```
+
+
+##
+
+## [G-9] Use immutable for unchanged values instead of external calls 
+
+It is a good practice to use immutable for unchanged values instead of external calls. This is because external calls can be gas-intensive, especially if the contract is calling a contract on another blockchain
+
+
+
+
 
 ## Use assembly to perform efficient back-to-back calls
 
@@ -376,4 +650,27 @@ Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
 Using true and false will trigger gas-refunds, which after London are 1/5 of what they used to be, meaning using 1 and 2 (keeping the slot non-zero), will cost 5k per change (5k + 5k) vs 20k + 5k, saving you 15k gas per function which uses the modifier.
 
 ## Caching global variables is more expensive than using the actual variable(use msg.sender instead of caching it)
+
+## [G-12] ``if (forceSuccess)`` should be checked only once instead of every iterations 
+
+The ``if (forceSuccess)`` check should be checked only once, instead of every iteration of the loop. This is because the value of ``forceSuccess`` ``does not change`` during the ``loop``. This saves at least ``100 GAS`` for each iterations.
+
+```diff
+FILE: tapioca-bar-audit/contracts/Penrose.sol
+
+Need to research about this 
+
+
+``` 
+
+
+##
+
+## [G-15] 
+
+
+
+
+
+
 
