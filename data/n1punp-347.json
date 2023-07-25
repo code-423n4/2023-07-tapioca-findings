@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "3",
+  "title": "SGLLiquidation's `liquidate` function will revert if trying to liquidate multiple users at the same time --> protocol may become insolvent.",
+  "issueId": 347,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/347"
+}
