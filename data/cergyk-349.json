@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "2",
+  "title": "oTAP::participate call will always revert if msg.sender is approved but not owner",
+  "issueId": 349,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/349"
+}
