@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "3",
+  "title": "Arbitrary calls from Magnetar can be used to steal YieldBox assets",
+  "issueId": 352,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/352"
+}
