@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "3",
+  "title": "No check for price freshness in SG and ARBTriCrypto oracles",
+  "issueId": 354,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/354"
+}
