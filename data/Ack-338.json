@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ack",
+  "risk": "3",
+  "title": "Bigbang and Singularity batch liquidations all use same minAmountOut",
+  "issueId": 338,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/338"
+}
