@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "n1punp",
+  "risk": "3",
+  "title": "ETH transferred to Singularity contract will get stuck forever (transferred via function calls)",
+  "issueId": 348,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/348"
+}
