@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "2",
+  "title": "Wrapping native token to TapiocaOFT through Magnetar will always revert",
+  "issueId": 344,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/344"
+}
