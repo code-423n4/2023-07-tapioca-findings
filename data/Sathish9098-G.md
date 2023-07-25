@@ -254,6 +254,30 @@ FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
 
 ```
 
+### ``TapiocaOptionLiquidityProvision.sol`` : ``sglAssetID``,``totalDeposited`` can be ``uint128`` instead of ``uint256`` : Saves ``2000 GAS``, ``1 SLOT``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionLiquidityProvision.sol#L34-L38
+
+- Other struct ``LockPosition`` is used ``uint128`` for ``sglAssetID``
+
+- ``totalDeposited`` always add or subtract with ``uint128`` values   ``activeSingularities[_singularity].totalDeposited += _amount;`` 
+
+
+```diff
+FILE: tap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
+
+34: struct SingularityPool {
+35:    uint256 sglAssetID; // Singularity market YieldBox asset ID
+- 36:    uint256 totalDeposited; // total amount of tOLR tokens deposited, used for pool share calculation
++ 36:    uint128 totalDeposited; // total amount of tOLR tokens deposited, used for pool share calculation
+- 37:    uint256 poolWeight; // Pool weight to calculate emission
++ 37:    uint128 poolWeight; // Pool weight to calculate emission
+38: }
+
+```
+
+##
+
 ## [G-3] Don't initialize the default values to state or local variables for saving gas  
 
 When you initialize a variable with its default value, the Solidity compiler has to store the default value in storage, which costs gas. If you don't initialize the variable, the compiler can optimize it out, which saves gas.
@@ -268,55 +292,82 @@ FILE: tap-token-audit/contracts/Vesting.sol
 + 29:    uint256 public seeded;
 
 ```
+##
+
+## [G-5] Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas
+
+When a function with a memory array is called externally, the abi.decode() step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. Note that even if an interface defines a function as having memory arguments, it’s still valid for implementation contracs to use calldata arguments instead.
+
+If the array is passed to an internal function which passes the array to another internal function where the array is modified and therefore memory is used in the external call, it’s still more gass-efficient to use calldata when the external function uses modifiers, since the modifiers may prevent the internal functions from being called. Structs have the same overhead as an array of length one
+
+Note that I’ve also flagged instances where the function is public but can be marked as external since it’s not called by the contract, and cases where a constructor is involved
+
+
+##
+
+## [G-12] Using storage instead of memory for structs/arrays saves gas
+
+When fetching data from a storage location, assigning the data to a memory variable causes all fields of the struct/array to be read from storage, which incurs a Gcoldsload (2100 gas) for each field of the struct/array. If the fields are read from the new memory variable, they incur an additional MLOAD rather than a cheap stack read. Instead of declearing the variable with the memory keyword, declaring the variable with the storage keyword and caching any fields that need to be re-read in stack variables, will be much cheaper, only incuring the Gcoldsload for the fields actually read. The only time it makes sense to read the whole struct/array into a memory variable, is if the full struct/array is being returned by the function, is being passed to a function that requires memory, or if the array/struct is being read from another memory array/struct
+
+
+
 
 ##
 
 ## [G-4] Optimizing gas usage Order your checks correctly
 
-Checks that involve constants should come before checks that involve state variables, function calls, and calculations. By doing these checks first, the function is able to revert before wasting a Gcoldsload (2100 gas) in a function that may ultimately revert in the unhappy case.
+FAIL CHEEPLY INSTEAD OF COSTLY
+
+Checks that involve constants should come before checks that involve state variables, function calls, and calculations. By doing these checks first, the function is able to revert before wasting a Gcoldsload (2100 gas) in a function that may ultimately revert in the unhappy case. 
+
+
+##
+
+## [G-6] Calldata pointer is used instead of memory pointer for loops or not modified
+
+ ``calldata`` pointer should be used instead of ``memory`` pointer inside the loops that do not modify the data. This is because ``calldata`` is a read-only data location, so it cannot be modified by the contract code.
+
+##
+
+## [G-7] Don't ``emit`` ``state`` variables when ``stack`` variable available 
+
+When you emit a ``state`` variable, it is stored on the blockchain permanently. This means that it takes gas to store the variable, and it also takes gas to access the variable. If you have a stack variable that is available, you can use that variable instead of emitting a state variable. This will save you gas because you will not need to store the variable on the blockchain
+
+
+##
+
+## [G-8] Combine events to save 2 Glogtopic (375 gas)
+
+ We can combine the events into one singular event to save two Glogtopic (375 gas) that would otherwise be paid for the additional two events.
+
+##
+
+## [G-9] Use immutable for unchanged values instead of external calls 
+
+It is a good practice to use immutable for unchanged values instead of external calls. This is because external calls can be gas-intensive, especially if the contract is calling a contract on another blockchain
+
+##
+
+## [G-10] Cache state variables outside of loop to avoid reading/writing storage on every iteration
+
+Tt is a good practice to cache state variables outside of loop to avoid reading/writing storage on every iteration. This is because reading and writing storage is gas-intensive, especially if the state variable is large.
 
 
 
+## [G-11] Cache external calls outside the loop
+
+It is a good practice to cache external calls outside the loop. This is because calling an external contract can be gas-intensive, especially if the contract is calling a contract on another blockchain
 
 
-
-
-## Calldata should be used instead of memory for external 
-
-## Calldata pointer is used instead of memory pointer for loops or not modified 
-
-## Don't emit state variable 
-
-## remove multiple emit use combined emit 
-
-
-## Use immutables for unchanged values instead of external calls 
-
-## Cache state variables outside of loop to avoid reading/writing storage on every iteration
-
-## Cache external calls outside the loop
-
-## Optimize names to save gas
-
-## if blocks should be separate loops 
-
-## A mapping is more efficient than an array
-
-## Using storage instead of memory for structs/arrays saves gas
-
-## State variable can be chached with stack varibale 
 
 ## Multiple access of mapping/array can be cached 
 
-## Result of function calls should be cached 
-
-## The condition check should be top of the functions 
-
 ## Use assembly to perform efficient back-to-back calls
 
-## Check from protocol any ways to saves gas 
 
 ## Transfer of 0 should be checked 
+
+## A mapping is more efficient than an array
 
 ## Private or modifiers only called once can be inlined 
 
