@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`mulDiv` used in `TapiocaOptionBroker.sol` by inheriting `twAML.sol` is copied from UniswapV3 `FullMath` which requires overflow behavior",
+  "issueId": 358,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/358"
+}
