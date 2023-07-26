@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SaeedAlipoor01988",
+  "risk": "3",
+  "title": "Lack of validation on the data from the user in YieldBox.sol",
+  "issueId": 364,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/364"
+}
