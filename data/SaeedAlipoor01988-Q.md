@@ -42,3 +42,15 @@ The accrueInfo.interestPerSecond, according to the comment, should set to 1% APR
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L117
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L115
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L112
+
+## Title
+Invalid value for claimable rewards from Convex rewardPool.sol
+
+## Decription
+Based on the document from Convex, to get value of Current Earned Rewards from pool, users should use baseRewardPool.earned(address) to see how much rewards will receive if they claim their rewards now.https://github.com/convex-eth/platform/blob/a5da3f127a321467a97a684c57970d2586520172/contracts/contracts/BaseRewardPool.sol#L149
+
+But ConvexTricryptoStrategy.sol is using rewards mapping.
+https://github.com/convex-eth/platform/blob/a5da3f127a321467a97a684c57970d2586520172/contracts/contracts/BaseRewardPool.sol#L73
+
+## Links
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L131
