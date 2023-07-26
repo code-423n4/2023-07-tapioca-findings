@@ -817,19 +817,19 @@ contract MarketERC20 is IERC20, IERC20Permit, EIP712 {
 
 9 . TARGET : https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/singularity/SGLCommon.sol
 
--Combine Emit: In the accrue function,  combine the log emission into the _accrue function to reduce the number of gas-consuming function calls.
+- Combine Emit: In the accrue function,  combine the log emission into the _accrue function to reduce the number of gas-consuming function calls.
 
-Remove Redundant Assignments:  remove unnecessary assignments to variables like extraAmount, feeFraction, and logStartingInterest to avoid redundant computations.
+- Remove Redundant Assignments:  remove unnecessary assignments to variables like extraAmount, feeFraction, and logStartingInterest to avoid redundant computations.
 
-Reduce Read/Write Operations: minimize the number of storage read and write operations by eliminating redundant updates to the accrueInfo and totalAsset variables in the _accrue function.
+- Reduce Read/Write Operations: minimize the number of storage read and write operations by eliminating redundant updates to the accrueInfo and totalAsset variables in the _accrue function.
 
-Reduce External Calls:  reduce external function calls by removing the explicit emit calls and performing log emission inside the functions where the data is readily available.
+- Reduce External Calls:  reduce external function calls by removing the explicit emit calls and performing log emission inside the functions where the data is readily available.
 
-Simplifiy Conditions:  simplifiy some conditions in the _getInterestRate function to reduce the number of computations.
+- Simplifiy Conditions:  simplifiy some conditions in the _getInterestRate function to reduce the number of computations.
 
-Remove Unused Return Values: In the _getInterestRate function,  remove the unnecessary return values that were not being used outside the function.
+- Remove Unused Return Values: In the _getInterestRate function,  remove the unnecessary return values that were not being used outside the function.
 
-Remove Unused Function: The accrue function is now an external function that directly calls the optimized _accrue function.
+- Remove Unused Function: The accrue function is now an external function that directly calls the optimized _accrue function.
 
 Here is an optimized SGLCommon contract : 
 
@@ -995,7 +995,7 @@ contract SGLCommon is SGLStorage {
 
 - Change the "unchecked" loop in _callApproval function to a regular for loop for better readability.
 
-- Add the value keyword when calling the mintFromBBAndLendOnSGL function to indicate the transferred ether value, if applicable.
+- Add the value keyword when calling the mintFromBBAndLendOnSGL function to indicate the transferred ether value.
 
  Here is an optimized SDOMarketModule contract : 
 
@@ -1516,17 +1516,17 @@ contract USDOOptionsModule is BaseUSDOStorage {
 12 . TARGET : https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/usd0/modules/USDOLeverageModule.sol
 
 
-Use bytes32 for Address: Instead of converting addresses to bytes32 using the LzLib.addressToBytes32() function,  directly convert addresses to bytes32 using bytes32(uint256(address)). This simplifies the address conversion process.
+- Use bytes32 for Address: Instead of converting addresses to bytes32 using the LzLib.addressToBytes32() function,  directly convert addresses to bytes32 using bytes32(uint256(address)). This simplifies the address conversion process.
 
-Combine External Calls: In the leverageUpInternal function,  combine multiple external calls into a single call to the ITapiocaOFT contract. This reduces gas consumption by batching operations.
+- Combine External Calls: In the leverageUpInternal function,  combine multiple external calls into a single call to the ITapiocaOFT contract. This reduces gas consumption by batching operations.
 
-Remove Unused Imports:  remove unused import statements to eliminate unnecessary code inclusion.
+- Remove Unused Imports:  remove unused import statements to eliminate unnecessary code inclusion.
 
-Simplifiy Data Encoding:  simplifiy the data encoding for the lzPayload variable in initMultiHopBuy and sendForLeverage functions to reduce gas costs.
+- Simplifiy Data Encoding:  simplifiy the data encoding for the lzPayload variable in initMultiHopBuy and sendForLeverage functions to reduce gas costs.
 
-Simplifiy Control Flow:  simplifiy the control flow in the multiHop function to remove unnecessary conditions and make the code more concise.
+- Simplifiy Control Flow:  simplifiy the control flow in the multiHop function to remove unnecessary conditions and make the code more concise.
 
-Reduce Loop Overhead: In the _callApproval function,  remove the unchecked block and used a standard for loop to reduce loop overhead.
+- Reduce Loop Overhead: In the _callApproval function,  remove the unchecked block and used a standard for loop to reduce loop overhead.
 
 Here is an optimized USDOLeverageModule Contract : 
 
@@ -1817,11 +1817,11 @@ contract USDOLeverageModule is BaseUSDOStorage {
 
 13 . TARGET : https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/singularity/SGLLiquidation.sol
 
-Use isBidAvailable() Function:  use the isBidAvailable() function from the liquidationQueue contract to check if a bid with the required amount is available. This reduces the need for additional local variables and simplifies the code.
+- Use isBidAvailable() Function:  use the isBidAvailable() function from the liquidationQueue contract to check if a bid with the required amount is available. This reduces the need for additional local variables and simplifies the code.
 
-Remove Unnecessary Conditions:  remove unnecessary conditions by directly checking if a bid is available and using an if-else statement to select the appropriate liquidation method.
+- Remove Unnecessary Conditions:  remove unnecessary conditions by directly checking if a bid is available and using an if-else statement to select the appropriate liquidation method.
 
-Optimize TotalMaxBorrow Calculation:  optimize the calculation of the total maximum borrow amount in the _orderBookLiquidation function to reduce redundant calculations.
+- Optimize TotalMaxBorrow Calculation:  optimize the calculation of the total maximum borrow amount in the _orderBookLiquidation function to reduce redundant calculations.
 
 Here is a optimized SGLLiquidation contract : 
 
@@ -1887,7 +1887,7 @@ contract SGLLiquidation is SGLCommon {
 
 - Add Require Statement:  require statement add to ensure the module address is not address(0) in the _extractModule function.
 
-Remove Unnecessary Return: A redundant return statement has to be  remove from the _extractModule function.
+- Remove Unnecessary Return: A redundant return statement has to be  remove from the _extractModule function.
 
 Here is an Optimized BaseUSDO Contract : 
 
@@ -2774,14 +2774,14 @@ contract Singularity is SGLCommon {
 
 
 
-Combine assignment statements: In some places, multiple assignment statements were used for the same variable.  I combine these assignments into a single line to reduce the number of stack operations and save gas.in the _rebase function,combine the assignment of accrueInfo.rate in one line instead of two.
+- Combine assignment statements: In some places, multiple assignment statements were used for the same variable.  I combine these assignments into a single line to reduce the number of stack operations and save gas.in the _rebase function,combine the assignment of accrueInfo.rate in one line instead of two.
 
-Avoid unnecessary storage operations: In the _rebase function, the totalFees variable was assigned to 0 and then used in the calculation of accrueInfo.rate. Since totalFees was not used afterward,  remove the assignment and directly used the value in the calculation to avoid unnecessary storage writes.
+- Avoid unnecessary storage operations: In the _rebase function, the totalFees variable was assigned to 0 and then used in the calculation of accrueInfo.rate. Since totalFees was not used afterward,  remove the assignment and directly used the value in the calculation to avoid unnecessary storage writes.
 
-Simplifiy conditions: In the getDebtRate function,contract had multiple conditions and calculations to determine the debt rate. simplifiy the contract by eliminating some redundant checks and calculations, making it more concise and efficient.
+- Simplifiy conditions: In the getDebtRate function,contract had multiple conditions and calculations to determine the debt rate. simplifiy the contract by eliminating some redundant checks and calculations, making it more concise and efficient.
 
 
-Use of modifiers: introduce a new onlyOperator modifier to ensure that certain functions can only be called by the owner or an authorized operator. This helps improve security by controlling access to critical functions.
+- Use of modifiers: introduce a new onlyOperator modifier to ensure that certain functions can only be called by the owner or an authorized operator. This helps improve security by controlling access to critical functions.
 
 Here is an optimized  BigBang  Contract :
 
@@ -3057,13 +3057,13 @@ contract BigBang is BoringOwnable, Market {
 
 18 . TARGET :https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/Market.sol
 
-Constructor Change:  add a constructor to set the EXCHANGE_RATE_PRECISION at deployment. This value is required for fixed-point arithmetic calculations. You can set this value based on your specific requirements and precision needs.
+- Constructor Change:  add a constructor to set the EXCHANGE_RATE_PRECISION at deployment. This value is required for fixed-point arithmetic calculations. You can set this value based on your specific requirements and precision needs.
 
-Visibility Change:  made the updateExchangeRate() function external and view. Since it does not modify the contract state, it can be called externally and marked as a view function, reducing gas costs for callers.
+- Visibility Change:  made the updateExchangeRate() function external and view. Since it does not modify the contract state, it can be called externally and marked as a view function, reducing gas costs for callers.
 
-Liquidator Reward Calculation:  move the liquidator reward calculation to an external view function named computeLiquidatorReward(). This function calculates the reward without modifying the contract state, reducing gas costs.
+- Liquidator Reward Calculation:  move the liquidator reward calculation to an external view function named computeLiquidatorReward(). This function calculates the reward without modifying the contract state, reducing gas costs.
 
-Ratio Calculation:  refactore the _computeMaxAndMinLTVInAsset() function to use a private _getRatio() function for calculating the ratio between numerator and denominator. This allows for code reuse and avoids redundant calculations.
+- Ratio Calculation:  refactore the _computeMaxAndMinLTVInAsset() function to use a private _getRatio() function for calculating the ratio between numerator and denominator. This allows for code reuse and avoids redundant calculations.
 
 Here is an Optimized Market Contract : 
 
@@ -3151,13 +3151,13 @@ contract Market is MarketERC20, BoringOwnable {
 - mark ERC20_ADDRESS and IS_ERC20_NATIVE as immutable to allow compiler optimization.
 
 
--optimize the memory usage for local variables within functions.
+- optimize the memory usage for local variables within functions.
 
 - reorder the modifiers to place onlyHostChain as the first modifier in functions for early modifier failure.
 
 - use the IS_ERC20_NATIVE variable to avoid repeated access to the erc20 address, which saves gas.
 
- - remove redundant checks and simplified the logic in the wrap function.
+- remove redundant checks and simplified the logic in the wrap function.
 
 Here is an Optimized TapiocaOFT Contract :
 
@@ -3325,9 +3325,9 @@ contract BaseTOFTStorage is OFTV2 {
 
 - Remove Unused Parameters: The wrap and unwrap functions did not use the _fromAddress parameter in the wrap function and _amount in the unwrap function, so they were removed.
 
-- Loop Unrolling and Ordering: The ordering of conditions in if-else statements was changed to place more likely conditions first. Additionally, loop unrolling is manually done in the _wrap function.
+- Loop Unrolling and Ordering: The ordering of conditions in if-else statements were change to place more likely conditions first. Additionally, loop unrolling should be done in the _wrap function.
 
-- Inlining Functions: The _wrapNative function is inlined in the wrap function to reduce the overhead of function calls.
+- Inlining Functions: The _wrapNative function,inline in the wrap function to reduce the overhead of function calls.
 
 Here is an optimized  mTapiocaOFT Contract : 
 
@@ -4330,13 +4330,13 @@ contract BaseTOFTMarketModule is BaseTOFTStorage {
 
 26 . TARGET : https://github.com/Tapioca-DAO/tapiocaz-audit/blob/master/contracts/tOFT/modules/BaseTOFTOptionsModule.sol
 
-Split Function Calls: In the sendFromDestination function,  split the approval calls and the sendFrom call to ISendFrom into two separate transactions. This avoids executing unnecessary code and reduces gas consumption.
+- Split Function Calls: In the sendFromDestination function,  split the approval calls and the sendFrom call to ISendFrom into two separate transactions. This avoids executing unnecessary code and reduces gas consumption.
 
-Batch External Call: In the exercise function,  add a check to credit the payment token amount only once to avoid redundant credit calls. Additionally,  batch multiple delegatecall operations into a single call by passing all the required data in the payload. This reduces the number of external calls and saves gas.
+- Batch External Call: In the exercise function,  add a check to credit the payment token amount only once to avoid redundant credit calls. Additionally,  batch multiple delegatecall operations into a single call by passing all the required data in the payload. This reduces the number of external calls and saves gas.
 
-Inlining Logic: In the exerciseInternal function,  inline the approval handling logic, avoiding the need for a separate function call.
+- Inlining Logic: In the exerciseInternal function,  inline the approval handling logic, avoiding the need for a separate function call.
 
-Short-Circuit Evaluation:  use short-circuit evaluation to optimize the logic in the _callApproval function, reducing gas costs when dealing with approvals.
+- Short-Circuit Evaluation:  use short-circuit evaluation to optimize the logic in the _callApproval function, reducing gas costs when dealing with approvals.
 
 Here is an optimized BaseTOFTOptionsModule Contract : 
 
@@ -4623,9 +4623,9 @@ contract BaseTOFTOptionsModule is BaseTOFTStorage {
 
 27 . TARGET : https://github.com/Tapioca-DAO/tapiocaz-audit/blob/master/contracts/tOFT/modules/BaseTOFTLeverageModule.sol
 
- - Optimize _safeTransferETH:  optimize the _safeTransferETH function to use a simpler call instead of transfer. This change avoids the need for additional checks, saving some gas.
+- Optimize _safeTransferETH:  optimize the _safeTransferETH function to use a simpler call instead of transfer. This change avoids the need for additional checks, saving some gas.
 
-Optimize _callApproval:  refactor the _callApproval function to avoid the unnecessary unchecked loop and improve readability.
+- Optimize _callApproval:  refactor the _callApproval function to avoid the unnecessary unchecked loop and improve readability.
 
 Here is an Optimized BaseTOFTLeverageModule contract : 
 
