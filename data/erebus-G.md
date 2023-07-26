@@ -4,6 +4,43 @@ Double check to ensure the transfer of tokens is allowed. The lines [YieldBox.so
 # Second
 Consider adding an `else` clause instead of the [return here](https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/modules/MagnetarMarketModule.sol#L698) so that it saves bytecode size by removing one return opcode, that is `if(!dest chain) {...} else {...}` instead of the current implementation (which has two implicit `return` routines, one at the end of the `if` and the other at the end of the function). 
 
+# Third 
+It is more efficient, for `++X` and `X++` to do `X += 1`. See the next test in foundry to show that it saves 8 gas and 2 gas respectively:
+
+```
+pragma solidity ^0.8.13;
+
+import "forge-std/Test.sol";
+
+contract POC is Test {
+    uint256 private a;
+
+    function setUp() public {
+         a = 0;
+    }
+
+    function testA() public {
+        a++;
+    }
+
+    function testB() public {
+        a += 1;
+    }
+
+    function testC() public {
+        ++a;
+    }
+}
+```
+
+Results:
+
+- testA -> 22397
+- testB -> 22389
+- testC -> 22391
+
+Consider using the `X += 1` version everywhere. The RE can be `[^ \+]*\+\+` for the occurrences of `X++` and `\+\+[^ \)]*` for the occurrences of `++X`. The same applies to other arithmetic operations.
+
 # Third
 Consider changing strings errors in the `require` statements to custom errors in order to save gas. The RE is `, "[^"]+"\)` 
 
