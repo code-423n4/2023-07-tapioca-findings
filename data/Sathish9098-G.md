@@ -327,20 +327,303 @@ FILE: tapioca-bar-audit/contracts/usd0/BaseUSDO.sol
 
 ```
 
+### ``approvals`` can be calldata instead of memory : Saves ``282 GAS ``
 
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/tOFT/BaseTOFT.sol#L156-L164
+
+
+```diff
+FILE : Breadcrumbstapiocaz-audit/contracts/tOFT/BaseTOFT.sol
+
+ function initMultiSell(
+        address from,
+        uint256 share,
+        IUSDOBase.ILeverageSwapData calldata swapData,
+        IUSDOBase.ILeverageLZData calldata lzData,
+        IUSDOBase.ILeverageExternalContractsData calldata externalData,
+        bytes calldata airdropAdapterParams,
+-        ICommonData.IApproval[] memory approvals
++        ICommonData.IApproval[] calldata approvals
+    ) external payable {
+
+
+```
+
+### ``_ercData`` can be changed to ``calldata`` instead of ``memory`` : Saves ``564 GAS ``, ``2 Instances``
+
+
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L177
+
+Here we need to change private function parameter into ``calldata ``
+
+```diff
+FILE: tapiocaz-audit/contracts/Balancer.sol
+
+    function rebalance(
+        address payable _srcOft,
+        uint16 _dstChainId,
+        uint256 _slippage,
+        uint256 _amount,
+-         bytes memory _ercData
++         bytes calldata _ercData
+    )
+        external
+        payable
+        onlyOwner
+        onlyValidDestination(_srcOft, _dstChainId)
+        onlyValidSlippage(_slippage)
+    {
+
+function _sendToken(
+        address payable _oft,
+        uint256 _amount,
+        uint16 _dstChainId,
+        uint256 _slippage,
+-         bytes memory _data
++         bytes calldata _data
+    ) private {
+
+
+219: function initConnectedOFT(
+        address _srcOft,
+        uint16 _dstChainId,
+        address _dstOft,
+-        bytes memory _ercData
++        bytes calldata _ercData
+    ) external onlyOwner {
+
+```
+
+### ``airdropAdapterParam`` can be changed to ``calldata`` instead of ``memory`` : Saves ``282 GAS ``
+
+
+```diff
+FILE: tapiocaz-audit/contracts/tOFT/modules/BaseTOFTStrategyModule.sol
+
+89:   function retrieveFromStrategy(
+        address _from,
+        uint256 amount,
+        uint256 share,
+        uint256 assetId,
+        uint16 lzDstChainId,
+        address zroPaymentAddress,
+-        bytes memory airdropAdapterParam
++        bytes calldata airdropAdapterParam
+    ) external payable {
+
+```
+
+### ``rewardTokens`` can be changed to ``calldata`` instead of ``memory`` : Saves ``282 GAS ``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/tokens/BaseTapOFT.sol#L166C39-L166C39
+
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/tokens/BaseTapOFT.sol
+
+function claimRewards(
+        address to,
+        uint256 tokenID,
+-        address[] memory rewardTokens,
++        address[] calldata rewardTokens,
+        uint16 lzDstChainId,
+        address zroPaymentAddress,
+        bytes calldata adapterParams,
+        IRewardClaimSendFromParams[] calldata rewardClaimSendParams
+    ) external payable {
+
+```
+
+### ``adapterParams`` can be changed to ``calldata`` instead of ``memory`` : Saves ``282 GAS ``
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/MagnetarV2.sol#L740
+
+```diff
+FILE: tapioca-periph-audit/contracts/Magnetar/MagnetarV2.sol
+
+ function withdrawToChain(
+        IYieldBoxBase yieldBox,
+        address from,
+        uint256 assetId,
+        uint16 dstChainId,
+        bytes32 receiver,
+        uint256 amount,
+        uint256 share,
+-         bytes memory adapterParams,
++         bytes calldata adapterParams,
+        address payable refundAddress,
+        uint256 gas
+    ) external payable {
+
+```
+### ``adapterParams`` can be changed to ``calldata`` instead of ``memory`` : Saves ``282 GAS ``
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/modules/MagnetarMarketModule.sol#L32
+
+```diff
+FILE: tapioca-periph-audit/contracts/Magnetar/modules/MagnetarMarketModule.sol
+
+24: function withdrawToChain(
+        IYieldBoxBase yieldBox,
+        address from,
+        uint256 assetId,
+        uint16 dstChainId,
+        bytes32 receiver,
+        uint256 amount,
+        uint256 share,
+-        bytes memory adapterParams,
++        bytes calldata adapterParams,
+        address payable refundAddress,
+        uint256 gas
+    ) external payable {
+
+```
+
+### ``bytecode``,``contractName`` can be changed to ``calldata`` instead of ``memory`` : Saves ``564 GAS ``
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/TapiocaDeployer/TapiocaDeployer.sol#L25-L26
+
+```diff
+FILE: tapioca-periph-audit/contracts/TapiocaDeployer/TapiocaDeployer.sol
+
+ function deploy(
+        uint256 amount,
+        bytes32 salt,
+-        bytes memory bytecode,
++        bytes calldata bytecode,
+-        string memory contractName
++        string calldata contractName
+    ) external payable returns (address addr) {
+
+```
 
 
 ##
 
 ## [G-12] Using storage instead of memory for structs/arrays saves gas
 
+NOTE: Instances missed in bot race
+
 When fetching data from a storage location, assigning the data to a memory variable causes all fields of the struct/array to be read from storage, which incurs a Gcoldsload (2100 gas) for each field of the struct/array. If the fields are read from the new memory variable, they incur an additional MLOAD rather than a cheap stack read. Instead of declearing the variable with the memory keyword, declaring the variable with the storage keyword and caching any fields that need to be re-read in stack variables, will be much cheaper, only incuring the Gcoldsload for the fields actually read. The only time it makes sense to read the whole struct/array into a memory variable, is if the full struct/array is being returned by the function, is being passed to a function that requires memory, or if the array/struct is being read from another memory array/struct
+
+### ``storage`` should be used instead of ``memory`` : Saves ``16800 GAS``, ``4 Instances``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionBroker.sol#L363
+
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/options/TapiocaOptionBroker.sol
+
+- 363: PaymentTokenOracle memory paymentTokenOracle = paymentTokens[
+            _paymentToken
+        ];
++ 363: PaymentTokenOracle storage paymentTokenOracle = paymentTokens[
+            _paymentToken
+        ];
+
+```
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L237
+
+```diff
+FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
+
+- 237: PaymentTokenOracle memory paymentTokenOracle = paymentTokens[
+            _paymentToken
+        ];
+
++ 237: PaymentTokenOracle storage paymentTokenOracle = paymentTokens[
+            _paymentToken
+        ];
+
+```
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionLiquidityProvision.sol#L115
+
+```diff
+FILE: tap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
+
+- 115: LockPosition memory lockPosition = lockPositions[_tokenId];
++ 115: LockPosition storage lockPosition = lockPositions[_tokenId];
+
+- 349: LockPosition memory lockPosition = lockPositions[tokenId];
++ 349: LockPosition storage lockPosition = lockPositions[tokenId];
+
+```
 
 ##
 
-## [G-6] Calldata pointer is used instead of memory pointer for loops or not modified
+## [G-7] Cache the ``state variables`` outside the ``loop`` to avoid ``SLOD`` in every iterations
+
+Cache state variables outside loops to avoid unnecessary gas costs associated with reading and writing state variables repeatedly
+
+### ``paymentTokenBeneficiary`` caching out side the loops saves ``100 GAS`` per Iteration
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionBroker.sol#L492
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/options/TapiocaOptionBroker.sol
+
+486:   uint256 len = _paymentTokens.length;
+487:
++    address paymentTokenBeneficiary_ = paymentTokenBeneficiary ;
+488:        unchecked {
+489:            for (uint256 i = 0; i < len; ++i) {
+490:                ERC20 paymentToken = ERC20(_paymentTokens[i]);
+491:                paymentToken.transfer(
+- 492:                    paymentTokenBeneficiary,
++ 492:                    paymentTokenBeneficiary_ ,
+493:                    paymentToken.balanceOf(address(this))
+494:                );
+495:            }
+
+```
+
+### ``paymentTokenBeneficiary`` caching out side the loops saves ``100 GAS`` per Iteration
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L378
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/option-airdrop/AirdropBroker.sol
+
+ uint256 len = _paymentTokens.length;
++  address paymentTokenBeneficiary_ = paymentTokenBeneficiary;
+        unchecked {
+            for (uint256 i = 0; i < len; ++i) {
+                ERC20 paymentToken = ERC20(_paymentTokens[i]);
+                paymentToken.transfer(
+-                     paymentTokenBeneficiary,
++                     paymentTokenBeneficiary_ ,
+                    paymentToken.balanceOf(address(this))
+                );
+            }
+
+```
+
+##
+
+## [G-6] Calldata pointer is used instead of memory pointer for loops 
 
 If our function parameter is specified as ``calldata``, using a memory pointer will copy that ``calldata`` value into memory, which can result in memory expansion costs. To avoid this, we should use a calldata pointer to read from ``calldata`` directly.
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Multicall/Multicall3.sol#L48
+
+```diff
+FILE: tapioca-periph-audit/contracts/Multicall/Multicall3.sol
+
+47: for (uint256 i = 0; i < length; ) {
+- 48:            Result memory result = returnData[i];
++ 48:            Result calldata result = returnData[i];
+49:            calli = calls[i];
+
+
+70: for (uint256 i = 0; i < length; ) {
+- 71:            Result memory result = returnData[i];
++ 71:            Result calldata result = returnData[i];
+72:            calli = calls[i];
+73:            uint256 val = calli.value;
+
+```
 
 
 ##
@@ -394,27 +677,6 @@ FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 107: for (uint256 i = 0; i < users.length; i++) {
 
 ```
-
-##
-
-## [G-10] Cache state variables outside of loop to avoid reading/writing storage on every iteration
-
-Tt is a good practice to cache state variables outside of loop to avoid reading/writing storage on every iteration. This is because reading and writing storage is gas-intensive, especially if the state variable is large.
-
-
-
-## [G-11] Cache external calls outside the loop
-
-It is a good practice to cache external calls outside the loop. This is because calling an external contract can be gas-intensive, especially if the contract is calling a contract on another blockchain
-
-##
-
-
-
-
-
-
-
 
 ##
 
@@ -495,8 +757,18 @@ function init(bytes calldata data) external onlyOnce {
 
 When you emit a ``state`` variable, it is stored on the blockchain permanently. This means that it takes gas to store the variable, and it also takes gas to access the variable. If you have a stack variable that is available, you can use that variable instead of emitting a state variable. This will save you gas because you will not need to store the variable on the blockchain
 
+### ``_epochTAPValuation`` emit this instead of ``epochTAPValuation `` state varibale : Saves ``100 GAS``, ``1 SLOD``
 
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L293
 
+```diff
+FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
+
+292:  epochTAPValuation = uint128(_epochTAPValuation);
+- 293:   emit NewEpoch(epoch, epochTAPValuation);
++ 293:   emit NewEpoch(epoch, uint128(_epochTAPValuation));
+
+```
 
 ##
 
@@ -649,7 +921,6 @@ Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
 
 Using true and false will trigger gas-refunds, which after London are 1/5 of what they used to be, meaning using 1 and 2 (keeping the slot non-zero), will cost 5k per change (5k + 5k) vs 20k + 5k, saving you 15k gas per function which uses the modifier.
 
-## Caching global variables is more expensive than using the actual variable(use msg.sender instead of caching it)
 
 ## [G-12] ``if (forceSuccess)`` should be checked only once instead of every iterations 
 
