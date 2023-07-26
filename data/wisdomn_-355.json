@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "wisdomn_",
+  "risk": "3",
+  "title": "Function createToken is vulnerable to unauthorized calls due to lack of access control",
+  "issueId": 355,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/355"
+}
