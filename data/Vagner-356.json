@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`brokerClaim` in `aoTAP.sol` can be called by anyone which will make user minting as many aoTap tokens as he wants",
+  "issueId": 356,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/356"
+}
