@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "2",
+  "title": "Swapper contract isn't validated for cross-chain leverage operations",
+  "issueId": 377,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/377"
+}
