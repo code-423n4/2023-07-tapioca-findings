@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "3",
+  "title": "`_sendToken` implementation in `Balancer.sol` is wrong which will make the underlying erc20 be send to a random address and lost",
+  "issueId": 369,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/369"
+}
