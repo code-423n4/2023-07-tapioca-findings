@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LosPollosHermanos",
+  "risk": "3",
+  "title": "Inconsistent `deposits` into `lendingPool` in `AaveStrategy.withdraw()` and `AaveStrategy.compound()`",
+  "issueId": 378,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/378"
+}
