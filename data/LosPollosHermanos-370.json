@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LosPollosHermanos",
+  "risk": "3",
+  "title": "Arbitrary market data in `Penrose.withdrawAllMarketFees()` allows protocol rewards to be stolen",
+  "issueId": 370,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/370"
+}
