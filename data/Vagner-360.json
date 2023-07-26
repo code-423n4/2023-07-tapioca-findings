@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`burst` function in `MagnetarV2.sol` calls a function on `TapiocaOFT.sol` which is internal and can't be called by external contracts",
+  "issueId": 360,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/360"
+}
