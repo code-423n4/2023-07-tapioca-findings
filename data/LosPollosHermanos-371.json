@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LosPollosHermanos",
+  "risk": "2",
+  "title": "Curve Swapper is not compatible with many contracts when swapping",
+  "issueId": 371,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/371"
+}
