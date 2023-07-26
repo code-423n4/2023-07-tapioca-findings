@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "3",
+  "title": "`burst` function in `MagnetarV2.sol` accumulates the `_action.value` for a second time in the case of `TOFT_WRAP` which will make the user pay the double amount intended to pass the last check ",
+  "issueId": 359,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/359"
+}
