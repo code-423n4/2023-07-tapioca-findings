@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`OracleMath.sol` used in `Seer.sol` inherits `FullMath.sol` to use `_mulDiv` , function which will revert all the time since it doesn't allow for overflow behavior ",
+  "issueId": 366,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/366"
+}
