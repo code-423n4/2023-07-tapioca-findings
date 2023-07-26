@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`Seer.sol` inherits `OracleMulti.sol` which calls `_getQuoteAtTick` from `OracleMath.sol` , function which would revert when `_getRatioAtTick` is called since it doesn't allow overflow behavior",
+  "issueId": 365,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/365"
+}
