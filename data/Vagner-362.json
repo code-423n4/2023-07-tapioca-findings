@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`Seer.sol` contract which uses `ChainlinkUtils.sol` does not check for L2 sequencer being down, which can result in stale prices",
+  "issueId": 362,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/362"
+}
