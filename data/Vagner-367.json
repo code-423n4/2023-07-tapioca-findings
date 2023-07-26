@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`OracleLibrary.sol` used in `UniswapV3Swapper.sol` uses functions from UniswapV3 which requires overflow behavior",
+  "issueId": 367,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/367"
+}
