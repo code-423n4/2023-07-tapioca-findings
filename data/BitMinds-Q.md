@@ -65,5 +65,7 @@ Balancer offers descriptive enums in the context of joining/exiting pools: https
 ## L-21 Withdrawing from lending pool in AaveStratgy during emergency withdrawal should use max integer value instead user balance
 The Strategy first determines the available user balance and then withdraws the balance: https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/aave/AaveStrategy.sol#L211-L216. As documented by Aave itself documents to "Use type(uint).max to withdraw the entire balance" (see: https://docs.aave.com/developers/v/2.0/the-core-protocol/lendingpool). The dode should be updated to follow the Aave docs.
 
+## L-22 BalancerStrategy.sol contains an unused state variable and related event
+The "rewardTokens" state variable (https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L41) and the "RewardTokens" event (https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L52) are unused and can be removed from the strategy.
 
 
