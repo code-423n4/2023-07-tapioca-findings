@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "Queries in `BalancerStrategy.sol` on the `helpers` contract should not be used the way they are implemented",
+  "issueId": 414,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/414"
+}
