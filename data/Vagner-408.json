@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "3",
+  "title": "`emergencyWithdraw` in `ConvexTricryptoStrategy.sol` and `LidoEthStrategy.sol` uses a very big which can hurt the protocol",
+  "issueId": 408,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/408"
+}
