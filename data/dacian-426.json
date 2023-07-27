@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dacian",
+  "risk": "2",
+  "title": "Attacker can extract value from protocol during extreme price crash as ChainlinkUtils._readChainlinkFeed() doesn't check answer > minAnswer",
+  "issueId": 426,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/426"
+}
