@@ -68,4 +68,5 @@ The Strategy first determines the available user balance and then withdraws the 
 ## L-22 BalancerStrategy.sol contains an unused state variable and related event
 The "rewardTokens" state variable (https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L41) and the "RewardTokens" event (https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L52) are unused and can be removed from the strategy.
 
-
+## L-23 Strategies contain comments containing the name of other strategies
+E.g., BalancerStrategy.sol refers to the Yearn strategy in multiple places: https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L44, https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L190. This also appears in other strategies. All strategies should be cleaned up to not refer to other strategies.
