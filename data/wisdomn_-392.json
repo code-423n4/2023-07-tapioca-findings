@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "wisdomn_",
+  "risk": "3",
+  "title": "Function burn is vulnerable to reentrancy attacks",
+  "issueId": 392,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/392"
+}
