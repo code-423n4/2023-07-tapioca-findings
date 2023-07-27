@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "wisdomn_",
+  "risk": "3",
+  "title": "Function collectPaymentTokems is vulnerable to reentrancy attack.   ",
+  "issueId": 413,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/413"
+}
