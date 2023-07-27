@@ -30,3 +30,7 @@ This may have been done to save gas, but a zero address could be relevant. Also,
 
 ## L-10 _executeViewModule function of Singularity.sol is unused
 When searching for the _executeViewModule function being used across the project (https://github.com/search?q=org%3ATapioca-DAO%20_executeViewModule&type=code) no call showed up. It may be removed from the project.
+
+## L-11 _getAmountForBorrowPart function of SGLCommon.sol is unused
+The _getAmountForBorrowPart function implemented in SGLCommon.sol (https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L254) is unused in the project and can be removed. Check: https://github.com/search?q=repo%3ATapioca-DAO%2Ftapioca-bar-audit%20_getAmountForBorrowPart&type=code.
+
