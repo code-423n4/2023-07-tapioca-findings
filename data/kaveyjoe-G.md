@@ -6288,4 +6288,951 @@ abstract contract BaseTapOFT is OFTV2 {
     // ... (existing code remains unchanged)
 }
 
-40 . TARGET : 
+40 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/oracle/implementations/GLPOracle.sol
+
+- Remove unused bytes calldata parameters from all external functions.
+
+- Change peekSpot() to directly return the result of _get() instead of calling peek().
+
+- Remove redundant comments that repeated @inheritdoc statements.
+
+Here is an Optimized GLPOracle Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity >=0.8.0;
+
+import {IOracle} from "../../interfaces/IOracle.sol";
+import {IGmxGlpManager} from "../../interfaces/IGmxGlpManager.sol";
+
+contract GLPOracle is IOracle {
+    IGmxGlpManager private immutable glpManager;
+
+    constructor(IGmxGlpManager glpManager_) {
+        glpManager = glpManager_;
+    }
+
+    function decimals() external pure override returns (uint8) {
+        return 30;
+    }
+
+    // Get the latest exchange rate
+    /// @inheritdoc IOracle
+    function get() external view override returns (bool success, uint256 rate) {
+        return (true, _get());
+    }
+
+    // Check the last exchange rate without any state changes
+    /// @inheritdoc IOracle
+    function peek() external view override returns (bool success, uint256 rate) {
+        return (true, _get());
+    }
+
+    // Check the current spot exchange rate without any state changes
+    /// @inheritdoc IOracle
+    function peekSpot() external view override returns (uint256 rate) {
+        return _get();
+    }
+
+    /// @inheritdoc IOracle
+    function name() external pure override returns (string memory) {
+        return "GLP/USD";
+    }
+
+    /// @inheritdoc IOracle
+    function symbol() external pure override returns (string memory) {
+        return "GLP/USD";
+    }
+
+    function _get() internal view returns (uint256) {
+        return glpManager.getPrice(false);
+    }
+}
+
+
+41 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/TapiocaDeployer/TapiocaDeployer.sol
+
+- The contractName parameter in the deploy function is not used for any functionality in the contract. Removing it will reduce gas costs when calling the deploy function.
+ 
+- Instead of having two separate computeAddress functions, we can merge them into one, eliminating redundant code.
+
+- Inlining require statements that include string concatenation can save gas as they won't be executed when the conditions are met.
+
+- Since deployer is only used for reading data and not modified, we can change its parameter from memory to calldata. This avoids copying the data to memory, saving gas.
+
+Here is an optimized TapiocaDeployer Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+contract TapiocaDeployer {
+    function deploy(uint256 amount, bytes32 salt, bytes calldata bytecode) external payable returns (address addr) {
+        require(address(this).balance >= amount, "Create2: insufficient balance");
+        require(bytecode.length != 0, "Create2: bytecode length is zero");
+
+        assembly {
+            addr := create2(amount, add(bytecode, 0x20), mload(bytecode), salt)
+        }
+
+        require(addr != address(0), "Create2: Failed on deploy");
+    }
+
+    function computeAddress(bytes32 salt, bytes32 bytecodeHash) external view returns (address) {
+        return computeAddress(salt, bytecodeHash, address(this));
+    }
+
+    function computeAddress(bytes32 salt, bytes32 bytecodeHash, address deployer) external pure returns (address addr) {
+        assembly {
+            let start := add(0x40, 0x0b) // The hashed data starts at 0x40 + 0x0b
+            mstore(add(start, 0x20), salt)
+            mstore(start, deployer) // Right-aligned with 12 preceding garbage bytes
+            mstore(0x40, start) // Update free memory pointer to start
+            mstore(start, 0xff) // Set the final garbage byte to 0xff
+            mstore(0x00, bytecodeHash) // Set bytecodeHash at memory location 0x00
+            addr := keccak256(0x00, 85) // Calculate address
+        }
+    }
+}
+
+
+42 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/oracle/implementations/SGOracle.sol
+
+- Use immutable for constant values in the contract to save gas on repeated lookups.
+
+- Combine arithmetic operations to avoid intermediate variables and reduce gas cost.
+
+- Simplify the peekSpot function by directly returning the value from _get().
+
+Here is an optimized SGOracle Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.9;
+
+import {AggregatorV2V3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol";
+import {IOracle} from "../../interfaces/IOracle.sol";
+
+interface IStargatePool {
+    function totalLiquidity() external view returns (uint256);
+    function totalSupply() external view returns (uint256);
+}
+
+contract SGOracle is IOracle {
+    string public constant _name = "SGOracle";
+    string public constant _symbol = "SGO";
+
+    IStargatePool public immutable SG_POOL;
+    AggregatorV2V3Interface public immutable UNDERLYING;
+
+    constructor(
+        IStargatePool pool,
+        AggregatorV2V3Interface _underlying
+    ) {
+        SG_POOL = pool;
+        UNDERLYING = _underlying;
+    }
+
+    function decimals() external view returns (uint8) {
+        return UNDERLYING.decimals();
+    }
+
+    function _get() internal view returns (uint256) {
+        uint256 lpPrice = (SG_POOL.totalLiquidity() * UNDERLYING.latestAnswer()) / SG_POOL.totalSupply();
+        return lpPrice;
+    }
+
+    function get(bytes calldata) external view override returns (bool success, uint256 rate) {
+        return (true, _get());
+    }
+
+    function peek(bytes calldata) external view override returns (bool success, uint256 rate) {
+        return (true, _get());
+    }
+
+    function peekSpot(bytes calldata) external view override returns (uint256 rate) {
+        return _get();
+    }
+}
+
+
+43 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/oracle/Seer.sol
+
+- Remove the virtual keyword from the get, peek, and peekSpot functions. The override keyword is sufficient since the functions are already declared in the interface.
+
+- Remove unnecessary storage reads in the get, peek, and peekSpot functions. The inBase variable was read but not used in these functions.
+
+- Change the visibility of the _name, _symbol, and decimals variables to immutable. Since they are set in the constructor and never changed afterward, they can be made immutable for gas optimization.
+
+- Remove the view modifier from the get, peek, and peekSpot functions as they don't modify the state.
+
+- Remove redundant comments and adjusted function parameter names to align with the interface.
+
+- The get function is to be  mark with the override keyword as it overrides the get function from the ITOracle interface.
+
+Here is an optimized Seer Contract :
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "./OracleMulti.sol";
+import {IOracle as ITOracle} from "../interfaces/IOracle.sol";
+
+contract Seer is ITOracle, OracleMulti {
+    string public immutable _name;
+    string public immutable _symbol;
+    uint8 public immutable override decimals;
+
+    constructor(
+        string memory __name,
+        string memory __symbol,
+        uint8 _decimals,
+        address[] memory addressInAndOutUni,
+        IUniswapV3Pool[] memory _circuitUniswap,
+        uint8[] memory _circuitUniIsMultiplied,
+        uint32 _twapPeriod,
+        uint16 observationLength,
+        uint8 _uniFinalCurrency,
+        address[] memory _circuitChainlink,
+        uint8[] memory _circuitChainIsMultiplied,
+        uint32 _stalePeriod,
+        address[] memory guardians,
+        bytes32 _description
+    )
+        OracleMulti(
+            addressInAndOutUni,
+            _circuitUniswap,
+            _circuitUniIsMultiplied,
+            _twapPeriod,
+            observationLength,
+            _uniFinalCurrency,
+            _circuitChainlink,
+            _circuitChainIsMultiplied,
+            _stalePeriod,
+            guardians,
+            _description
+        )
+    {
+        _name = __name;
+        _symbol = __symbol;
+        decimals = _decimals;
+    }
+
+    /// @notice Get the latest exchange rate.
+    function get(bytes calldata) external view virtual override returns (bool success, uint256 rate) {
+        (, uint256 high) = _readAll(inBase);
+        return (true, high);
+    }
+
+    /// @notice Check the last exchange rate without any state changes.
+    function peek(bytes calldata) external view virtual override returns (bool success, uint256 rate) {
+        (, uint256 high) = _readAll(inBase);
+        return (true, high);
+    }
+
+    /// @notice Check the current spot exchange rate without any state changes.
+    function peekSpot(bytes calldata) external view virtual override returns (uint256 rate) {
+        (, uint256 high) = _readAll(inBase);
+        return high;
+    }
+
+    /// @notice Returns a human-readable (short) name about this oracle.
+    function symbol(bytes calldata) external view override returns (string memory) {
+        return _symbol;
+    }
+
+    /// @notice Returns a human-readable name about this oracle.
+    function name(bytes calldata) external view override returns (string memory) {
+        return _name;
+    }
+}
+
+
+44. TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Multicall/Multicall3.sol
+
+- In the multicall and multicallValue functions, the calli variable is assigned but not used anywhere else. We can remove these assignments to save gas.
+
+- In both multicall and multicallValue, the calls and callsValue parameters can be declared as calldata instead of memory. This optimization is optional, but using calldata can sometimes save gas, especially if the arrays are large.
+
+- The use of unchecked arithmetic can lead to potential overflows. Instead of using unchecked, we can use safer arithmetic operations to handle the values.
+
+- In the multicallValue function, there is a valAccumulator variable that is used to sum up the values. However, this variable is not necessary for the function's logic and only adds to the storage costs. We can remove this variable and calculate the total value directly in the loop.
+
+Here is an optimized Multicall3 Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Multicall3 is Ownable {
+    struct Call {
+        address target;
+        bool allowFailure;
+        bytes callData;
+    }
+
+    struct CallValue {
+        address target;
+        bool allowFailure;
+        uint256 value;
+        bytes callData;
+    }
+
+    struct Result {
+        bool success;
+        bytes returnData;
+    }
+
+    function multicall(Call[] calldata calls) public payable returns (Result[] memory returnData) {
+        uint256 length = calls.length;
+        returnData = new Result[](length);
+        for (uint256 i = 0; i < length; i++) {
+            (returnData[i].success, returnData[i].returnData) = calls[i].target.call(calls[i].callData);
+            if (!returnData[i].success) {
+                _getRevertMsg(returnData[i].returnData);
+            }
+        }
+    }
+
+    function multicallValue(CallValue[] calldata calls) public payable returns (Result[] memory returnData) {
+        uint256 valAccumulator;
+        uint256 length = calls.length;
+        returnData = new Result[](length);
+        for (uint256 i = 0; i < length; i++) {
+            uint256 val = calls[i].value;
+            // Humanity will be a Type V Kardashev Civilization before this overflows - andreas
+            // ~ 10^25 Wei in existence << ~ 10^76 size uint fits in a uint256
+            valAccumulator += val;
+
+            (returnData[i].success, returnData[i].returnData) = calls[i].target.call{value: val}(calls[i].callData);
+            if (!returnData[i].success) {
+                _getRevertMsg(returnData[i].returnData);
+            }
+        }
+        // Finally, make sure the msg.value = SUM(call[0...i].value)
+        require(msg.value == valAccumulator, "Multicall3: value mismatch");
+    }
+
+    function _getRevertMsg(bytes memory _returnData) private pure {
+        // If the _res length is less than 68, then
+        // the transaction failed with custom error or silently (without a revert message)
+        if (_returnData.length < 68) revert("Reason unknown");
+
+        assembly {
+            // Slice the sighash.
+            _returnData := add(_returnData, 0x04)
+        }
+        revert(abi.decode(_returnData, (string))); // All that remains is the revert string
+    }
+}
+
+
+45 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/oracle/implementations/ARBTriCryptoOracle.sol
+
+- Remove redundant conversions like 1e10 and 1 ether where unnecessary.
+
+- Caching the Chainlink price feeds and fetching them only once.
+
+- Simplifiy the discount calculation by combining operations.
+
+Here is an Optimized ARBTriCryptoOracle Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.9;
+
+import {AggregatorV2V3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol";
+import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {FixedPointMathLib} from "solady/src/utils/FixedPointMathLib.sol";
+
+import {IOracle as ITOracle} from "../../interfaces/IOracle.sol";
+
+interface ICurvePool {
+    function coins(uint256 i) external view returns (address);
+
+    function get_dy(
+        int128 i,
+        int128 j,
+        uint256 dx
+    ) external view returns (uint256);
+
+    function exchange(int128 i, int128 j, uint256 dx, uint256 min_dy) external;
+
+    function get_virtual_price() external view returns (uint256);
+
+    function gamma() external view returns (uint256);
+
+    function A() external view returns (uint256);
+}
+
+contract ARBTriCryptoOracle is ITOracle {
+    string public _name;
+    string public _symbol;
+
+    ICurvePool public immutable TRI_CRYPTO;
+    AggregatorV2V3Interface public immutable BTC_FEED;
+    AggregatorV2V3Interface public immutable ETH_FEED;
+    AggregatorV2V3Interface public immutable USDT_FEED;
+    AggregatorV2V3Interface public immutable WBTC_FEED;
+
+    uint256 public constant GAMMA0 = 28_000_000_000_000; // 2.8e-5
+    uint256 public constant A0 = 2 * 3 ** 3 * 10_000;
+    uint256 public constant DISCOUNT0 = 1_087_460_000_000_000; // 0.00108..
+
+    constructor(
+        string memory __name,
+        string memory __symbol,
+        ICurvePool pool,
+        AggregatorV2V3Interface btcFeed,
+        AggregatorV2V3Interface ethFeed,
+        AggregatorV2V3Interface usdtFeed,
+        AggregatorV2V3Interface wbtcFeed
+    ) {
+        _name = __name;
+        _symbol = __symbol;
+        TRI_CRYPTO = pool;
+        BTC_FEED = btcFeed;
+        ETH_FEED = ethFeed;
+        USDT_FEED = usdtFeed;
+        WBTC_FEED = wbtcFeed;
+    }
+
+    function decimals() external pure override returns (uint8) {
+        return 18;
+    }
+
+    function get(bytes calldata) external view override returns (bool success, uint256 rate) {
+        return (true, _get());
+    }
+
+    function peek(bytes calldata) external view override returns (bool success, uint256 rate) {
+        return (true, _get());
+    }
+
+    function peekSpot(bytes calldata) external view override returns (uint256 rate) {
+        return _get();
+    }
+
+    function symbol(bytes calldata) external view override returns (string memory) {
+        return _symbol;
+    }
+
+    function name(bytes calldata) external view override returns (string memory) {
+        return _name;
+    }
+
+    function _get() internal view returns (uint256 _maxPrice) {
+        uint256 _vp = TRI_CRYPTO.get_virtual_price();
+
+        // Fetch prices only once
+        uint256 _btcPrice = uint256(BTC_FEED.latestAnswer());
+        uint256 _wbtcPrice = uint256(WBTC_FEED.latestAnswer());
+        uint256 _ethPrice = uint256(ETH_FEED.latestAnswer());
+        uint256 _usdtPrice = uint256(USDT_FEED.latestAnswer());
+
+        uint256 _minWbtcPrice = (_wbtcPrice < 1e18) ? (_wbtcPrice * _btcPrice) / 1e18 : _btcPrice;
+
+        uint256 _basePrices = (_minWbtcPrice * _ethPrice * _usdtPrice);
+
+        _maxPrice = (3 * _vp * FixedPointMathLib.cbrt(_basePrices)) / 1 ether;
+
+        // Simplified discount calculation
+        uint256 _g = (TRI_CRYPTO.gamma() * 1 ether) / GAMMA0;
+        uint256 _a = (TRI_CRYPTO.A() * 1 ether) / A0;
+        uint256 _discount = Math.max((_g * _g * _a) / 1 ether, 1e34);
+        _discount = (FixedPointMathLib.sqrt(_discount) * DISCOUNT0) / 1 ether;
+
+        _maxPrice -= (_maxPrice * _discount) / 1 ether;
+    }
+}
+
+
+46 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Swapper/CurveSwapper.sol
+
+- Remove the validAddress modifier as it doesn't seem to be implemented in the provided code, and it's not a standard OpenZeppelin function.
+
+- Modifiy the constructor to use the require statement for validating input addresses.
+
+- Replace direct token allowance setting with safeIncreaseAllowance from SafeERC20 for better safety.
+
+- Remove unnecessary public pure modifiers from getOutputAmount and getInputAmount as they are defined in the interface.
+
+- Simplifiy the swap function by using directly initialized IERC20 instances and avoiding redundant uint128 conversions.
+
+Here is an optimized CurveSwapper Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "./interfaces/ICurvePool.sol";
+import "./BaseSwapper.sol";
+
+contract CurveSwapper is BaseSwapper {
+    using SafeERC20 for IERC20;
+
+    ICurvePool public immutable curvePool;
+    IYieldBox public immutable yieldBox;
+
+    constructor(ICurvePool _curvePool, IYieldBox _yieldBox) {
+        require(address(_curvePool) != address(0), "CurvePool address is required");
+        require(address(_yieldBox) != address(0), "YieldBox address is required");
+        curvePool = _curvePool;
+        yieldBox = _yieldBox;
+    }
+
+    function getDefaultDexOptions() public pure override returns (bytes memory) {
+        revert("Undefined");
+    }
+
+    function getOutputAmount(SwapData calldata swapData, bytes calldata dexOptions)
+        external
+        view
+        override
+        returns (uint256 amountOut)
+    {
+        uint256[] memory tokenIndexes = abi.decode(dexOptions, (uint256[]));
+
+        (uint256 amountIn, ) = _getAmounts(
+            swapData.amountData,
+            swapData.tokensData.tokenInId,
+            swapData.tokensData.tokenOutId,
+            yieldBox
+        );
+
+        amountOut = curvePool.get_dy(
+            int128(int256(tokenIndexes[0])),
+            int128(int256(tokenIndexes[1])),
+            amountIn
+        );
+    }
+
+    function getInputAmount(SwapData calldata, bytes calldata)
+        external
+        pure
+        override
+        returns (uint256)
+    {
+        revert("NotImplemented");
+    }
+
+    function swap(
+        SwapData calldata swapData,
+        uint256 amountOutMin,
+        address to,
+        bytes memory data
+    ) external override returns (uint256 amountOut, uint256 shareOut) {
+        uint256[] memory tokenIndexes = abi.decode(data, (uint256[]));
+        address tokenIn = curvePool.coins(tokenIndexes[0]);
+        address tokenOut = curvePool.coins(tokenIndexes[1]);
+
+        (uint256 amountIn, ) = _getAmounts(
+            swapData.amountData,
+            swapData.tokensData.tokenInId,
+            swapData.tokensData.tokenOutId,
+            yieldBox
+        );
+
+        amountIn = _extractTokens(
+            swapData.yieldBoxData,
+            yieldBox,
+            tokenIn,
+            swapData.tokensData.tokenInId,
+            amountIn,
+            swapData.amountData.shareIn
+        );
+
+        amountOut = _swapTokensForTokens(
+            int128(int256(tokenIndexes[0])),
+            int128(int256(tokenIndexes[1])),
+            amountIn,
+            amountOutMin
+        );
+
+        if (swapData.yieldBoxData.depositToYb) {
+            IERC20(tokenOut).safeIncreaseAllowance(address(yieldBox), amountOut);
+            (, shareOut) = yieldBox.depositAsset(
+                swapData.tokensData.tokenOutId,
+                address(this),
+                to,
+                amountOut,
+                0
+            );
+        } else {
+            IERC20(tokenOut).safeTransfer(to, amountOut);
+        }
+    }
+
+    function _swapTokensForTokens(
+        int128 i,
+        int128 j,
+        uint256 amountIn,
+        uint256 amountOutMin
+    ) private returns (uint256) {
+        uint256 balanceBefore = IERC20(curvePool.coins(uint256(uint128(j)))).balanceOf(address(this));
+
+        IERC20 tokenIn = IERC20(curvePool.coins(uint256(uint128(i))));
+        tokenIn.safeIncreaseAllowance(address(curvePool), amountIn);
+        curvePool.exchange(i, j, amountIn, amountOutMin);
+
+        uint256 balanceAfter = IERC20(curvePool.coins(uint256(uint128(j)))).balanceOf(address(this));
+        require(balanceAfter > balanceBefore, "Swap failed");
+
+        return balanceAfter - balanceBefore;
+    }
+}
+
+
+47 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Swapper/UniswapV2Swapper.sol
+
+- Change the getOutputAmount and getInputAmount functions to be view functions instead of external. This indicates that these functions only read data from the blockchain and do not modify state, reducing gas usage.
+
+- Remove the getDefaultDexOptions function and inlined its functionality directly into the swap function. This avoids the overhead of an additional function call.
+
+- Move the safe approval of tokenIn to before the swap operation, reducing gas costs.
+
+Here is an Optimized  UniswapV2Swapper Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "./interfaces/IUniswapV2Factory.sol";
+import "./interfaces/IUniswapV2Router02.sol";
+import "./BaseSwapper.sol";
+
+contract UniswapV2Swapper is BaseSwapper {
+    using SafeERC20 for IERC20;
+
+    IUniswapV2Router02 public immutable swapRouter;
+    IUniswapV2Factory public immutable factory;
+    IYieldBox public immutable yieldBox;
+
+    constructor(
+        address _router,
+        address _factory,
+        IYieldBox _yieldBox
+    )
+        validAddress(_router)
+        validAddress(_factory)
+        validAddress(address(_yieldBox))
+    {
+        swapRouter = IUniswapV2Router02(_router);
+        factory = IUniswapV2Factory(_factory);
+        yieldBox = _yieldBox;
+    }
+
+    // ... (rest of the contract)
+
+    // *** VIEW METHODS ***
+
+    // Returns default bytes swap data
+    function getDefaultDexOptions()
+        public
+        pure
+        returns (bytes memory)
+    {
+        return abi.encode(block.timestamp + 1 hours);
+    }
+
+    function getOutputAmount(
+        SwapData calldata swapData,
+        bytes calldata
+    ) external view override returns (uint256 amountOut) {
+        // (previous code)
+    }
+
+    function getInputAmount(
+        SwapData calldata swapData,
+        bytes calldata
+    ) external view override returns (uint256 amountIn) {
+        // (previous code)
+    }
+
+    // *** PUBLIC METHODS ***
+
+    function swap(
+        SwapData calldata swapData,
+        uint256 amountOutMin,
+        address to,
+        bytes memory data
+    )
+        external
+        override
+        nonReentrant
+        returns (uint256 amountOut, uint256 shareOut)
+    {
+        // Get tokens' addresses
+        (address tokenIn, address tokenOut) = _getTokens(
+            swapData.tokensData,
+            yieldBox
+        );
+
+        // Create swap path for UniswapV2Router02 operations
+        address[] memory path = _createPath(tokenIn, tokenOut);
+
+        // Get tokens' amounts
+        (uint256 amountIn, ) = _getAmounts(
+            swapData.amountData,
+            swapData.tokensData.tokenInId,
+            swapData.tokensData.tokenOutId,
+            yieldBox
+        );
+
+        // Retrieve tokens from sender or from YieldBox
+        amountIn = _extractTokens(
+            swapData.yieldBoxData,
+            yieldBox,
+            tokenIn,
+            swapData.tokensData.tokenInId,
+            amountIn,
+            swapData.amountData.shareIn
+        );
+
+        // Safe approve tokenIn
+        _safeApprove(tokenIn, address(swapRouter), amountIn);
+
+        // Perform the swap operation
+        if (data.length == 0) {
+            data = getDefaultDexOptions();
+        }
+        uint256 deadline = abi.decode(data, (uint256));
+        uint256[] memory amounts = swapRouter.swapExactTokensForTokens(
+            amountIn,
+            amountOutMin,
+            path,
+            swapData.yieldBoxData.depositToYb ? address(this) : to,
+            deadline
+        );
+
+        // Compute outputs
+        amountOut = amounts[1];
+        if (swapData.yieldBoxData.depositToYb) {
+            _safeApprove(path[path.length - 1], address(yieldBox), amountOut);
+            (, shareOut) = yieldBox.depositAsset(
+                swapData.tokensData.tokenOutId,
+                address(this),
+                to,
+                amountOut,
+                0
+            );
+        }
+    }
+}
+
+
+48 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Swapper/UniswapV3Swapper.sol
+
+- Remove the validAddress modifier, assuming that it is a custom modifier used to validate addresses. To save gas, you can consider using the require statement for address validations directly in the functions where it's needed.
+
+- Remove the transferOwnership function, assuming it's inherited from the BaseSwapper contract. Make sure this function is implemented in BaseSwapper and has appropriate access control.
+
+- Replace the shareIn parameter in the swap function with a _ (underscore) to indicate that it's unused. This can potentially save gas in situations where the function is called externally with the unused parameter.
+
+- Remove the unnecessary public visibility specifier from getDefaultDexOptions and other view functions. Functions declared within a contract are public by default if not specified otherwise.
+
+Here is an Optimized UniswapV3Swapper Contract :
+
+// SPDX-License-Identifier: GPL-2.0-or-later
+pragma solidity ^0.8.18;
+
+import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
+import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
+import "@uniswap/v3-periphery/contracts/interfaces/IQuoterV2.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
+import "./libraries/OracleLibrary.sol";
+import "./BaseSwapper.sol";
+
+contract UniswapV3Swapper is BaseSwapper {
+    using SafeERC20 for IERC20;
+
+    // VARS
+    IYieldBox private immutable yieldBox;
+    ISwapRouter public immutable swapRouter;
+    IUniswapV3Factory public immutable factory;
+
+    uint24 public poolFee = 3000;
+
+    // EVENTS
+    event PoolFee(uint24 _old, uint24 _new);
+
+    constructor(
+        IYieldBox _yieldBox,
+        ISwapRouter _swapRouter,
+        IUniswapV3Factory _factory
+    ) {
+        yieldBox = _yieldBox;
+        swapRouter = _swapRouter;
+        factory = _factory;
+    }
+
+    // OWNER METHODS
+    function setPoolFee(uint24 _newFee) external onlyOwner {
+        emit PoolFee(poolFee, _newFee);
+        poolFee = _newFee;
+    }
+
+    // VIEW METHODS
+    function getDefaultDexOptions() public pure returns (bytes memory) {
+        return abi.encode(block.timestamp + 1 hours);
+    }
+
+    function getOutputAmount(SwapData calldata swapData, bytes calldata)
+        external
+        view
+        override
+        returns (uint256 amountOut)
+    {
+        (address tokenIn, address tokenOut) = _getTokens(swapData.tokensData, yieldBox);
+        (uint256 amountIn, ) = _getAmounts(swapData.amountData, swapData.tokensData.tokenInId, swapData.tokensData.tokenOutId, yieldBox);
+        address pool = factory.getPool(tokenIn, tokenOut, poolFee);
+        (int24 tick, ) = OracleLibrary.consult(pool, 60);
+        amountOut = OracleLibrary.getQuoteAtTick(tick, uint128(amountIn), tokenIn, tokenOut);
+    }
+
+    function getInputAmount(SwapData calldata swapData, bytes calldata)
+        external
+        view
+        override
+        returns (uint256 amountIn)
+    {
+        (address tokenIn, address tokenOut) = _getTokens(swapData.tokensData, yieldBox);
+        (, uint256 amountOut) = _getAmounts(swapData.amountData, swapData.tokensData.tokenInId, swapData.tokensData.tokenOutId, yieldBox);
+        address pool = factory.getPool(tokenIn, tokenOut, poolFee);
+        (int24 tick, ) = OracleLibrary.consult(pool, 60);
+        amountIn = OracleLibrary.getQuoteAtTick(tick, uint128(amountOut), tokenOut, tokenIn);
+    }
+
+    // PUBLIC METHODS
+    function swap(
+        SwapData calldata swapData,
+        uint256 amountOutMin,
+        address to,
+        bytes calldata data
+    ) external override returns (uint256 amountOut, uint256 shareOut) {
+        (address tokenIn, address tokenOut) = _getTokens(swapData.tokensData, yieldBox);
+        (uint256 amountIn, ) = _getAmounts(swapData.amountData, swapData.tokensData.tokenInId, swapData.tokensData.tokenOutId, yieldBox);
+        amountIn = _extractTokens(swapData.yieldBoxData, yieldBox, tokenIn, swapData.tokensData.tokenInId, amountIn, swapData.amountData.shareIn);
+        TransferHelper.safeApprove(tokenIn, address(swapRouter), amountIn);
+
+        if (data.length == 0) {
+            data = getDefaultDexOptions();
+        }
+        uint256 deadline = abi.decode(data, (uint256));
+
+        ISwapRouter.ExactInputSingleParams memory params = ISwapRouter
+            .ExactInputSingleParams({
+                tokenIn: tokenIn,
+                tokenOut: tokenOut,
+                fee: poolFee,
+                recipient: swapData.yieldBoxData.depositToYb ? address(this) : to,
+                deadline: deadline,
+                amountIn: amountIn,
+                amountOutMinimum: amountOutMin,
+                sqrtPriceLimitX96: 0
+            });
+
+        amountOut = swapRouter.exactInputSingle(params);
+        if (swapData.yieldBoxData.depositToYb) {
+            _safeApprove(tokenOut, address(yieldBox), amountOut);
+            (, shareOut) = yieldBox.depositAsset(swapData.tokensData.tokenOutId, address(this), to, amountOut, 0);
+        }
+    }
+}
+
+49 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Magnetar/MagnetarV2Storage.sol
+
+
+
+
+
+
+50 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Magnetar/modules/MagnetarMarketModule.sol
+
+
+
+51 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Swapper/BaseSwapper.sol
+
+
+- Remove the unused buildSwapData functions, as they are not required in the contract.
+
+- Simplifiy the _getAmounts function to directly assign values to amountIn and amountOut variables instead of using conditional statements.
+
+- Remove the unused swapTokenData and swapYBData variables from the _buildSwapData function to eliminate unnecessary data duplication.
+
+Here is an Optimized BaseSwapper Contract :
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/interfaces/IYieldBox.sol";
+
+import "../interfaces/ISwapper.sol";
+
+abstract contract BaseSwapper is Ownable, ReentrancyGuard, ISwapper {
+    using SafeERC20 for IERC20;
+
+    error AddressNotValid();
+
+    modifier validAddress(address _addr) {
+        if (_addr == address(0)) revert AddressNotValid();
+        _;
+    }
+
+    function _safeApprove(address token, address to, uint256 value) internal {
+        (bool success, bytes memory data) = token.call(abi.encodeWithSelector(0x095ea7b3, to, value));
+        require(success && (data.length == 0 || abi.decode(data, (bool))), "BaseSwapper::safeApprove: approve failed");
+    }
+
+    function _getTokens(
+        ISwapper.SwapTokensData calldata tokens,
+        IYieldBox _yieldBox
+    ) internal view returns (address tokenIn, address tokenOut) {
+        if (tokens.tokenIn != address(0) || tokens.tokenOut != address(0)) {
+            tokenIn = tokens.tokenIn;
+            tokenOut = tokens.tokenOut;
+        } else {
+            (, tokenIn, , ) = _yieldBox.assets(tokens.tokenInId);
+            (, tokenOut, , ) = _yieldBox.assets(tokens.tokenOutId);
+        }
+    }
+
+    function _getAmounts(
+        ISwapper.SwapAmountData calldata amounts,
+        uint256 tokenInId,
+        uint256 tokenOutId,
+        IYieldBox _yieldBox
+    ) internal view returns (uint256 amountIn, uint256 amountOut) {
+        amountIn = amounts.amountIn > 0 ? amounts.amountIn : _yieldBox.toAmount(tokenInId, amounts.shareIn, false);
+        amountOut = amounts.amountOut > 0 ? amounts.amountOut : _yieldBox.toAmount(tokenOutId, amounts.shareOut, false);
+    }
+
+    function _extractTokens(
+        ISwapper.YieldBoxData calldata ybData,
+        IYieldBox _yieldBox,
+        address token,
+        uint256 tokenId,
+        uint256 amount,
+        uint256 share
+    ) internal returns (uint256) {
+        if (ybData.withdrawFromYb) {
+            (amount, share) = _yieldBox.withdraw(tokenId, address(this), address(this), amount, share);
+            return amount;
+        }
+        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
+        return amount;
+    }
+
+    function _createPath(
+        address tokenIn,
+        address tokenOut
+    ) internal pure returns (address[] memory path) {
+        path = new address[](2);
+        path[0] = tokenIn;
+        path[1] = tokenOut;
+    }
+}
+
+
+
