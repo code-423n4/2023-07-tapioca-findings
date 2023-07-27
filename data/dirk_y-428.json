@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "2",
+  "title": "Failed cross chain TapOFT messages aren't stored for retrying",
+  "issueId": 428,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/428"
+}
