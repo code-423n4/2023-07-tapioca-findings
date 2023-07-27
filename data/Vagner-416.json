@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "3",
+  "title": "`setMultiSwapper` in `AaveStrategy.sol` does not update the allowance to the new address set which will make funds be stuck in the contract",
+  "issueId": 416,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/416"
+}
