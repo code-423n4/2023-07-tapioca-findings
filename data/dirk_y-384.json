@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "dirk_y",
+  "risk": "2",
+  "title": "Emergency withdraws from yield generating strategies can be immediately deposited again by a malicious user",
+  "issueId": 384,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/384"
+}
