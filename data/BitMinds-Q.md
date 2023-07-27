@@ -34,3 +34,11 @@ When searching for the _executeViewModule function being used across the project
 ## L-11 _getAmountForBorrowPart function of SGLCommon.sol is unused
 The _getAmountForBorrowPart function implemented in SGLCommon.sol (https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L254) is unused in the project and can be removed. Check: https://github.com/search?q=repo%3ATapioca-DAO%2Ftapioca-bar-audit%20_getAmountForBorrowPart&type=code.
 
+## L-12 amount parameter of addCollateral function in SGLCollateral.sol is undocumented
+The "amount" parameter is missing in the Natspec of the addCollateral function. See: https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCollateral.sol#L15-L26. It should be added to the Natspec.
+
+## L-13 allowedBorrow function in MarketERC20.sol has the side effect of decreasing borrow allowance
+Just looking at the function name "allowedBorrow" it could be assumed that this is only a check and not a state-altering function. But it also decreases the borrow allowance: https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L89.  The function should best be renamed to also indicate that the borrow allowance is decreased.
+
+## L-14 BigBang.sol error messages still contain "SGL" in error messages
+It looks like some leftovers of developing BigBang as a version of Singularity remained in error messages of require statements in BigBang.sol. Here is 1 example: https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L344. All occurrences in the file should be corrected to indicate that the error came from BigBang.
