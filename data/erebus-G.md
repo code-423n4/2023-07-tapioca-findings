@@ -46,3 +46,6 @@ Consider changing strings errors in the `require` statements to custom errors in
 
 # Fourth
 Consider changing the increment in loops to unchecked blocks if the loop cycles are known (`for(...; ...; ++i) {...}` to `for(...; ...; ;) {...; unchecked { ++i; } }`. This is because Solidity checks for over/underflows by default since version 0.8.0, so if the maximum value of the counter, there is no need for those useless opcodes that ensures there is no over/underflows. The RE is `; [^;\)]+\) \{`
+
+# Fifth
+In [TapiocaWrapper.sol#L86-L90](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/TapiocaWrapper.sol#L86-L90) it is doing a check to avoid OOB indexing. However, starting from version 0.8.0, Solidity does check for underflows, thus it makes impossible to OOB in this situation. Consider removing the `if` clause because it is doing unnecessary opcodes (although it is more explicit to let it there)
