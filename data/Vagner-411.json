@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "2",
+  "title": "`pricePerShare` calculations in `CompoundStrategy.sol` can return stale data which could hurt that calculations of `_withdraw` and `_currentBalance`",
+  "issueId": 411,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/411"
+}
