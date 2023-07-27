@@ -42,3 +42,13 @@ Just looking at the function name "allowedBorrow" it could be assumed that this 
 
 ## L-14 BigBang.sol error messages still contain "SGL" in error messages
 It looks like some leftovers of developing BigBang as a version of Singularity remained in error messages of require statements in BigBang.sol. Here is 1 example: https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L344. All occurrences in the file should be corrected to indicate that the error came from BigBang.
+
+## L-15 SGLCommon.sol and SGLLendingCommon.sol contain a hardcoded and undocumented check for _totalAsset.base >= 1000
+It is unclear why the check is against a value of 1000 and why the value is hardcoded. Instead a descriptive variable should be used which is set to 1000. Appears https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLendingCommon.sol#L75 and here https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L240
+
+## L-16 minimumTargetUtilization and maximumTargetUtilization are not checked against each other in setSingularityConfig function of Singularity.sol
+It is not checked that maximumTargetUtilization > minimumTargetUtilization. Other min/max variable pairs are checked against each other:
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L523, https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L535. It necessary, the missing check should be added.
+
+## L-17 Different checks against FEE_PRECISION for _lqCollateralizationRate and _liquidationMultiplier in Singularity.sol
+For the _lqCollateralizationRate a "lower than or equal" check is done: https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L555. For the check of _liquidationMultiplier against the same FEE_PRECISION constant only a "lower than check is done": https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L566. If both checks should be done with the same operator, it should be corrected.
