@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Vagner",
+  "risk": "3",
+  "title": "`_sellGmx` in `GlpStrategy.sol` can transfer more funds to the UniswapV3 pool than needed, funds which will be lost",
+  "issueId": 410,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/410"
+}
