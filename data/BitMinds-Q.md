@@ -73,3 +73,12 @@ E.g., BalancerStrategy.sol refers to the Yearn strategy in multiple places: http
 
 ## L-24 Inconsistency between Singularity strategies regarding emitted events on asset deposits which may distort off-chain accounting
 On deposits, there are two events that may be issued across the strategies: AmountQueued and AmountDeposited. AaveStrategy.sol, for example, does not emit the AmountQueued event for the amount passed to the deposit function if the threshold is reached that assets are deposited into the lending pool: https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/aave/AaveStrategy.sol#L234-L247. In comparison BalancerStrategy.sol does always emit an AmountQueued and AmountDeposited event irrespective whether the threshold was met or not: https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L138-L147. This is inconsistent and may lead to distortion in off-chain accounting. This should be corrected so that all strategies follow the same pattern of emitting events for deposits.
+
+## L-25 Typo in ConvexTricryptoStrategy.sol
+It should be "successEmptyApproval" instead of "successEmtptyApproval": https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L356, https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L364
+
+## L-26 Typo in Market.sol
+It should be "maxBorrowable" instead of "maxBorrowabe": https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L470, https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L474
+
+## L-27 Typo in ConvexTricryptoStrategy.sol
+It should be "_rewardPool" instead of "_rewadPool": https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L87, https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L99
