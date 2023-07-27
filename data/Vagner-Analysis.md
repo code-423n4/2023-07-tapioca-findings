@@ -1,0 +1,4 @@
+The approach that I have taken in this evaluating this codebase is similar to other codebases, I read the code at a very low level at first to see if there are any inconsistencies in the codebase or logic flaws then I try to understand it as effective as possible from a high level perspective to see if the implementation is done right. The codebase was extremely complex and with a lot of other protocols integrations, so I learned a lot about other protocols and how they should be implemented, especially since I found a lot of integration problems and bugs into Tapioca. Very challenging audit and very exciting at the same time.
+
+### Time spent:
+50 hours
