@@ -26,3 +26,43 @@ Commented import [here](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61
 
 # Seventh
 Some contracts like `Balancer.sol` in the `tapiocaz-audit` repo do use the function `swapETH` from `IStargateRouter` in functions like `_sendNative` (see [here](https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/interfaces/IStargateRouter.sol#L27) for the interface and [here](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L288) for the usage). However, there is no such function in the implementation from the Stargate protocol (see [here](https://github.com/stargate-protocol/stargate/blob/main/contracts/Router.sol)). So it shall revert because the signature does not exist in the `Router` contract. I am putting the severity as QA because it may be some Solidity fact I do not know yet BUT calling a function that does not exist is definitely a higher severity (up to the judges to increase my knowledge or increase the severity of this submission to a higher one)
+
+# Eight
+In [Balancer.sol#L322](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L322), the contract does performs a Stargate swap as seen in their [docs](https://stargateprotocol.gitbook.io/stargate/developers/how-to-swap)
+
+(for judges comfort, the function is here)
+
+```
+// perform a Stargate swap() in a solidity smart contract function
+// the msg.value is the "fee" that Stargate needs to pay for the cross chain message <------ HERE
+IStargateRouter(routerAddress).swap{value:msg.value}(
+    10006,                           // send to Fuji (use LayerZero chainId)
+    1,                               // source pool id
+    1,                               // dest pool id                 
+    msg.sender,                      // refund adddress. extra gas (if any) is returned to this address
+    qty,                             // quantity to swap
+    amountOutMin,                    // the min qty you would accept on the destination
+    IStargateRouter.lzTxObj(0, 0, "0x")  // 0 additional gasLimit increase, 0 airdrop, at 0x address
+    abi.encodePacked(msg.sender),    // the address to send the tokens to on the destination
+    bytes("")                        // bytes param, if you wish to send additional payload you can abi.encode() them here
+);
+```
+
+that is, it needs to forward the oncoming ether as gas to pay for the cross chain message. However, as seen in the line 322 from `Balancer.sol`, the devs do set correctly the additional gas limit but forget to set the `value` field of the transaction. It may be 0 because the user did not know that he had to put it or arbitrarily high, thus it can revert or users can lose more money as gas than the needed
+
+```
+// from Balancer.sol#L322
+router.swap( <------------------ forwards all the oncoming ether, from 0 to max
+            _dstChainId,
+            _srcPoolId,
+            _dstPoolId,
+            _oft, //refund,
+            _amount,
+            _computeMinAmount(_amount, _slippage),
+            _lzTxParams,
+            _lzTxParams.dstNativeAddr,
+            "0x"
+);
+```
+
+The solution is trivial, just calculate the gas needed for the cross chain message with `quoteLayerZero()` for the `swap` call and explicitly put the `value` field of the transaction to it (checking that it is less or equal than the oncoming one and reverting if that's not the case, so that the user knows what happened instead of seeing his balance decreasing more than expected). See the [docs](https://stargateprotocol.gitbook.io/stargate/developers/how-to-swap) as a reference
