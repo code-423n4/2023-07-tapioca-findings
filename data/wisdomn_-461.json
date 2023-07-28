@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "wisdomn_",
+  "risk": "3",
+  "title": "function mintFromBBAndLendOnSGL is vulnerable to lack of access control.",
+  "issueId": 461,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/461"
+}
