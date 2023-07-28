@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kodyvim",
+  "risk": "3",
+  "title": "A malicious user could set the allowable slippage in `withdrawAllMarketFees` to zero and sandwich all market fees.",
+  "issueId": 457,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/457"
+}
