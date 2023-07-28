@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "vagrant",
+  "risk": "3",
+  "title": "BigBang liquidation and repay are resumed at the same time which could lead to loss of funds",
+  "issueId": 445,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/445"
+}
