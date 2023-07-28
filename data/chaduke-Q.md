@@ -273,3 +273,9 @@ QA26. Penrose.setFeeTo() fails to perform a zero address check for the input ``f
 [https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L455C14-L458](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L455C14-L458)
 
 Correction: perform a zero address check for ``feeTo_``. 
+
+QA26. YieldBox.depositETH() fails to have a zero address check for ``strategy``. As a result, if ``strat3egy`` is set to zero by accident or maliciously, then funds will be lost to the zero address.
+
+[https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/YieldBox.sol#L500-L502C1](https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/YieldBox.sol#L500-L502C1)
+
+This is because none of the callee functions, ``registerAsset()`` and ``_registerAsset()`` perform any zero address check and funds will be deposited to the zero address when  ``strategy`` is a zero address.
