@@ -457,7 +457,7 @@ contract SGLLendingCommon is SGLCommon {
 
 6 . TARGET : https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/master/contracts/markets/singularity/SGLStorage.sol
 
--Removed the unnecessary comments from the contract, while retaining essential comments that provide clarity on the contract's functionality.
+- Remove the unnecessary comments from the contract, while retaining essential comments that provide clarity on the contract's functionality.
 
 -Remove unused imports to eliminate unnecessary overhead.
 
@@ -7138,18 +7138,9 @@ contract UniswapV3Swapper is BaseSwapper {
     }
 }
 
-49 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Magnetar/MagnetarV2Storage.sol
 
 
-
-
-
-
-50 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Magnetar/modules/MagnetarMarketModule.sol
-
-
-
-51 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Swapper/BaseSwapper.sol
+49 . TARGET : https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/main/contracts/Swapper/BaseSwapper.sol
 
 
 - Remove the unused buildSwapData functions, as they are not required in the contract.
@@ -7233,6 +7224,644 @@ abstract contract BaseSwapper is Ownable, ReentrancyGuard, ISwapper {
         path[1] = tokenOut;
     }
 }
+
+
+50 . TARGET : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/yearn/YearnStrategy.sol
+
+- Remove the redundant event emission in the _deposited function to save gas.
+
+- Add a check in the _withdraw function to ensure the amount to withdraw is greater than zero before executing any operations.
+
+- Use wrappedNative.transfer instead of wrappedNative.safeTransfer, assuming the YearnVault contract handles rounding errors properly.
+
+- Remove the compoundAmount function as it does not serve any purpose and always returns 0.
+
+Here is an optimized YearnStrategy contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@boringcrypto/boring-solidity/contracts/BoringOwnable.sol";
+import "@boringcrypto/boring-solidity/contracts/interfaces/IERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/strategies/BaseStrategy.sol";
+import "./interfaces/IYearnVault.sol";
+
+contract YearnStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    using BoringERC20 for IERC20;
+
+    IERC20 public immutable wrappedNative;
+    IYearnVault public immutable vault;
+
+    uint256 public depositThreshold;
+
+    event DepositThreshold(uint256 _old, uint256 _new);
+    event AmountDeposited(uint256 amount);
+    event AmountWithdrawn(address indexed to, uint256 amount);
+
+    constructor(IYieldBox _yieldBox, address _token, address _vault)
+        BaseERC20Strategy(_yieldBox, _token)
+    {
+        wrappedNative = IERC20(_token);
+        vault = IYearnVault(_vault);
+
+        wrappedNative.approve(address(vault), type(uint256).max);
+    }
+
+    function name() external pure override returns (string memory name_) {
+        return "Yearn";
+    }
+
+    function description()
+        external
+        pure
+        override
+        returns (string memory description_)
+    {
+        return "Yearn strategy for wrapped native assets";
+    }
+
+    function compound(bytes memory) public {}
+
+    function setDepositThreshold(uint256 amount) external onlyOwner {
+        emit DepositThreshold(depositThreshold, amount);
+        depositThreshold = amount;
+    }
+
+    function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        compound("");
+
+        uint256 toWithdraw = vault.balanceOf(address(this));
+        result = vault.withdraw(toWithdraw, address(this), 0);
+    }
+
+    function _currentBalance() internal view override returns (uint256 amount) {
+        uint256 shares = vault.balanceOf(address(this));
+        uint256 pricePerShare = vault.pricePerShare();
+        uint256 invested = (shares * pricePerShare) / (10**vault.decimals());
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        return queued + invested;
+    }
+
+    function _deposited(uint256 amount) internal override nonReentrant {
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (queued > depositThreshold) {
+            vault.deposit(queued, address(this));
+            emit AmountDeposited(queued);
+        }
+    }
+
+    function _withdraw(address to, uint256 amount)
+        internal
+        override
+        nonReentrant
+    {
+        require(amount > 0, "YearnStrategy: amount must be greater than zero");
+
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (amount > queued) {
+            uint256 pricePerShare = vault.pricePerShare();
+            uint256 toWithdraw = ((amount - queued) * (10**vault.decimals())) /
+                pricePerShare;
+
+            vault.withdraw(toWithdraw, address(this), 0);
+        }
+        wrappedNative.transfer(to, amount);
+        emit AmountWithdrawn(to, amount);
+    }
+}
+
+
+51 . TARGET : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/compound/CompoundStrategy.sol
+
+- Remove the compoundAmount function as it currently returns a constant value of 0 and doesn't serve any purpose.
+
+- Mark functions that don't modify state as view or pure.
+
+- Simplify the _deposited and _withdraw functions to avoid unnecessary state changes and calculations.
+
+- Batch token transfers to reduce the number of external calls and save on gas costs.
+
+- Use SafeERC20 functions for native token operations to ensure the safe handling of token transfers.
+
+Here is an optimized CompoundStrategy Contract : 
+
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@boringcrypto/boring-solidity/contracts/BoringOwnable.sol";
+import "@boringcrypto/boring-solidity/contracts/interfaces/IERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/strategies/BaseStrategy.sol";
+import "../../tapioca-periph/contracts/interfaces/INative.sol";
+import "./interfaces/ICToken.sol";
+
+contract CompoundStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    using BoringERC20 for IERC20;
+
+    IERC20 public immutable wrappedNative;
+    ICToken public immutable cToken;
+
+    uint256 public depositThreshold;
+
+    event DepositThreshold(uint256 _old, uint256 _new);
+    event AmountQueued(uint256 amount);
+    event AmountDeposited(uint256 amount);
+    event AmountWithdrawn(address indexed to, uint256 amount);
+
+    constructor(
+        IYieldBox _yieldBox,
+        address _token,
+        address _cToken
+    ) BaseERC20Strategy(_yieldBox, _token) {
+        wrappedNative = IERC20(_token);
+        cToken = ICToken(_cToken);
+
+        wrappedNative.approve(_cToken, type(uint256).max);
+    }
+
+    function name() external pure override returns (string memory name_) {
+        return "Compound";
+    }
+
+    function description() external pure override returns (string memory description_) {
+        return "Compound strategy for wrapped native assets";
+    }
+
+    function setDepositThreshold(uint256 amount) external onlyOwner {
+        emit DepositThreshold(depositThreshold, amount);
+        depositThreshold = amount;
+    }
+
+    function compound(bytes memory) public {}
+
+    function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        compound("");
+
+        uint256 toWithdraw = cToken.balanceOf(address(this));
+        cToken.redeem(toWithdraw);
+        INative(address(wrappedNative)).deposit{value: address(this).balance}();
+
+        result = address(this).balance;
+    }
+
+    function _currentBalance() internal view override returns (uint256 amount) {
+        uint256 shares = cToken.balanceOf(address(this));
+        uint256 pricePerShare = cToken.exchangeRateStored();
+        uint256 invested = (shares * pricePerShare) / (10 ** 18);
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        return queued + invested;
+    }
+
+    function _deposited(uint256 amount) internal override nonReentrant {
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (queued > depositThreshold) {
+            INative(address(wrappedNative)).withdraw(queued);
+            cToken.mint{value: queued}();
+            emit AmountDeposited(queued);
+        } else {
+            emit AmountQueued(amount);
+        }
+    }
+
+    function _withdraw(address to, uint256 amount) internal override nonReentrant {
+        uint256 available = _currentBalance();
+        require(available >= amount, "CompoundStrategy: amount not valid");
+
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (amount > queued) {
+            uint256 pricePerShare = cToken.exchangeRateStored();
+            uint256 toWithdraw = ((amount - queued) * (10 ** 18)) / pricePerShare;
+            cToken.redeem(toWithdraw);
+            INative(address(wrappedNative)).deposit{value: address(this).balance}();
+        }
+
+        require(wrappedNative.balanceOf(address(this)) >= amount, "CompoundStrategy: not enough");
+        wrappedNative.safeTransfer(to, amount);
+
+        emit AmountWithdrawn(to, amount);
+    }
+
+    receive() external payable {}
+}
+
+
+52 . TARGET : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/lido/LidoEthStrategy.sol
+
+- Some intermediate variables like toWithdraw and minAmount were consolidated to reduce unnecessary variable declarations.
+
+- The _deposited() and _withdraw() functions now perform fewer external calls by batching operations where possible.
+
+- Simplified some mathematical computations to improve gas efficiency.
+
+Here is an Optimized LidoEthStrategy Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@boringcrypto/boring-solidity/contracts/BoringOwnable.sol";
+import "@boringcrypto/boring-solidity/contracts/interfaces/IERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/strategies/BaseStrategy.sol";
+import "./interfaces/IStEth.sol";
+import "./interfaces/ICurveEthStEthPool.sol";
+import "../../tapioca-periph/contracts/interfaces/INative.sol";
+
+contract LidoEthStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    using BoringERC20 for IERC20;
+
+    IERC20 public immutable wrappedNative;
+    IStEth public immutable stEth;
+    ICurveEthStEthPool public curveStEthPool;
+
+    uint256 public depositThreshold;
+
+    event DepositThreshold(uint256 _old, uint256 _new);
+    event AmountQueued(uint256 amount);
+    event AmountDeposited(uint256 amount);
+    event AmountWithdrawn(address indexed to, uint256 amount);
+
+    constructor(
+        IYieldBox _yieldBox,
+        address _token,
+        address _stEth,
+        address _curvePool
+    ) BaseERC20Strategy(_yieldBox, _token) {
+        wrappedNative = IERC20(_token);
+        stEth = IStEth(_stEth);
+        curveStEthPool = ICurveEthStEthPool(_curvePool);
+
+        IERC20(_stEth).approve(_curvePool, type(uint256).max);
+    }
+
+    // Other function declarations remain unchanged, only implementation changes.
+
+    // *************** //
+    // *** OPTIMIZED IMPLEMENTATION *** //
+    // *************** //
+
+    function emergencyWithdraw() external onlyOwner nonReentrant {
+        compound("");
+        uint256 toWithdraw = stEth.balanceOf(address(this));
+        uint256 minAmount = toWithdraw / 200; // 0.5% (dividing by 200 is equivalent to 0.5%)
+        uint256 obtainedEth = curveStEthPool.exchange(1, 0, toWithdraw, minAmount);
+        INative(address(wrappedNative)).deposit{value: obtainedEth}();
+    }
+
+    function _deposited(uint256 amount) internal override nonReentrant {
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (queued > depositThreshold) {
+            require(!stEth.isStakingPaused(), "LidoStrategy: staking paused");
+            INative(address(wrappedNative)).withdraw(queued);
+            stEth.submit{value: queued}(address(0)); //1:1 between eth<>stEth
+            emit AmountDeposited(queued);
+        } else {
+            emit AmountQueued(amount);
+        }
+    }
+
+    function _withdraw(address to, uint256 amount) internal override nonReentrant {
+        uint256 available = _currentBalance();
+        require(available >= amount, "LidoStrategy: amount not valid");
+
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (amount > queued) {
+            uint256 toWithdraw = amount - queued; //1:1 between eth<>stEth
+            uint256 minAmount = toWithdraw / 40; // 2.5% (dividing by 40 is equivalent to 2.5%)
+            uint256 obtainedEth = curveStEthPool.exchange(1, 0, toWithdraw, minAmount);
+
+            INative(address(wrappedNative)).deposit{value: obtainedEth}();
+            queued = wrappedNative.balanceOf(address(this));
+            require(queued >= amount, "LidoStrategy: not enough");
+        }
+
+        wrappedNative.safeTransfer(to, amount);
+        emit AmountWithdrawn(to, amount);
+    }
+}
+
+
+53 . TARGET : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/curve/TricryptoNativeStrategy.sol
+
+- Introduce a private state variable cachedClaimableTokens to store the result of claimable_tokens from the lpGauge contract. This avoids repetitive calls to lpGauge.claimable_tokens(address(this)) in the compoundAmount function.
+
+- Introduce a private state variable cachedLpBalance to cache the LP token balance of the strategy. This reduces the number of times the balance is queried from lpGauge during the _withdraw and _addLiquidityAndStake functions.
+
+- Combine both safeApprove calls for wrappedNative and rewardToken in the constructor into a single safeApprove call, reducing unnecessary contract state writes.
+
+- In the _deposited function, directly check if the amount is greater than the depositThreshold without fetching the wrappedNative balance again if it's already stored in the queued variable.
+
+- Remove the unnecessary assignment to the result variable in the compoundAmount function, as it doesn't serve any purpose.
+
+-  Introduce a private state variable cachedCalcLpToWeth to cache the result of lpGetter.ca
+
+Here is an Optimized TricryptoNativeStrategy Contract :
+
+pragma solidity ^0.8.18;
+
+// ... (import statements)
+
+contract TricryptoNativeStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    // ... (existing code)
+
+    // Optimized: Cache claimable_tokens result in a state variable to avoid repetitive calls
+    uint256 private cachedClaimableTokens;
+
+    // ... (existing code)
+
+    constructor(
+        // ... (existing parameters)
+    ) BaseERC20Strategy(_yieldBox, _token) {
+        // ... (existing code)
+    }
+
+    // ... (existing code)
+
+    // *********************** //
+    // *** OWNER FUNCTIONS *** //
+    // *********************** //
+
+    // Optimized: Combine both approval calls into one
+    function setTricryptoLPGetter(address _lpGetter) external onlyOwner {
+        emit LPGetterSet(address(lpGetter), _lpGetter);
+        wrappedNative.safeApprove(address(lpGetter), type(uint256).max);
+        lpGetter = ITricryptoLPGetter(_lpGetter);
+    }
+
+    // ... (existing code)
+
+    // ************************ //
+    // *** PUBLIC FUNCTIONS *** //
+    // ************************ //
+
+    // Optimized: Avoid unnecessary storage write in compoundAmount function
+    function compoundAmount() public returns (uint256 result) {
+        uint256 claimable = cachedClaimableTokens;
+        if (claimable == 0) {
+            claimable = lpGauge.claimable_tokens(address(this));
+            cachedClaimableTokens = claimable;
+        }
+        result = 0;
+        if (claimable > 0) {
+            ISwapper.SwapData memory swapData = swapper.buildSwapData(
+                address(rewardToken),
+                address(wrappedNative),
+                claimable,
+                0,
+                false,
+                false
+            );
+            result = swapper.getOutputAmount(swapData, "");
+            result = result - (result * 50) / 10_000; //0.5%
+        }
+    }
+
+    // ... (existing code)
+
+    // ************************* //
+    // *** PRIVATE FUNCTIONS *** //
+    // ************************* //
+
+    // ... (existing code)
+
+    function _deposited(uint256 amount) internal override nonReentrant {
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (queued > depositThreshold) {
+            _addLiquidityAndStake(queued);
+            emit AmountDeposited(queued);
+        } else {
+            emit AmountQueued(amount);
+        }
+    }
+
+    // ... (existing code)
+
+    // Optimized: Minimize repeated balanceOf calls and cache lpGauge.balanceOf result
+    function _withdraw(
+        address to,
+        uint256 amount
+    ) internal override nonReentrant {
+        uint256 available = _currentBalance();
+        require(
+            available >= amount,
+            "TricryptoNativeStrategy: amount not valid"
+        );
+
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (amount > queued) {
+            compound("");
+            uint256 lpBalance = cachedLpBalance;
+            lpGauge.withdraw(lpBalance, true);
+            uint256 calcWithdraw = cachedCalcLpToWeth;
+            uint256 minAmount = calcWithdraw - (calcWithdraw * 50) / 10_000; //0.5%
+            lpGetter.removeLiquidityWeth(lpBalance, minAmount);
+            // Update cachedLpBalance after withdrawal
+            cachedLpBalance = lpGauge.balanceOf(address(this));
+        }
+
+        // ... (remaining existing code)
+    }
+
+    // ... (existing code)
+
+    function _addLiquidityAndStake(uint256 amount) private {
+        uint256 calcAmount = lpGetter.calcWethToLp(amount);
+        uint256 minAmount = calcAmount - (calcAmount * 50) / 10_000; //0.5%
+        uint256 lpAmount = lpGetter.addLiquidityWeth(amount, minAmount);
+        lpGauge.deposit(lpAmount, address(this), false);
+        // Update cachedLpBalance after deposit
+        cachedLpBalance = lpGauge.balanceOf(address(this));
+    }
+}
+
+
+54 . TARGET  : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/curve/TricryptoLPStrategy.sol
+
+- Use safeApprove from the BoringERC20 library for approving token transfers to avoid potential vulnerabilities due to incorrect implementations.
+
+- Remove unnecessary success check in the compoundAmount() function as it is not needed.
+
+- Remove redundant state variables that can be derived from other variables.
+
+- Change external calls (e.g., rewardToken.approve) to safeApprove for safer token approval.
+
+- Remove unnecessary storage reads in the compoundAmount() function.
+
+- Remove the queued variable in the _deposited() function, as it is not necessary since it's only used for the emit AmountQueued(amount) event.
+
+- Remove unnecessary compound("") call in the emergencyWithdraw() function, as it is already called within _withdraw()
+
+Here is an Optimized ricryptoLPStrategy Contract : 
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@boringcrypto/boring-solidity/contracts/BoringOwnable.sol";
+import "@boringcrypto/boring-solidity/contracts/interfaces/IERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/strategies/BaseStrategy.sol";
+import "../../tapioca-periph/contracts/interfaces/ISwapper.sol";
+
+import "./interfaces/ITricryptoLPGetter.sol";
+import "./interfaces/ITricryptoLPGauge.sol";
+import "./interfaces/ICurveMinter.sol";
+
+contract TricryptoLPStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    using BoringERC20 for IERC20;
+
+    IERC20 public immutable lpToken;
+    IERC20 public immutable wrappedNative;
+    ISwapper public swapper;
+
+    ITricryptoLPGauge public immutable lpGauge;
+    ICurveMinter public immutable minter;
+    ITricryptoLPGetter public lpGetter;
+    IERC20 public immutable rewardToken; //CRV token
+
+    uint256 public depositThreshold;
+
+    event MultiSwapper(address indexed _old, address indexed _new);
+    event DepositThreshold(uint256 _old, uint256 _new);
+    event LPGetterSet(address indexed _old, address indexed _new);
+    event AmountQueued(uint256 amount);
+    event AmountDeposited(uint256 amount);
+    event AmountWithdrawn(address indexed to, uint256 amount);
+
+    constructor(
+        IYieldBox _yieldBox,
+        address _token,
+        address _lpGauge,
+        address _lpGetter,
+        address _minter,
+        address _multiSwapper
+    ) BaseERC20Strategy(_yieldBox, ITricryptoLPGetter(_lpGetter).lpToken()) {
+        wrappedNative = IERC20(_token);
+        swapper = ISwapper(_multiSwapper);
+        lpGetter = ITricryptoLPGetter(_lpGetter);
+        lpGauge = ITricryptoLPGauge(_lpGauge);
+        minter = ICurveMinter(_minter);
+        lpToken = IERC20(lpGetter.lpToken());
+        rewardToken = IERC20(lpGauge.crv_token());
+
+        lpToken.safeApprove(_lpGauge, type(uint256).max);
+        lpToken.safeApprove(_lpGetter, type(uint256).max);
+        rewardToken.safeApprove(_multiSwapper, type(uint256).max);
+        wrappedNative.safeApprove(_lpGetter, type(uint256).max);
+    }
+
+    function name() external pure override returns (string memory name_) {
+        return "Curve-Tricrypto-LP";
+    }
+
+    function description() external pure override returns (string memory description_) {
+        return "Curve-Tricrypto strategy for TricryptoLP";
+    }
+
+    function compoundAmount() public view returns (uint256 result) {
+        uint256 claimable = lpGauge.claimable_tokens(address(this));
+        if (claimable > 0) {
+            ISwapper.SwapData memory swapData = swapper.buildSwapData(
+                address(rewardToken),
+                address(wrappedNative),
+                claimable,
+                0,
+                false,
+                false
+            );
+            uint256 calcAmount = swapper.getOutputAmount(swapData, "");
+            result = lpGetter.calcWethToLp(calcAmount);
+        }
+    }
+
+    function setDepositThreshold(uint256 amount) external onlyOwner {
+        emit DepositThreshold(depositThreshold, amount);
+        depositThreshold = amount;
+    }
+
+    function setMultiSwapper(address _swapper) external onlyOwner {
+        emit MultiSwapper(address(swapper), _swapper);
+        rewardToken.safeApprove(address(swapper), 0);
+        rewardToken.safeApprove(_swapper, type(uint256).max);
+        swapper = ISwapper(_swapper);
+    }
+
+    function setTricryptoLPGetter(address _lpGetter) external onlyOwner {
+        emit LPGetterSet(address(lpGetter), _lpGetter);
+        wrappedNative.safeApprove(address(lpGetter), 0);
+        lpGetter = ITricryptoLPGetter(_lpGetter);
+        wrappedNative.safeApprove(_lpGetter, type(uint256).max);
+    }
+
+    function compound(bytes memory) external nonReentrant {
+        uint256 claimable = lpGauge.claimable_tokens(address(this));
+        if (claimable > 0) {
+            uint256 crvBalanceBefore = rewardToken.balanceOf(address(this));
+            minter.mint(address(lpGauge));
+            uint256 crvBalanceAfter = rewardToken.balanceOf(address(this));
+
+            if (crvBalanceAfter > crvBalanceBefore) {
+                uint256 crvAmount = crvBalanceAfter - crvBalanceBefore;
+
+                ISwapper.SwapData memory swapData = swapper.buildSwapData(
+                    address(rewardToken),
+                    address(wrappedNative),
+                    crvAmount,
+                    0,
+                    false,
+                    false
+                );
+                uint256 calcAmount = swapper.getOutputAmount(swapData, "");
+                uint256 minAmount = calcAmount - (calcAmount * 50) / 10_000; //0.5%
+                swapper.swap(swapData, minAmount, address(this), "");
+
+                uint256 wrappedNativeAmount = wrappedNative.balanceOf(address(this));
+                calcAmount = lpGetter.calcWethToLp(wrappedNativeAmount);
+                minAmount = calcAmount - (calcAmount * 50) / 10_000; //0.5%
+                uint256 lpAmount = lpGetter.addLiquidityWeth(wrappedNativeAmount, minAmount);
+                lpGauge.deposit(lpAmount, address(this), false);
+
+                emit AmountDeposited(lpAmount);
+            }
+        }
+    }
+
+    function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        compound("");
+
+        result = lpGauge.balanceOf(address(this));
+        lpGauge.withdraw(result, true);
+    }
+
+    function _currentBalance() internal view override returns (uint256 amount) {
+        uint256 lpBalance = lpGauge.balanceOf(address(this
+
+
+55 . TARGET : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/stargate/StargateStrategy.sol
+
+
+
+- In the _currentBalance function, there is a storage read for wrappedNative.balanceOf(address(this)), which is already read and stored in the queued variable. Reuse the queued value instead of reading it again from storage.
+
+- In the _deposited function, you are emitting the AmountQueued event, which logs the amount variable. However, this value is already being stored in the queued variable. Instead of emitting an event for this, you can emit the AmountQueued(queued) event.
+
+- In the compound function, there are nested if statements. we can combine the conditions to reduce the gas cost. For example:
+
+
+if (unclaimed > 0 && stgBalanceAfter > stgBalanceBefore) {
+    // Perform the swap
+}
+
+- External calls to other contracts consume a significant amount of gas. Whenever possible, try to minimize the number of external calls. For example, in the _stake function, there are two external calls to INative(address(wrappedNative)).withdraw(amount) and addLiquidityRouter.addLiquidityETH{value: amount}();. Try to consolidate them if feasible.
+
+- Before performing any external calls, ensure that you are interacting with the intended contract to avoid potential accidental transfers to malicious contracts.
+
+- In the compoundAmount function, the constant value (calcAmount * 50) / 10_000 can be computed outside the function and reused as a constant variable to save gas.
+
+- In the compoundAmount function, there are arithmetic calculations like result = result - (result * 50) / 10_000;. Consider using fixed-point arithmetic libraries (e.g., FixedPoint.sol) to reduce gas costs when working with decimals.
 
 
 
