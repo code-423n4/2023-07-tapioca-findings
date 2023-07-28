@@ -66,3 +66,6 @@ router.swap( <------------------ forwards all the oncoming ether, from 0 to max
 ```
 
 The solution is trivial, just calculate the gas needed for the cross chain message with `quoteLayerZero()` for the `swap` call and explicitly put the `value` field of the transaction to it (checking that it is less or equal than the oncoming one and reverting if that's not the case, so that the user knows what happened instead of seeing his balance decreasing more than expected). See the [docs](https://stargateprotocol.gitbook.io/stargate/developers/how-to-swap) as a reference
+
+# Ninth
+Unlicensed code (see any file). Anyone can copy your code and make his own ecosystem equal to yours. That means, if for any chance he can have more traction, user adoption and fundraising rounds or even better devs, then he can kick you out of the market without Tapioca being able to bring them to court due to the fact that your code is unlicensed. License it under MIT or any software license to protect your work
