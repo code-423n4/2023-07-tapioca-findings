@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "FullMath and TickMath libraries desire overflow behavior",
+  "issueId": 483,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/483"
+}
