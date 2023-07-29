@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "Messages from an untrusted remote can be executed in `USDO` and `TOFT` contracts in an edge case",
+  "issueId": 484,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/484"
+}
