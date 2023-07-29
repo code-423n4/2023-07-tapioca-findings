@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "UniswapV3Swapper - poolFee can be set to unoptimal routing or to an incorrect value",
+  "issueId": 488,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/488"
+}
