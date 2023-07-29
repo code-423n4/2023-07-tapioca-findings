@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "3",
+  "title": "External protocols can be paused and killed in YieldBox strategies which leads to user funds stuck",
+  "issueId": 497,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/497"
+}
