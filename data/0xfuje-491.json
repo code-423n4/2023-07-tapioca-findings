@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "Missing Arbitrum sequencer checks in Arbitrum based oracles",
+  "issueId": 491,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/491"
+}
