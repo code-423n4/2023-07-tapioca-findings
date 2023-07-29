@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xStalin",
+  "risk": "2",
+  "title": "USDO initMultiHopBuy process is broken and will always revert because one of the called functions is not payable and won't be able to forward the native token to pay for gas when levering up cross chain via Layer Zero",
+  "issueId": 495,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/495"
+}
