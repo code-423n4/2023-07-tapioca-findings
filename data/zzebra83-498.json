@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzebra83",
+  "risk": "3",
+  "title": "Magnetar V2 - exitPositionAndRemoveCollateral can cause total loss of user funds",
+  "issueId": 498,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/498"
+}
