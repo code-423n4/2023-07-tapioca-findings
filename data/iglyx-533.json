@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "iglyx",
+  "risk": "2",
+  "title": "Rebalancing Aave strategy can become unavailable when the corresponding pool has liquidity shortage",
+  "issueId": 533,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/533"
+}
