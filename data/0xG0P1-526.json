@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xG0P1",
+  "risk": "3",
+  "title": " The \"flashLoan\" function in USDO.sol is vulnerable to reentrancy, enabling an attacker to obtain a significant number of USDO tokens",
+  "issueId": 526,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/526"
+}
