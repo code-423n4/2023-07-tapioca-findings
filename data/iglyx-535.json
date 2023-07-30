@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "iglyx",
+  "risk": "3",
+  "title": "Tricrypto rewards can be stolen as `compound()` has no access controls, while swap is performed with min amount calculated off current pool state",
+  "issueId": 535,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/535"
+}
