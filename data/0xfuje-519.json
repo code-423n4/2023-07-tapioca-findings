@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "3",
+  "title": "MagnetarV2's entire balance can be stolen via malicious `burst()` call",
+  "issueId": 519,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/519"
+}
