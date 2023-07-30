@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "Wrapped native asset doesn't have `safeTransfer` function implemented so it reverts",
+  "issueId": 522,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/522"
+}
