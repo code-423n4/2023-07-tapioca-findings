@@ -279,3 +279,57 @@ QA26. YieldBox.depositETH() fails to have a zero address check for ``strategy``.
 [https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/YieldBox.sol#L500-L502C1](https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/YieldBox.sol#L500-L502C1)
 
 This is because none of the callee functions, ``registerAsset()`` and ``_registerAsset()`` perform any zero address check and funds will be deposited to the zero address when  ``strategy`` is a zero address.
+
+QA27. Balancer.rebalance() has the wrong logic to check the msg.value. As a result, the function will not work properly. For example, when msg.value == _amount, the function will revert, which is not supposed to be for the case of ``_isNative == true``. Meanwhile, when ``msg.value  == 0`` for the case of   ``_isNative ~= true``, it will revert as well. 
+
+[https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L172-L199C1](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L172-L199C1)
+
+The correction is as follows:
+
+```diff
+ function rebalance(
+        address payable _srcOft,
+        uint16 _dstChainId,
+        uint256 _slippage,
+        uint256 _amount,
+        bytes memory _ercData
+    )
+        external
+        payable
+        onlyOwner
+        onlyValidDestination(_srcOft, _dstChainId)
+        onlyValidSlippage(_slippage)
+    {
+        if (connectedOFTs[_srcOft][_dstChainId].rebalanceable < _amount)
+            revert RebalanceAmountNotSet();
+
+        //check if OFT is still valid
+        if (
+            !_isValidOft(
+                _srcOft,
+                connectedOFTs[_srcOft][_dstChainId].dstOft,
+                _dstChainId
+            )
+        ) revert DestinationOftNotValid();
+
+        //extract
+        ITapiocaOFT(_srcOft).extractUnderlying(_amount);
+
+        //send
+        bool _isNative = ITapiocaOFT(_srcOft).erc20() == address(0);
+        if (_isNative) {
+-            if (msg.value <= _amount) revert FeeAmountNotSet();
++            if (msg.value != _amount) revert FeeAmountNotSet();
+
+            _sendNative(_srcOft, _amount, _dstChainId, _slippage);
+        } else {
+-            if (msg.value == 0) revert FeeAmountNotSet();
++            if (msg.value != 0) revert FeeAmountNotSet();
+
+            _sendToken(_srcOft, _amount, _dstChainId, _slippage, _ercData);
+        }
+
+        connectedOFTs[_srcOft][_dstChainId].rebalanceable -= _amount;
+        emit Rebalanced(_srcOft, _dstChainId, _slippage, _amount, _isNative);
+    }
+```
