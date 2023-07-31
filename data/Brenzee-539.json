@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Brenzee",
+  "risk": "2",
+  "title": "emergencyWithdraw in LidoEthStrategy can be sandwich attacked because the slippage is calculated incorrectly",
+  "issueId": 539,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/539"
+}
