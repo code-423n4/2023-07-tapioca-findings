@@ -44,48 +44,6 @@ The following PoC, shows the simplified version. To execute it, the contracts `E
 
 It shows that the event `PayloadStored` is emitted instead of inner catch statements event `CallFailedBytes`.
 
-## Recommended Mitigation Steps
-It is recommended to put the body of try-statement in another try/catch:
-
-```
-function _unlockTwTapPosition(uint16 _srcChainId, bytes memory _payload)
-        internal
-        virtual
-    {
-        (
-            ,
-            ,
-            address to,
-            uint256 tokenID,
-            LzCallParams memory twTapSendBackAdapterParams
-        ) = abi.decode(
-                _payload,
-                (uint16, address, address, uint256, LzCallParams)
-            );
-
-        // Only the owner can unlock
-        require(twTap.ownerOf(tokenID) == to, "TapOFT: Not owner");
-
-        // Exit and receive tokens to this contract
-        try twTap.exitPositionAndSendTap(tokenID) returns (uint256 _amount) {
-            // Transfer them to the user
-            try
-                this.sendFrom{value: address(this).balance}(
-                    address(this),
-                    _srcChainId,
-                    LzLib.addressToBytes32(to),
-                    _amount,
-                    twTapSendBackAdapterParams
-                )
-            {} catch {}
-        } catch Error(string memory _reason) {
-            emit CallFailedStr(_srcChainId, _payload, _reason);
-        } catch (bytes memory _reason) {
-            emit CallFailedBytes(_srcChainId, _payload, _reason);
-        }
-    }
-```
-
 ```
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.0;
@@ -499,6 +457,50 @@ contract Helper {
 }
 
 ```
+
+## Recommended Mitigation Steps
+It is recommended to put the body of try-statement in another try/catch:
+
+```
+function _unlockTwTapPosition(uint16 _srcChainId, bytes memory _payload)
+        internal
+        virtual
+    {
+        (
+            ,
+            ,
+            address to,
+            uint256 tokenID,
+            LzCallParams memory twTapSendBackAdapterParams
+        ) = abi.decode(
+                _payload,
+                (uint16, address, address, uint256, LzCallParams)
+            );
+
+        // Only the owner can unlock
+        require(twTap.ownerOf(tokenID) == to, "TapOFT: Not owner");
+
+        // Exit and receive tokens to this contract
+        try twTap.exitPositionAndSendTap(tokenID) returns (uint256 _amount) {
+            // Transfer them to the user
+            try
+                this.sendFrom{value: address(this).balance}(
+                    address(this),
+                    _srcChainId,
+                    LzLib.addressToBytes32(to),
+                    _amount,
+                    twTapSendBackAdapterParams
+                )
+            {} catch {}
+        } catch Error(string memory _reason) {
+            emit CallFailedStr(_srcChainId, _payload, _reason);
+        } catch (bytes memory _reason) {
+            emit CallFailedBytes(_srcChainId, _payload, _reason);
+        }
+    }
+```
+
+
 
 # Q2
 ## Impact
