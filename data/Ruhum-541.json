@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ruhum",
+  "risk": "2",
+  "title": "Attacker can prevent rewards from being issued to gauges for a given epoch in TapiocaOptionBroker",
+  "issueId": 541,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/541"
+}
