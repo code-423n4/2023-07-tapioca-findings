@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "Users can deposit to YieldBox strategies before `depositThreshold` have been set ",
+  "issueId": 548,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/548"
+}
