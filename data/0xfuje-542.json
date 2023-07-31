@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "`CompoundStrategy.sol` assumes incorrect exchange rate scaled up by 18 decimals",
+  "issueId": 542,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/542"
+}
