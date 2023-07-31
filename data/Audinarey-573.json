@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Audinarey",
+  "risk": "3",
+  "title": "missing check for equality of assetId and shares array length",
+  "issueId": 573,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/573"
+}
