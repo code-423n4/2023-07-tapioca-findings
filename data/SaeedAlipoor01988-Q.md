@@ -54,3 +54,15 @@ https://github.com/convex-eth/platform/blob/a5da3f127a321467a97a684c57970d258652
 
 ## Links
 https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L131
+
+## Title
+Wrong calculation of Claimable Rewards from Curve Gauges
+
+## Decription
+Calculating Claimable Rewards from curve gauges is wrong, it should be total earned reward tokens, both claimed and unclaimed - The number of reward tokens already claimed.
+
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L104
+
+## Links
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L152
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/curve/TricryptoNativeStrategy.sol#L104
