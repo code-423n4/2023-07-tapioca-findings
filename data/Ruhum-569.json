@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ruhum",
+  "risk": "3",
+  "title": "tOLP tokens that are not unlocked after they have expired cause the reward distribution to be flawed",
+  "issueId": 569,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/569"
+}
