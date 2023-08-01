@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Several instances assume that an address is able to accept ether or ERC20 tokens.",
+  "issueId": 634,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/634"
+}
