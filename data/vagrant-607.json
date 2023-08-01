@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "vagrant",
+  "risk": "3",
+  "title": "Missing reentrancy check on USDO#flashLoan()",
+  "issueId": 607,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/607"
+}
