@@ -333,3 +333,10 @@ The correction is as follows:
         emit Rebalanced(_srcOft, _dstChainId, _slippage, _amount, _isNative);
     }
 ```
+
+QA28. Vesting.claim() fails to check the ``data.revoked``. As a result, a user can claim tokens even they have already been revoked. 
+
+[https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/Vesting.sol#L110-L121](https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/Vesting.sol#L110-L121)
+
+Correction: check ``data.revoked`` and if it is true, the function should not allow the user to claim tokens. 
+
