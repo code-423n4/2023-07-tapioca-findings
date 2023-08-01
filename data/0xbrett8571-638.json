@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "An attacker can repeatedly claim rewards from the same reward tokens.",
+  "issueId": 638,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/638"
+}
