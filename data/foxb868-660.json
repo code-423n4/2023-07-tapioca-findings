@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "Attackers may craft malicious data to manipulate `sendFrom` and lending operations, potentially transferring funds to unauthorized addresses.",
+  "issueId": 660,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/660"
+}
