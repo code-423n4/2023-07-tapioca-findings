@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Calling `claimAndSendRewards` function of the `twTap` contract without verifying if `twTap` is a trusted and secure contract.",
+  "issueId": 644,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/644"
+}
