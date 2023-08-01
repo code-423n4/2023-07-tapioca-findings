@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "`MagnetarV2.burst(...)` calls non-existing method `TapiocaOFT.wrapNative(...)`",
+  "issueId": 682,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/682"
+}
