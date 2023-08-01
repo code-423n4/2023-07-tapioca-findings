@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "The `extractTAP` and `_mint` functions that assume destination addresses can accept ERC20 tokens without performing necessary checks.",
+  "issueId": 641,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/641"
+}
