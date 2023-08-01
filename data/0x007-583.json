@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x007",
+  "risk": "3",
+  "title": "Funds are locked because borrowFee is not correctly implemented in BigBang",
+  "issueId": 583,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/583"
+}
