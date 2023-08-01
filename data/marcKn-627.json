@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "marcKn",
+  "risk": "2",
+  "title": "Vesting Contract cannot exclude users that turn malicious and react to a freeze",
+  "issueId": 627,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/627"
+}
