@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Arbitrary data decoding vulnerability in two critical functions `_nonblockingLzReceive` and `_claimRewards`.",
+  "issueId": 631,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/631"
+}
