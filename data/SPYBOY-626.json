@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SPYBOY",
+  "risk": "3",
+  "title": "Calling  exitPositionAndRemoveCollateral() & depositAddCollateralAndBorrowFromMarket() through burst() will always fail  in MagnetarV2.sol",
+  "issueId": 626,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/626"
+}
