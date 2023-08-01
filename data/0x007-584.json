@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x007",
+  "risk": "3",
+  "title": "BigBang.repay burns the wrong amount of USD0 token",
+  "issueId": 584,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/584"
+}
