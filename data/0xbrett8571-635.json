@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Attackers could drain funds from the vulnerable contract by redirecting the funds back to their own address.",
+  "issueId": 635,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/635"
+}
