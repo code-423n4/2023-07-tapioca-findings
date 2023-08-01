@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "An attacker could manipulate the `_lockAmount` parameter to exceed the current `totalDeposited` value, leading to an underflow and incorrect accounting of deposited amounts in the pool. ",
+  "issueId": 669,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/669"
+}
