@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "If an attacker exploits the reentrancy, they can repeatedly call the `_callApproval` function with malicious payloads. This may result in repeated approvals that drain the user's token balance.",
+  "issueId": 636,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/636"
+}
