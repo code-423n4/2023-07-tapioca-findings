@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": " If the contract mistakenly sends USDO tokens to an invalid or incompatible address, the transaction will fail, and users may lose their tokens.",
+  "issueId": 666,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/666"
+}
