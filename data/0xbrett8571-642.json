@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Several instances of integer arithmetic that could potentially lead to off-by-one errors. may arise due to incorrect handling of calculations involving division, subtraction, and comparisons.",
+  "issueId": 642,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/642"
+}
