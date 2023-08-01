@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Improper handling of integer arithmetic operations without adequate checks in (tOLP) could expose the contract.",
+  "issueId": 629,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/629"
+}
