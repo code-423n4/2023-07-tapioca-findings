@@ -279,6 +279,8 @@ require(reward >= 0, "Reward must be non-negative");
 
 ## Use .call instead of .transfer to send ether
 
+## Is this possible receiver possible to receive nft, is NFT Ownership checked ? Is tokenid generated right way ? 
+
 ## Tokens with very large decimals will not work as expected
 
 Although not common, it is possible that ERC-20 tokens have decimals() > 36. The current system acknowledges it, but does not prevent anyone from creating a position with them. This will result in the token not working as expected.
