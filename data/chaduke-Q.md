@@ -340,3 +340,10 @@ QA28. Vesting.claim() fails to check the ``data.revoked``. As a result, a user c
 
 Correction: check ``data.revoked`` and if it is true, the function should not allow the user to claim tokens. 
 
+QA29. TapiocaOptionLiquidityProvision.registerSingularity() fails to check whether ``assetID`` has been registered or not.
+
+[https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionLiquidityProvision.sol#L276-L293](https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionLiquidityProvision.sol#L276-L293)
+
+Other functions such as TapiocaOptionLiquidityProvision.unregisterSingularity() assumes that there is no duplicate of ``assetID`` in ``singularities``. It is important to ensure that TapiocaOptionLiquidityProvision.registerSingularity() would check whether ``assetID`` has been registered or not.
+
+
