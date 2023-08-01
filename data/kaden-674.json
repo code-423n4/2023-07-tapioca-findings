@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "CompoundStrategy attempts to transfer out a greater amount of ETH than will actually be withdrawn, leading to DoS",
+  "issueId": 674,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/674"
+}
