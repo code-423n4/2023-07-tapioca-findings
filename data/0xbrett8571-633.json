@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "`lockTwTapPosition` function uses `msg.value` in the `_lzSend` function when processing twTAP position opening. Similarly, the `_claimRewards` function employs `msg.value` within a loop when calling the `_lzSend` function to claim rewards.",
+  "issueId": 633,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/633"
+}
