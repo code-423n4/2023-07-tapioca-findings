@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "Delegatecall Vulnerability in `_executeModule` Function.",
+  "issueId": 661,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/661"
+}
