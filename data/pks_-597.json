@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "pks_",
+  "risk": "3",
+  "title": "Some curve pools have read-only reentrancy vulnerability maybe used as protocol oracle price source",
+  "issueId": 597,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/597"
+}
