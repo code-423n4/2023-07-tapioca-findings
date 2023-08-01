@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "2",
+  "title": "Unchecked growth of the \"tokenList\" array can lead to increased gas costs and potential out-of-gas errors during the execution of the for-loop, affecting the contract's performance and user experience.",
+  "issueId": 667,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/667"
+}
