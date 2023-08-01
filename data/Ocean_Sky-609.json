@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ocean_Sky",
+  "risk": "2",
+  "title": "No checking for status of L2 sequencer on whether it is active or not",
+  "issueId": 609,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/609"
+}
