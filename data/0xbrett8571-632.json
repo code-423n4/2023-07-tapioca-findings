@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Arbitrary Code Execution in `_nonblockingLzReceive` Function, due to inadequate validation and handling of `packetType`, attackers can manipulate the `payload` to execute unintended actions.",
+  "issueId": 632,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/632"
+}
