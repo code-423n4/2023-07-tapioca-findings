@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Improper use of `try-catch` block in the `_lockTwTapPosition` function, if an exception occurs during the call to the `twTap.participate` function, the transaction will revert, but any remaining gas will be consumed.",
+  "issueId": 628,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/628"
+}
