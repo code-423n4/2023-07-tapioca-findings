@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "pks_",
+  "risk": "2",
+  "title": "block.timestamp is not available in the L2 chains when sequencer is not available",
+  "issueId": 600,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/600"
+}
