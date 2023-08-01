@@ -43,3 +43,6 @@ Consider using the `X += 1` version everywhere. The RE can be `[^ \+]*\+\+` for 
 
 # Third
 In [TapiocaWrapper.sol#L86-L90](https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/TapiocaWrapper.sol#L86-L90) it is doing a check to avoid OOB indexing. However, starting from version 0.8.0, Solidity does check for underflows, thus it makes impossible to OOB in this situation. Consider removing the `if` clause because it is doing unnecessary opcodes (although it is more explicit to let it there)
+
+# Fourth
+Redundant check in [Market.sol#L222](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L222). The equivalent is done a few lines above, in [Market.sol#L213](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L213). Although it is explicit, it does check for something that was previously checked, so consider removing that `require`
