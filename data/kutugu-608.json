@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kutugu",
+  "risk": "2",
+  "title": "LidoEthStrategy withdraw usually revert because of toWithdraw miscalculation.",
+  "issueId": 608,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/608"
+}
