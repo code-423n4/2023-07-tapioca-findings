@@ -54,3 +54,16 @@ https://github.com/convex-eth/platform/blob/a5da3f127a321467a97a684c57970d258652
 
 ## Links
 https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/convex/ConvexTricryptoStrategy.sol#L131
+
+## Title
+BalancerStrategy.sol, use payable(address(this)) instead of payable(this)
+
+## Decription
+receive() external payable {}, only exists because the exitPool() function of the balancer vaults require an address payable as argument, and the current BalancerStrategy.sol contract uses the payable(this) to retrieve the payable address.
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L257
+
+Casting the contract to an address first, and then to a payable address (i.e. payable(address(this))) would allow the removal of this function, receive() external payable {}.
+
+## Links
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L257
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/balancer/BalancerStrategy.sol#L301C4-L301C34
