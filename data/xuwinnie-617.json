@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "Attacker can call `addCollateral` with share=0 to steal other's collateral",
+  "issueId": 617,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/617"
+}
