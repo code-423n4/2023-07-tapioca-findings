@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "DelerRH",
+  "risk": "2",
+  "title": "Doesn't map masterContract to cloneAddress in addSingularity",
+  "issueId": 603,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/603"
+}
