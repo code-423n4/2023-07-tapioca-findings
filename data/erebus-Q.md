@@ -69,3 +69,6 @@ The solution is trivial, just calculate the gas needed for the cross chain messa
 
 # Ninth
 Unlicensed code (see any file). Anyone can copy your code and make his own ecosystem equal to yours. That means, if for any chance he can have more traction, user adoption and fundraising rounds or even better devs, then he can kick you out of the market without Tapioca being able to bring them to court due to the fact that your code is unlicensed. License it under MIT or any software license to protect your work
+
+# Tenth
+Typo in ["//not costant, but..."](https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L82). It says `costant` where it should be `constant`
