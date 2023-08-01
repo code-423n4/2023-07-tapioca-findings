@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xG0P1",
+  "risk": "2",
+  "title": "Authorized user addresses may swap substantial borrowed assets for minimal collateral, leading to potential losses for the user",
+  "issueId": 611,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/611"
+}
