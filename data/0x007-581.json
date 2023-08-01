@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x007",
+  "risk": "3",
+  "title": "Liquidator's reward for markets is not correct because _getCallerReward uses borrowed-part instead of borrowed-amount",
+  "issueId": 581,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/581"
+}
