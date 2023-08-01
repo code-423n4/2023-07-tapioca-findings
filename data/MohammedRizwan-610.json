@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "Chainlink oracle will return the wrong price if the aggregator hits minAnswer",
+  "issueId": 610,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/610"
+}
