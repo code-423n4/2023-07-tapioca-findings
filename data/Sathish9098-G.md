@@ -1,8 +1,24 @@
 # GAS OPTIMIZATIONS
 
+| Gas Count | Issues | Instances  | Gas Saved  |
+| :------------ | :------------ | :------------ |:------------ |
+| [G-1]   | ``State variables`` can be packed into fewer storage slots | 14 |  28000   |
+| [G-2]   | ``Structs`` can be packed into fewer storage slots    | 2   | 4000   |
+| [G-3]   | Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas    |  13  | 3102 |
+| [G-4]   |  Using ``storage`` instead of ``memory`` for structs/arrays saves gas    | 4  | 16800   |
+| [G-5]   | Don't initialize the default values to state or local variables for saving gas      | 15   | 2388 |
+| [G-6]   | Optimizing gas usage Order your checks correctly   | 1   | 12000     |
+| [G-7]   | Combine events to save Glogtopic (375 gas)     | 7  | 2450    |
+| [G-8]   | Cache the ``state variables`` outside the ``loop`` to avoid ``SLOD`` in every iterations | 2  | 200 |
+| [G-9]   | Calldata pointer is used instead of memory pointer for loops    | 2   | 34    |
+| [G-10]   | Don't ``emit`` ``state`` variables when ``stack`` variable available      | 1    | 100   |
+
+
 ##
 
 ## [G-1] State variables can be packed into fewer storage slots
+
+### Saves ``28000 GAS``, ``14 SLOTs``
 
 If variables occupying the same slot are both written the same function or by the constructor, avoids a separate Gsset (20000 gas). Reads of the variables can also be cheaper.
 
@@ -24,7 +40,7 @@ If variables occupying the same slot are both written the same function or by th
 
 ``liquidationMultiplier `` value is not changed inside the contract . The value is always ``12000`` . So ``uint32`` is more than enough instead of ``uint256``
 
--  ``totalBorrow,borrowOpeningFee , liquidationMultiplier `` can be packed single ``SLOT``
+-  ``totalBorrow,borrowOpeningFee,liquidationMultiplier `` can be packed single ``SLOT``
 
 
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L20-L77
@@ -201,45 +217,21 @@ FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
 - 26:    uint256 public duration;
 + 26:    uint128 public duration;
 ```
-##
-
-## [G-2] State variables only set in the constructor should be declared ``immutable``
-
-Avoids a Gsset (20000 gas) in the constructor, and replaces the first access in each transaction (Gcoldsload - 2100 gas) and each access thereafter (Gwarmacces - 100 gas) with a PUSH32 (3 gas).
-
-While ``strings`` are not value types, and therefore cannot be ``immutable/constant`` if not hard-coded outside of the constructor, the same behavior can be achieved by making the current contract ``abstract`` with ``virtual`` functions for the ``string`` accessors, and having a child contract override the functions with the hard-coded implementation-specific values.
-
-### ``BaseUSDOStorage.sol`` : ``flashMintFee``, ``maxFlashMint `` can be declared ``immutable``. The values only set in the constructor : Saves ``4194 GAS``
-
-https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/usd0/BaseUSDOStorage.sol#L77-L78
-
-
-```diff
-FILE: tapioca-bar-audit/contracts/usd0/BaseUSDOStorage.sol
-
-32:   /// @notice returns the flash mint fee
-33:    uint256 public flashMintFee;
-34:    /// @notice returns the maximum amount of USDO that can be minted through the EIP-3156 flow
-35:    uint256 public maxFlashMint;
-
-
-77: flashMintFee = 10; // 0.001%
-78: maxFlashMint = 100_000 * 1e18; // 100k USDO
-
-```
 
 ##
 
-##
+## [G-2] Structs can be packed into fewer storage slots
 
-## [G-3] Structs can be packed into fewer storage slots
+### Saves ``4000 GAS``, ``2 SLOTs``
 
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
 
 ### ``Vesting.sol`` :``latestClaimTimestamp`` and ``revoked`` can be packed same ``SLOT`` . Saves ``2000 ``, ``1 SLOT``
 
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/Vesting.sol#L32-L37
+
 ```diff
-FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
+FILE: tap-token-audit/contracts/Vesting.sol
 
 ``latestClaimTimestamp`` can be ``uint248 `` to accommodate  ``revoked`` in same SLOT. Down casting is not affect protocol in any way . This way followed many of the protocols to avoid extra ``SLOT`` and ``GAS ``
 
@@ -275,11 +267,11 @@ FILE: tap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
 38: }
 
 ```
-
-
 ##
 
-## [G-5] Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas
+## [G-3] Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas
+
+### Saves ``3102 GAS``, ``13 Instances``
 
 When a function with a memory array is called externally, the abi.decode() step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. Note that even if an interface defines a function as having memory arguments, it’s still valid for implementation contracs to use calldata arguments instead.
 
@@ -396,6 +388,8 @@ function _sendToken(
 
 ### ``airdropAdapterParam`` can be changed to ``calldata`` instead of ``memory`` : Saves ``282 GAS ``
 
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/tOFT/modules/BaseTOFTStrategyModule.sol#L89-L97
+
 
 ```diff
 FILE: tapiocaz-audit/contracts/tOFT/modules/BaseTOFTStrategyModule.sol
@@ -496,11 +490,11 @@ FILE: tapioca-periph-audit/contracts/TapiocaDeployer/TapiocaDeployer.sol
     ) external payable returns (address addr) {
 
 ```
-
-
 ##
 
-## [G-12] Using storage instead of memory for structs/arrays saves gas
+## [G-4] Using storage instead of memory for structs/arrays saves gas
+
+### Saves ``16800 GAS``, ``4 Instances``
 
 NOTE: Instances missed in bot race
 
@@ -550,85 +544,11 @@ FILE: tap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
 + 349: LockPosition storage lockPosition = lockPositions[tokenId];
 
 ```
-
 ##
 
-## [G-7] Cache the ``state variables`` outside the ``loop`` to avoid ``SLOD`` in every iterations
+## [G-5] Don't initialize the default values to state or local variables for saving gas  
 
-Cache state variables outside loops to avoid unnecessary gas costs associated with reading and writing state variables repeatedly
-
-### ``paymentTokenBeneficiary`` caching out side the loops saves ``100 GAS`` per Iteration
-
-https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionBroker.sol#L492
-
-```diff
-FILE: Breadcrumbstap-token-audit/contracts/options/TapiocaOptionBroker.sol
-
-486:   uint256 len = _paymentTokens.length;
-487:
-+    address paymentTokenBeneficiary_ = paymentTokenBeneficiary ;
-488:        unchecked {
-489:            for (uint256 i = 0; i < len; ++i) {
-490:                ERC20 paymentToken = ERC20(_paymentTokens[i]);
-491:                paymentToken.transfer(
-- 492:                    paymentTokenBeneficiary,
-+ 492:                    paymentTokenBeneficiary_ ,
-493:                    paymentToken.balanceOf(address(this))
-494:                );
-495:            }
-
-```
-
-### ``paymentTokenBeneficiary`` caching out side the loops saves ``100 GAS`` per Iteration
-
-https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L378
-
-```diff
-FILE: Breadcrumbstap-token-audit/contracts/option-airdrop/AirdropBroker.sol
-
- uint256 len = _paymentTokens.length;
-+  address paymentTokenBeneficiary_ = paymentTokenBeneficiary;
-        unchecked {
-            for (uint256 i = 0; i < len; ++i) {
-                ERC20 paymentToken = ERC20(_paymentTokens[i]);
-                paymentToken.transfer(
--                     paymentTokenBeneficiary,
-+                     paymentTokenBeneficiary_ ,
-                    paymentToken.balanceOf(address(this))
-                );
-            }
-
-```
-
-##
-
-## [G-6] Calldata pointer is used instead of memory pointer for loops 
-
-If our function parameter is specified as ``calldata``, using a memory pointer will copy that ``calldata`` value into memory, which can result in memory expansion costs. To avoid this, we should use a calldata pointer to read from ``calldata`` directly.
-
-https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Multicall/Multicall3.sol#L48
-
-```diff
-FILE: tapioca-periph-audit/contracts/Multicall/Multicall3.sol
-
-47: for (uint256 i = 0; i < length; ) {
-- 48:            Result memory result = returnData[i];
-+ 48:            Result calldata result = returnData[i];
-49:            calli = calls[i];
-
-
-70: for (uint256 i = 0; i < length; ) {
-- 71:            Result memory result = returnData[i];
-+ 71:            Result calldata result = returnData[i];
-72:            calli = calls[i];
-73:            uint256 val = calli.value;
-
-```
-
-
-##
-
-## [G-3] Don't initialize the default values to state or local variables for saving gas  
+Saves ``2206 GAS`` In state variable and ``182 GAS`` from loop
 
 When you initialize a variable with its default value, the Solidity compiler has to store the default value in storage, which costs gas. If you don't initialize the variable, the compiler can optimize it out, which saves gas.
 
@@ -642,6 +562,8 @@ FILE: tap-token-audit/contracts/Vesting.sol
 + 29:    uint256 public seeded;
 
 ```
+
+### Default values initialization in loops : Saves ``182 GAS``, ``14 Instances```
 
 ```solidity
 FILE: Breadcrumbstapioca-bar-audit/contracts/markets/Market.sol
@@ -680,7 +602,9 @@ FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 
 ##
 
-## [G-4] Optimizing gas usage Order your checks correctly
+## [G-6] Optimizing gas usage Order your checks correctly
+
+### Saves ``12000 GAS``
 
 FAIL CHEEPLY INSTEAD OF COSTLY
 
@@ -690,7 +614,7 @@ Checks that involve constants should come before checks that involve state varia
 
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L92-L104
 
-If any revert after storage write this cost more volume of gas . So the conditions should be checked first the values should be write in storage variables. 
+If any revert after storage write this cost more volume of gas . So the conditions should be checked first then the values should be write in storage variables. 
 
 
 ```diff
@@ -749,35 +673,17 @@ function init(bytes calldata data) external onlyOnce {
 -        );
 
 ```
-
-
 ##
 
-## [G-7] Don't ``emit`` ``state`` variables when ``stack`` variable available 
+## [G-7] Combine events to save Glogtopic (375 gas)
 
-When you emit a ``state`` variable, it is stored on the blockchain permanently. This means that it takes gas to store the variable, and it also takes gas to access the variable. If you have a stack variable that is available, you can use that variable instead of emitting a state variable. This will save you gas because you will not need to store the variable on the blockchain
+### Saves ``2450 GAS``
 
-### ``_epochTAPValuation`` emit this instead of ``epochTAPValuation `` state varibale : Saves ``100 GAS``, ``1 SLOD``
-
-https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L293
-
-```diff
-FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
-
-292:  epochTAPValuation = uint128(_epochTAPValuation);
-- 293:   emit NewEpoch(epoch, epochTAPValuation);
-+ 293:   emit NewEpoch(epoch, uint128(_epochTAPValuation));
-
-```
-
-##
-
-## [G-8] Combine events to save Glogtopic (375 gas)
-
- We can combine the events into one singular event to save two Glogtopic (375 gas) that would otherwise be paid for the additional two events.
+We can combine the events into one singular event to save two Glogtopic (375 gas) that would otherwise be paid for the additional events.
 
 ### ``BigBang.sol`` : ``LogRemoveCollateral``,``LogRepay`` events can be combined  : Saves ``Glogtopic (375 gas)``
 
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L587-L588
 
 ```diff
 FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
@@ -797,9 +703,10 @@ FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
 
 ### ``Singularity.sol`` : ``Transfer``,``LogWithdrawFees`` events can be combined  : Saves ``Glogtopic (375 gas)``
 
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/Singularity.sol#L466-L468
 
 ```diff
-FILE: Breadcrumbstapioca-bar-audit/contracts/markets/singularity/Singularity.sol
+FILE: tapioca-bar-audit/contracts/markets/singularity/Singularity.sol
 
 465:  balanceOf[_feeTo] += _feesEarnedFraction;
 - 466:  emit Transfer(address(0), _feeTo, _feesEarnedFraction);
@@ -813,6 +720,8 @@ FILE: Breadcrumbstapioca-bar-audit/contracts/markets/singularity/Singularity.sol
 
 ```
 ### ``Singularity.sol`` : ``LogRemoveCollateral``,``LogRepay`` events can be combined  : Saves ``Glogtopic (375 gas)``
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLiquidation.sol#L134-L144
 
 
 ```diff
@@ -889,33 +798,128 @@ FILE: tapioca-bar-audit/contracts/markets/singularity/SGLCommon.sol
 +    emit LogTransferAndRemoveAsset(from, address(0), fraction, to, share);
 
 
-215: emit Transfer(address(0), to, fraction);
+- 215: emit Transfer(address(0), to, fraction);
 216:
 217:        _addTokens(from, to, assetId, share, totalAssetShare, skim);
-218:        emit LogAddAsset(skim ? address(yieldBox) : from, to, share, fraction);
+- 218:        emit LogAddAsset(skim ? address(yieldBox) : from, to, share, fraction);
 +    emit LogTransferAndAddAsset(address(0), to, fraction, skim ? address(yieldBox) : from, share);
+
+```
+##
+
+## [G-8] Cache the ``state variables`` outside the ``loop`` to avoid ``SLOD`` in every iterations
+
+### Saves ``200 GAS``, ``2 SLOD `` per iterations
+
+Cache state variables outside loops to avoid unnecessary gas costs associated with reading and writing state variables repeatedly
+
+### ``paymentTokenBeneficiary`` caching out side the loops saves ``100 GAS`` per Iteration
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionBroker.sol#L492
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/options/TapiocaOptionBroker.sol
+
+486:   uint256 len = _paymentTokens.length;
+487:
++    address paymentTokenBeneficiary_ = paymentTokenBeneficiary ;
+488:        unchecked {
+489:            for (uint256 i = 0; i < len; ++i) {
+490:                ERC20 paymentToken = ERC20(_paymentTokens[i]);
+491:                paymentToken.transfer(
+- 492:                    paymentTokenBeneficiary,
++ 492:                    paymentTokenBeneficiary_ ,
+493:                    paymentToken.balanceOf(address(this))
+494:                );
+495:            }
+
+```
+
+### ``paymentTokenBeneficiary`` caching out side the loops saves ``100 GAS`` per Iteration
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L378
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/option-airdrop/AirdropBroker.sol
+
+ uint256 len = _paymentTokens.length;
++  address paymentTokenBeneficiary_ = paymentTokenBeneficiary;
+        unchecked {
+            for (uint256 i = 0; i < len; ++i) {
+                ERC20 paymentToken = ERC20(_paymentTokens[i]);
+                paymentToken.transfer(
+-                     paymentTokenBeneficiary,
++                     paymentTokenBeneficiary_ ,
+                    paymentToken.balanceOf(address(this))
+                );
+            }
+
+```
+
+##
+
+## [G-9] Calldata pointer is used instead of memory pointer for loops 
+
+### Saves ``34 GAS`` per iterations
+
+If our function parameter is specified as ``calldata``, using a memory pointer will copy that ``calldata`` value into memory, which can result in memory expansion costs. To avoid this, we should use a calldata pointer to read from ``calldata`` directly.
+
+```
+
+- Memory copy: 20 gas
+- Calldata read: 3 gas
+
+```
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Multicall/Multicall3.sol#L48
+
+```diff
+FILE: tapioca-periph-audit/contracts/Multicall/Multicall3.sol
+
+47: for (uint256 i = 0; i < length; ) {
+- 48:            Result memory result = returnData[i];
++ 48:            Result calldata result = returnData[i];
+49:            calli = calls[i];
+
+
+70: for (uint256 i = 0; i < length; ) {
+- 71:            Result memory result = returnData[i];
++ 71:            Result calldata result = returnData[i];
+72:            calli = calls[i];
+73:            uint256 val = calli.value;
+
+```
+
+##
+
+## [G-10] Don't ``emit`` ``state`` variables when ``stack`` variable available 
+
+### Saves ``100 GAS``, ``1 SLOD ``
+
+When you emit a ``state`` variable, it is stored on the blockchain permanently. This means that it takes gas to store the variable, and it also takes gas to access the variable. If you have a stack variable that is available, you can use that variable instead of emitting a state variable. This will save you gas because you will not need to store the variable on the blockchain
+
+### ``_epochTAPValuation`` emit this instead of ``epochTAPValuation `` state varibale : Saves ``100 GAS``, ``1 SLOD``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L293
+
+```diff
+FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
+
+292:  epochTAPValuation = uint128(_epochTAPValuation);
+- 293:   emit NewEpoch(epoch, epochTAPValuation);
++ 293:   emit NewEpoch(epoch, uint128(_epochTAPValuation));
 
 ```
 
 
-##
-
-## [G-9] Use immutable for unchanged values instead of external calls 
-
-It is a good practice to use immutable for unchanged values instead of external calls. This is because external calls can be gas-intensive, especially if the contract is calling a contract on another blockchain
-
-
-
-
-
-## Use assembly to perform efficient back-to-back calls
-
-
-## Transfer of 0 should be checked 
+## Transfer of 0 should be checked  
 
 ## A mapping is more efficient than an array
 
-## Private or modifiers only called once can be inlined 
+Fetching data from an array is more expensive than fetching data from a mapping. Fetching data from an array will require iterating over the array until you reach your desired data. When using a mapping you only need to know the key in order to fetch the data from the exact slot it is stored in. Source 
+ https://twitter.com/pcaversaccio/status/1464523336730480640
+
+Gas Savings for MintingHub.bid, obtained via protocol's tests: Avg 2133 gas
 
 Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
 
