@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x007",
+  "risk": "2",
+  "title": "The protocol cannot liquidate bad debts and therefore risk USD0 depegging to 0",
+  "issueId": 582,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/582"
+}
