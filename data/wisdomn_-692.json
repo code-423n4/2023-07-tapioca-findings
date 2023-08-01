@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "wisdomn_",
+  "risk": "3",
+  "title": "Function approve is Vulnerable to Access control Attack.",
+  "issueId": 692,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/692"
+}
