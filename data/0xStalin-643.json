@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xStalin",
+  "risk": "3",
+  "title": "Attacker can use Magnetar contract to extract assets from user's accounts and deposit them into the YieldBox, and by using a fake market contract it can transfer the deposited assets in the YieldBox to an address of his own",
+  "issueId": 643,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/643"
+}
