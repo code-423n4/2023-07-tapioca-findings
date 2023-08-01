@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ltyu",
+  "risk": "2",
+  "title": "Withdrawing all market fees can be called with no slippage causing all protocol fees to be lost",
+  "issueId": 652,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/652"
+}
