@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "3",
+  "title": "Decoding Arbitrary Bytes from Untrusted Sources Security Vulnerability in USDOOptionsModule Contract within the `sendFromDestination` and `exercise` functions.",
+  "issueId": 665,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/665"
+}
