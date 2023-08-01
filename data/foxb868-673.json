@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "foxb868",
+  "risk": "2",
+  "title": "Malicious data provided as bytes can cause incorrect valuation of TAP and payment tokens. ",
+  "issueId": 673,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/673"
+}
