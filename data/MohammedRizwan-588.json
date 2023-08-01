@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "Frontrunning possible with deploy()  in TapiocaDeployer.sol",
+  "issueId": 588,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/588"
+}
