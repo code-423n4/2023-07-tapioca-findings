@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "lack of bound checks in two specific areas, the incrementing of `tokenCounter` and the addition of `_amount` to `totalDeposited`.",
+  "issueId": 630,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/630"
+}
