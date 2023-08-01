@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "Incorrect amount of USDO is burned when repaying debt on BigBang, leading to excessive Penrose fee",
+  "issueId": 621,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/621"
+}
