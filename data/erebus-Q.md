@@ -3,7 +3,7 @@ This [condition](https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751
 
 ```
 function _checkSender(address _from) internal view {
-        require(_from == msg.sender, "MagnetarV2: operator not approved"); // @audit rlly ?
+        require(_from == msg.sender, "MagnetarV2: operator not approved");
 }
 ```
 
