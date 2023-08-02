@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "emerald7017",
+  "risk": "2",
+  "title": "Users who interact with the `compoundAmount()` function could be affected if an overflow occurs, leading to incorrect compounded amounts",
+  "issueId": 723,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/723"
+}
