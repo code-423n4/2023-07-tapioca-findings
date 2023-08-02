@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "emerald7017",
+  "risk": "2",
+  "title": "Potential vulnerability in `_currentBalance` and `_withdraw` Functions.",
+  "issueId": 713,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/713"
+}
