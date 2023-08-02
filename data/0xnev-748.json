@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "## [M-05] Missing checks for oracle failure when retrieving oracle prices for TAP and payment tokens",
+  "issueId": 748,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/748"
+}
