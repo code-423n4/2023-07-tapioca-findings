@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ayeslick",
+  "risk": "2",
+  "title": "ETH sent is not used potentially trapping it ",
+  "issueId": 802,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/802"
+}
