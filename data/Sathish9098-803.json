@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Sathish9098",
+  "risk": "2",
+  "title": "``block.timestamp <= deadline``  is vulnerable to a  front running timestamp attack ",
+  "issueId": 803,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/803"
+}
