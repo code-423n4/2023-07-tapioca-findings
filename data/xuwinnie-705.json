@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "`multiHopBuyCollateral` will always fail due to two consecutive rounding down",
+  "issueId": 705,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/705"
+}
