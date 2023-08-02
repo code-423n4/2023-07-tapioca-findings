@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "XDZIBECX",
+  "risk": "2",
+  "title": "vulnerability in  addTokens function causing a critical imbalance in the lending system",
+  "issueId": 804,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/804"
+}
