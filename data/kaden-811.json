@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "ConvexTricryptoStrategy and TricryptoNativeStrategy slippage compounds losses with every withdrawal, resulting in the underlying balance of the strategy depleting significantly over time",
+  "issueId": 811,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/811"
+}
