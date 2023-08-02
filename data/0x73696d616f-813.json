@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "2",
+  "title": "`mTapiocaOFT` can't be rebalanced because the Balancer in tapiocaz-audit calls `swapETH()` or `swap()` of the `RouterETH` but does not forward ether for the message fee",
+  "issueId": 813,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/813"
+}
