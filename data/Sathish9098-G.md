@@ -858,7 +858,7 @@ FILE: Breadcrumbstap-token-audit/contracts/option-airdrop/AirdropBroker.sol
 
 ##
 
-## [G-9] Calldata pointer is used instead of memory pointer for loops 
+## [G-9] ``Calldata`` pointer is used instead of ``memory`` pointer for loops 
 
 ### Saves ``34 GAS`` per iterations
 
@@ -911,6 +911,34 @@ FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
 
 ```
 
+##
+
+## [G-11] Multiple accesses of a mapping/array should use a local variable cache
+
+The instances below point to the second+ access of a value inside a mapping/array, within a function. Caching a mapping's value in a local storage or calldata variable when the value is accessed multiple times, saves ~42 gas per access due to not having to recalculate the key's keccak256 hash (Gkeccak256 - 30 gas) and that calculation's associated stack operations. Caching an array's struct avoids recalculating the array offsets into memory/calldata
+
+### ``userCollateralShare[user]`` should be cached : Saves ``200 GAS, 2 SLODs``
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L816-L819
+
+
+```diff
+FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
++ uint256  userCollateralShareuser_ = userCollateralShare[user];
+- 816:   if (collateralShare > userCollateralShare[user]) {
++ 816:   if (collateralShare > userCollateralShareuser_ ) {
+- 817:            collateralShare = userCollateralShare[user];
++ 817:            collateralShare = userCollateralShareuser_ ;
+818:        }
+- 819:        userCollateralShare[user] -= collateralShare;
++ 819:        userCollateralShare[user] =userCollateralShareuser_ - collateralShare;
+
+```
+
+##
+
+## [G-] Internal function calls should be cached instead of repeated calling 
+
 
 ## Transfer of 0 should be checked  
 
@@ -943,6 +971,8 @@ Need to research about this
 
 ## [G-15] 
 
+
+Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
 
 
 
