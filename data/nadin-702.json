@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "nadin",
+  "risk": "2",
+  "title": "No Validation Of `create2` Return Value in `Penrose.sol`",
+  "issueId": 702,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/702"
+}
