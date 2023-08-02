@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ayeslick",
+  "risk": "2",
+  "title": "`borrow`, `repay`, `sellCollateral`, `buyCollateral` expect `result` to be a bytes object when it is an uint256 object. ",
+  "issueId": 808,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/808"
+}
