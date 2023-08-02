@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "Function `strategyWithdraw` should `_burn` instead of `_debitFrom`",
+  "issueId": 759,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/759"
+}
