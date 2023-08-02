@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "[M-02] Missing slippage and deadline checks can expose users to MEV and sandwich attacks",
+  "issueId": 745,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/745"
+}
