@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "`computeClosingFactor` and `_computeMaxBorrowableAmount` handle ERC20 decimals inconsistently",
+  "issueId": 753,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/753"
+}
