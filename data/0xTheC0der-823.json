@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "The value accumulator of `MagnetarV2.burst(...)` can be overflown to 0 in any case ",
+  "issueId": 823,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/823"
+}
