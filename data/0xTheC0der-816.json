@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xTheC0der",
+  "risk": "2",
+  "title": "`Multicall3` ignores `allowFailure` leading to DoS",
+  "issueId": 816,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/816"
+}
