@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hassan-truscova",
+  "risk": "3",
+  "title": "L​ack of ​chainID​ validation allows signatures to be reused across forks",
+  "issueId": 814,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/814"
+}
