@@ -23,3 +23,7 @@ For example, due to ui problems, inconsistent amounts will cause some troubles
 https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/YieldBox.sol#L500-L502
 
 https://github.com/Tapioca-DAO/YieldBox/blob/f5ad271b2dcab8b643b7cf622c2d6a128e109999/contracts/YieldBox.sol#L196-L215
+
+## The solmate library has been redirected to https://github.com/transmissions11/solmate, it is recommended to replace it
+
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L6
