@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "cergyk",
+  "risk": "3",
+  "title": "GlpStrategy fails to account for pending WETH rewards when calculating shares to mint in YieldBox",
+  "issueId": 785,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/785"
+}
