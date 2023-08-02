@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "emerald7017",
+  "risk": "2",
+  "title": "Withdraw Function Subtraction Vulnerability, the logic proceeds with the assumption that `toWithdraw` represents the amount that can be immediately withdrawn.",
+  "issueId": 721,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/721"
+}
