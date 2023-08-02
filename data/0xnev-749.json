@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "3",
+  "title": "[H-01] `TapOFT.emitForWeek()`: Lack of access control in function can result in unsynced epoch and emissions timestamp leading to potential complete DoS of exercising oTAP call options",
+  "issueId": 749,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/749"
+}
