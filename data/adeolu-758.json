@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "possible reeentrancy if rewardToken is ERC777 or execute arbitrary code on senders/receivers using hooks",
+  "issueId": 758,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/758"
+}
