@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kutugu",
+  "risk": "3",
+  "title": "get_virtual_price can be manipulated by read-only reentrant  to manipulate the ARBTriCryptoOracle   ",
+  "issueId": 704,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/704"
+}
