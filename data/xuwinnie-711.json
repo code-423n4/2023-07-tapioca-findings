@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "When a cross chain request fails, bridged asset will be permanently locked because an extra revert is made after transfer.",
+  "issueId": 711,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/711"
+}
