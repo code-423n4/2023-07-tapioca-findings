@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "[M-01] `SGLCommon._getInterestRate()`: feeFraction multiplied by wrong base amount ",
+  "issueId": 743,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/743"
+}
