@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "[M-04] `SGLLiquidation._orderBookLiquidation()`: Lack of check of collateralShare obtained greater than userCollateral balance ",
+  "issueId": 747,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/747"
+}
