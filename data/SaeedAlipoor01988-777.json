@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "GLP token is not approved from GlpStrategy to the RewardTracker.sol",
+  "issueId": 777,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/777"
+}
