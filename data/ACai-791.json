@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ACai",
+  "risk": "3",
+  "title": "The `delegatecall` could be uesd to modify the stroage of `USDOLeverageModule`",
+  "issueId": 791,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/791"
+}
