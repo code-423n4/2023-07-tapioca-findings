@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "emerald7017",
+  "risk": "3",
+  "title": "If the target address is unable to accept ether transfers, the transaction will revert, and the transferred ether will remain in the sender's contract.",
+  "issueId": 716,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/716"
+}
