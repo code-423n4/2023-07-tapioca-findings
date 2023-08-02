@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "[M-01] `TapiocaOptionBroker.epochTAPValuation()`: Price of TAP only updated on a per epoch basis can affect exercising of oTAP call options",
+  "issueId": 750,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/750"
+}
