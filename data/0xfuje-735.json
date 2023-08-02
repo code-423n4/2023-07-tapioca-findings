@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xfuje",
+  "risk": "2",
+  "title": "`AaveStrategy.sol`: new swapper set will DoS withdrawal functions if AAVE is to be claimed",
+  "issueId": 735,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/735"
+}
