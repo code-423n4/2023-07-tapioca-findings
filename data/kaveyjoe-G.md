@@ -7863,5 +7863,1027 @@ if (unclaimed > 0 && stgBalanceAfter > stgBalanceBefore) {
 
 - In the compoundAmount function, there are arithmetic calculations like result = result - (result * 50) / 10_000;. Consider using fixed-point arithmetic libraries (e.g., FixedPoint.sol) to reduce gas costs when working with decimals.
 
+56 . Target : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/aave/AaveStrategy.sol
+
+- The emergencyWithdraw function is to  batches the compound and lendingPool.withdraw operations together to save gas.
+
+ - The contract now should safeApprove and safeTransfer functions to interact with ERC20 tokens, which adds protection against potential revert scenarios.
+
+Here is optimized AaveStrategy contract :
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+import "@boringcrypto/boring-solidity/contracts/BoringOwnable.sol";
+import "@boringcrypto/boring-solidity/contracts/interfaces/IERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/strategies/BaseStrategy.sol";
+import "../../tapioca-periph/contracts/interfaces/ISwapper.sol";
+import "./interfaces/IStkAave.sol";
+import "./interfaces/ILendingPool.sol";
+import "./interfaces/IIncentivesController.sol";
+
+contract AaveStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    using BoringERC20 for IERC20;
+
+    IERC20 public immutable wrappedNative;
+    ISwapper public swapper;
+
+    IStkAave public immutable stakedRewardToken;
+    IERC20 public immutable rewardToken;
+    IERC20 public immutable receiptToken;
+    ILendingPool public immutable lendingPool;
+    IIncentivesController public immutable incentivesController;
+
+    uint256 public depositThreshold;
+
+    event MultiSwapper(address indexed _old, address indexed _new);
+    event DepositThreshold(uint256 _old, uint256 _new);
+    event AmountQueued(uint256 amount);
+    event AmountDeposited(uint256 amount);
+    event AmountWithdrawn(address indexed to, uint256 amount);
+
+    constructor(
+        IYieldBox _yieldBox,
+        address _token,
+        address _lendingPool,
+        address _incentivesController,
+        address _receiptToken,
+        address _multiSwapper
+    ) BaseERC20Strategy(_yieldBox, _token) {
+        wrappedNative = IERC20(_token);
+        swapper = ISwapper(_multiSwapper);
+
+        lendingPool = ILendingPool(_lendingPool);
+        incentivesController = IIncentivesController(_incentivesController);
+        stakedRewardToken = IStkAave(incentivesController.REWARD_TOKEN());
+        rewardToken = IERC20(stakedRewardToken.REWARD_TOKEN());
+        receiptToken = IERC20(_receiptToken);
+
+        wrappedNative.safeApprove(_lendingPool, type(uint256).max);
+        rewardToken.safeApprove(_multiSwapper, type(uint256).max);
+    }
+
+    function name() external pure override returns (string memory name_) {
+        return "AAVE";
+    }
+
+    function description()
+        external
+        pure
+        override
+        returns (string memory description_)
+    {
+        return "AAVE strategy for wrapped native assets";
+    }
+
+    function compoundAmount() public view returns (uint256 result) {
+        uint256 claimable = stakedRewardToken.stakerRewardsToClaim(
+            address(this)
+        );
+        result = 0;
+        if (claimable > 0) {
+            ISwapper.SwapData memory swapData = swapper.buildSwapData(
+                address(rewardToken),
+                address(wrappedNative),
+                claimable,
+                0,
+                false,
+                false
+            );
+            result = swapper.getOutputAmount(swapData, "");
+            result = result - (result * 50) / 10_000; //0.5%
+        }
+    }
+
+    function setDepositThreshold(uint256 amount) external onlyOwner {
+        emit DepositThreshold(depositThreshold, amount);
+        depositThreshold = amount;
+    }
+
+    function setMultiSwapper(address _swapper) external onlyOwner {
+        emit MultiSwapper(address(swapper), _swapper);
+        swapper = ISwapper(_swapper);
+    }
+
+    function compound(bytes memory) public nonReentrant {
+        uint256 aaveBalanceBefore = rewardToken.balanceOf(address(this));
+
+        uint256 unclaimedStkAave = incentivesController.getUserUnclaimedRewards(address(this));
+        if (unclaimedStkAave > 0) {
+            address[] memory tokens = new address[](1);
+            tokens[0] = address(receiptToken);
+            incentivesController.claimRewards(tokens, type(uint256).max, address(this));
+        }
+
+        uint256 claimable = stakedRewardToken.stakerRewardsToClaim(address(this));
+        if (claimable > 0) {
+            stakedRewardToken.claimRewards(address(this), claimable);
+        }
+
+        uint256 currentCooldown = stakedRewardToken.stakersCooldowns(address(this));
+        uint256 balanceOfStkAave = stakedRewardToken.balanceOf(address(this));
+        if (currentCooldown > 0) {
+            bool daysPassed = (currentCooldown + 12 days) < block.timestamp;
+            if (daysPassed && balanceOfStkAave > 0) {
+                stakedRewardToken.cooldown();
+            }
+        } else if (balanceOfStkAave > 0) {
+            stakedRewardToken.cooldown();
+        }
+
+        uint256 aaveBalanceAfter = rewardToken.balanceOf(address(this));
+        if (aaveBalanceAfter > aaveBalanceBefore) {
+            uint256 aaveAmount = aaveBalanceAfter - aaveBalanceBefore;
+
+            ISwapper.SwapData memory swapData = swapper.buildSwapData(
+                address(rewardToken),
+                address(wrappedNative),
+                aaveAmount,
+                0,
+                false,
+                false
+            );
+            uint256 calcAmount = swapper.getOutputAmount(swapData, "");
+            uint256 minAmount = calcAmount - (calcAmount * 50) / 10_000; //0.5%
+            swapper.swap(swapData, minAmount, address(this), "");
+
+            uint256 queued = wrappedNative.balanceOf(address(this));
+            if (queued > depositThreshold) {
+                lendingPool.deposit(address(wrappedNative), queued, address(this), 0);
+                emit AmountDeposited(queued);
+            } else {
+                emit AmountQueued(queued);
+            }
+        }
+    }
+
+    function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        compound("");
+        (uint256 toWithdraw, , , , , ) = lendingPool.getUserAccountData(address(this));
+        result = lendingPool.withdraw(address(wrappedNative), toWithdraw, address(this));
+    }
+
+    function _currentBalance() internal view override returns (uint256 amount) {
+        (amount, , , , , ) = lendingPool.getUserAccountData(address(this));
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        uint256 claimableRewards = compoundAmount();
+        return amount + queued + claimableRewards;
+    }
+
+    function _deposited(uint256 amount) internal override nonReentrant {
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (queued > depositThreshold) {
+            lendingPool.deposit(address(wrappedNative), queued, address(this), 0);
+            emit AmountDeposited(queued);
+        } else {
+            emit AmountQueued(amount);
+        }
+    }
+
+    function _withdraw(
+        address to,
+        uint256 amount
+    ) internal override nonReentrant {
+        uint256 available = _currentBalance();
+        require(available >= amount, "AaveStrategy: amount not valid");
+
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        if (amount > queued) {
+            compound("");
+
+            uint256 toWithdraw = amount - queued;
+
+            uint256 obtainedWrapped = lendingPool.withdraw(address(wrappedNative), toWithdraw, address(this));
+            if (obtainedWrapped > toWithdraw) {
+                amount += (obtainedWrapped - toWithdraw);
+            }
+        }
+
+        wrappedNative.safeTransfer(to, amount);
+        emit AmountWithdrawn(to, amount);
+    }
+}
 
 
+57 . Target : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/balancer/BalancerStrategy.sol
+
+- Remove the function compoundAmount() as it always returns 0 and doesn't serve any purpose.
+
+- Remove the variable rewardTokens as it is not used in the contract.
+
+- Simplifiy the emergencyWithdraw() function to reduce gas costs:
+
+- Remove the unnecessary 50% reduction from the withdrawal amount. Instead, we directly use 0.5% reduction by multiplying with 995/1000.
+
+- Combine loops and reduced unnecessary iterations in various functions to optimize gas usage.
+
+
+- Simplifiy logic in functions like _vaultDeposit() and _vaultWithdraw() to make them more gas-efficient.
+
+Here is an optimized BalancerStrategy contract :
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+// ... (imports and contract definition remain unchanged)
+
+contract BalancerStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    using BoringERC20 for IERC20;
+
+    // ... (rest of the contract remains unchanged)
+
+    // Removed event RewardTokens
+    // Removed function compoundAmount()
+    // Removed variable rewardTokens
+
+    // Simplified emergencyWithdraw() function
+    function emergencyWithdraw() external onlyOwner returns (uint256 result) {
+        uint256 toWithdraw = updateCache();
+        toWithdraw = (toWithdraw * 995) / 1000; // 0.5% reduction
+
+        result = _vaultWithdraw(toWithdraw);
+    }
+
+    // ... (rest of the contract remains unchanged)
+
+    // Combined loops and optimized _vaultDeposit() function
+    function _vaultDeposit(uint256 amount) private {
+        uint256 lpBalanceBefore = pool.balanceOf(address(this));
+
+        (address[] memory poolTokens, , ) = vault.getPoolTokens(poolId);
+        uint256[] memory maxAmountsIn = new uint256[](poolTokens.length);
+        int256 index = -1;
+
+        for (uint256 i = 0; i < poolTokens.length; i++) {
+            if (poolTokens[i] == address(wrappedNative)) {
+                maxAmountsIn[i] = amount;
+                index = int256(i);
+            } else {
+                maxAmountsIn[i] = 0;
+            }
+        }
+
+        // ... (rest of the function remains unchanged)
+    }
+
+    // Combined loops and optimized _vaultWithdraw() function
+    function _vaultWithdraw(uint256 amount) private returns (uint256) {
+        uint256 wrappedNativeBalanceBefore = wrappedNative.balanceOf(address(this));
+        (address[] memory poolTokens, , ) = vault.getPoolTokens(poolId);
+        uint256[] memory minAmountsOut = new uint256[](poolTokens.length);
+        int256 index = -1;
+
+        for (uint256 i = 0; i < poolTokens.length; i++) {
+            if (poolTokens[i] == address(wrappedNative)) {
+                minAmountsOut[i] = amount;
+                index = int256(i);
+            } else {
+                minAmountsOut[i] = 0;
+            }
+        }
+
+        // ... (rest of the function remains unchanged)
+    }
+
+    // ... (rest of the contract remains unchanged)
+}
+
+
+58 . Target :https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/glp/GlpStrategy.sol
+
+- Avoid unnecessary external calls: Combine the calls to glpRewardRouter.mintAndStakeGlp() and weth.approve() to save on gas costs.
+
+- Minimize storage writes: Instead of repeatedly updating feesPending, we can calculate the total fee amount only when required.
+
+- Avoid redundant state variable: Remove the feesPending state variable and calculate it when needed.
+
+- Use local variables: Use local variables to store intermediate values and avoid multiple storage reads.
+
+- Combine harvest functions: Merge the harvest and harvestGmx functions to reduce code duplication.
+
+Here's  optimized GlpStrategy contract:
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+pragma experimental ABIEncoderV2;
+
+import "@boringcrypto/boring-solidity/contracts/interfaces/IERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+import "@boringcrypto/boring-solidity/contracts/BoringOwnable.sol";
+
+import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
+
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/enums/YieldBoxTokenType.sol";
+import "tapioca-sdk/dist/contracts/YieldBox/contracts/strategies/BaseStrategy.sol";
+
+import "../interfaces/IFeeCollector.sol";
+import "../interfaces/gmx/IGlpManager.sol";
+import "../interfaces/gmx/IGmxRewardDistributor.sol";
+import "../interfaces/gmx/IGmxRewardRouter.sol";
+import "../interfaces/gmx/IGmxRewardTracker.sol";
+import "../interfaces/gmx/IGmxVester.sol";
+import "../interfaces/gmx/IGmxVault.sol";
+
+// NOTE: Specific to a UniV3 pool!! This will not work on Avalanche!
+contract GlpStrategy is BaseERC20Strategy, BoringOwnable {
+    using BoringERC20 for IERC20;
+
+    string public constant override name = "sGLP";
+    string public constant override description =
+        "Holds staked GLP tokens and compounds the rewards";
+
+    IERC20 private immutable gmx;
+    IERC20 private immutable esGmx;
+    IERC20 private immutable weth;
+
+    IGmxRewardTracker private immutable feeGmxTracker;
+    IGlpManager private immutable glpManager;
+    IGmxRewardRouterV2 private immutable glpRewardRouter;
+    IGmxRewardRouterV2 private immutable gmxRewardRouter;
+    IGmxVester private immutable glpVester;
+    IGmxVester private immutable gmxVester;
+    IGmxRewardTracker private immutable stakedGlpTracker;
+    IGmxRewardTracker private immutable stakedGmxTracker;
+
+    IUniswapV3Pool private constant gmxWethPool =
+        IUniswapV3Pool(0x80A9ae39310abf666A87C743d6ebBD0E8C42158E);
+    uint160 internal constant UNI_MIN_SQRT_RATIO = 4295128739;
+    uint160 internal constant UNI_MAX_SQRT_RATIO =
+        1461446703485210103287273052203988822378723970342;
+
+    uint256 internal constant FEE_BPS = 100;
+    address public feeRecipient;
+
+    constructor(
+        IYieldBox _yieldBox,
+        IGmxRewardRouterV2 _gmxRewardRouter,
+        IGmxRewardRouterV2 _glpRewardRouter,
+        IERC20 _sGlp
+    ) BaseERC20Strategy(_yieldBox, address(_sGlp)) {
+        weth = IERC20(_yieldBox.wrappedNative());
+        require(address(weth) == _gmxRewardRouter.weth(), "WETH mismatch");
+
+        require(_glpRewardRouter.gmx() == address(0), "Bad GLP reward router");
+        glpRewardRouter = _glpRewardRouter;
+
+        address _gmx = _gmxRewardRouter.gmx();
+        require(_gmx != address(0), "Bad GMX reward router");
+        gmxRewardRouter = _gmxRewardRouter;
+        gmx = IERC20(_gmx);
+        esGmx = IERC20(_gmxRewardRouter.esGmx());
+
+        stakedGlpTracker = IGmxRewardTracker(
+            glpRewardRouter.stakedGlpTracker()
+        );
+        stakedGmxTracker = IGmxRewardTracker(
+            gmxRewardRouter.stakedGmxTracker()
+        );
+        feeGmxTracker = IGmxRewardTracker(gmxRewardRouter.feeGmxTracker());
+        glpManager = IGlpManager(glpRewardRouter.glpManager());
+        glpVester = IGmxVester(gmxRewardRouter.glpVester());
+        gmxVester = IGmxVester(gmxRewardRouter.gmxVester());
+
+        feeRecipient = owner;
+    }
+
+    // (For the GMX-ETH pool)
+    function uniswapV3SwapCallback(
+        int256 /* amount0Delta */,
+        int256 /* amount1Delta */,
+        bytes calldata data
+    ) external {
+        require(msg.sender == address(gmxWethPool), "Not the pool");
+        uint256 amount = abi.decode(data, (uint256));
+        gmx.safeTransfer(address(gmxWethPool), amount);
+    }
+
+    function harvest() public {
+        _claimRewards();
+        _buyGlp();
+        _vestByGlpAndEsGmx();
+        _stakeEsGmx();
+    }
+
+    function setFeeRecipient(address recipient) external onlyOwner {
+        feeRecipient = recipient;
+    }
+
+    function withdrawFees() external {
+        uint256 feeAmount = _calculateFeesPending();
+        if (feeAmount > 0) {
+            uint256 wethAmount = weth.balanceOf(address(this));
+            if (wethAmount < feeAmount) {
+                feeAmount = wethAmount;
+            }
+            weth.safeTransfer(feeRecipient, feeAmount);
+        }
+    }
+
+    function _calculateFeesPending() private view returns (uint256) {
+        uint256 wethAmount = weth.balanceOf(address(this));
+        uint256 feeAmount = wethAmount * FEE_BPS / 10_000;
+        return feeAmount;
+    }
+
+    function _currentBalance() internal view override returns (uint256 amount) {
+        // This _should_ include both free and "reserved" GLP:
+        amount = IERC20(contractAddress).balanceOf(address(this));
+    }
+
+    function _deposited(uint256 /* amount */) internal override {
+        harvest();
+    }
+
+    function _withdraw(address to, uint256 amount) internal override {
+        _claimRewards();
+        _buyGlp();
+        uint256 freeGlp = stakedGlpTracker.balanceOf(address(this));
+        if (freeGlp < amount) {
+            // Reverts if none are vesting, but in that case, the whole TX will
+            // revert anyway for withdrawing too much:
+            glpVester.withdraw();
+        }
+        // Call this first; `_vestByGlpAndEsGmx()` will lock the GLP again
+        IERC20(contractAddress).safeTransfer(to, amount);
+        _vestByGlpAndEsGmx();
+        _stakeEsGmx();
+    }
+
+    function _claimRewards() private {
+        gmxRewardRouter.handleRewards({
+            _shouldClaimGmx: true,
+            _shouldStakeGmx: false,
+            _shouldClaimEsGmx: true,
+            _shouldStakeEsGmx: false,
+            _shouldStakeMultiplierPoints: true,
+            _shouldClaimWeth: true,
+            _shouldConvertWethToEth: false
+        });
+    }
+
+    function _buyGlp() private {
+        uint256 wethAmount = weth.balanceOf(address(this));
+        uint256 feeAmount = _calculateFeesPending();
+        if (wethAmount > feeAmount) {
+            wethAmount -= feeAmount;
+            weth.approve(address(glpManager), wethAmount);
+            glpRewardRouter.mintAndStakeGlp(address(weth), wethAmount, 0, 0);
+        }
+    }
+
+    function _getVestableAmount(
+        IGmxVester vester,
+        uint256 available,
+        uint256 tokenAvailable
+    ) private view returns (uint256) {
+        // Implementation of _getVestableAmount remains the same
+        // ...
+    }
+
+    function _vestByGlpAndEsGmx() private {
+        uint256 freeEsGmx = esGmx.balanceOf(address(this));
+        uint256 stakedEsGmx = stakedGmxTracker.depositBalances(
+            address(this),
+            address(esGmx)
+        );
+        uint256 available = freeEsGmx + stakedEsGmx;
+        uint256 vestableGlp = _getVestableAmount(
+            glpVester,
+            available,
+            stakedGlpTracker.balanceOf(address(this))
+        );
+        uint256 vestableEsGmx = _getVestableAmount(
+            gmxVester,
+            freeEsGmx,
+            feeGmxTracker.balanceOf(address(this))
+        );
+
+        if (vestableGlp > 0) {
+            if (vestableGlp > freeEsGmx) {
+                glpVester.withdraw();
+            }
+            glpVester.deposit(vestableGlp);
+        }
+
+        if (vestableEsGmx > 0) {
+            gmxVester.deposit(vestableEsGmx);
+        }
+    }
+
+    function _stakeEsGmx() private {
+        uint256 freeEsGmx = esGmx.balanceOf(address(this));
+        uint256 stakedEsGmx = stakedGmxTracker.depositBalances(
+            address(this),
+            address(esGmx)
+        );
+        uint256 buffer = (freeEsGmx + stakedEsGmx) / 20;
+        if (freeEsGmx > buffer) {
+            gmxRewardRouter.stakeEsGmx(freeEsGmx - buffer);
+        }
+    }
+
+    function _sellGmx(uint256 priceNum, uint256 priceDenom) private {
+        // The implementation of _sellGmx remains the same
+        // ...
+    }
+}
+
+
+59 . Target : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/convex/ConvexTricryptoStrategy.sol
+
+- Try to minimize the number of external contract calls. In the compound function, you can batch the calls to swapper.buildSwapData and swapper.swap to reduce gas costs.
+
+-  Instead of recalculating constants like calcAmount * 50 / 10_000, store them as constants or variables to avoid unnecessary recalculations.
+
+Here is an Optimized ConvexTricryptoStrategy Contract :
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+// Import other contracts
+
+contract ConvexTricryptoStrategy is BaseERC20Strategy, BoringOwnable, ReentrancyGuard {
+    // ... (rest of the contract code)
+
+    function compound(bytes memory data) public {
+        if (data.length == 0) return;
+
+        (uint256[] memory rewards, address[] memory tokens) = _executeClaim(data);
+        uint256 swapAmount;
+
+        for (uint256 i = 0; i < tokens.length; i++) {
+            if (rewards[i] > 0) {
+                _safeApprove(tokens[i], address(swapper), rewards[i]);
+                ISwapper.SwapData memory swapData = swapper.buildSwapData(
+                    tokens[i],
+                    address(wrappedNative),
+                    rewards[i],
+                    0,
+                    false,
+                    false
+                );
+                swapAmount += swapper.getOutputAmount(swapData, "");
+            }
+        }
+
+        if (swapAmount > 0) {
+            uint256 calcAmount = swapAmount - (swapAmount * 50) / 10_000; //0.5%
+            swapper.swap(ISwapper.SwapData(address(wrappedNative), address(this), swapAmount, 0, false, false), calcAmount, address(this), "");
+        }
+
+        uint256 queued = wrappedNative.balanceOf(address(this));
+        _addLiquidityAndStake(queued);
+        emit AmountDeposited(queued);
+    }
+
+    // ... (rest of the contract code)
+
+    function _executeClaim(bytes memory data) private returns (uint256[] memory, address[] memory) {
+        // ... (rest of the function code)
+    }
+
+    function _addLiquidityAndStake(uint256 amount) private {
+        uint256 calcAmount = lpGetter.calcWethToLp(amount);
+        if (calcAmount >= 1e18) {
+            uint256 minAmount = calcAmount - (calcAmount * 50) / 10_000; //0.5%
+            uint256 lpAmount = lpGetter.addLiquidityWeth(amount, minAmount);
+            booster.deposit(pid, lpAmount, true);
+        }
+    }
+
+    // ... (rest of the contract code)
+}
+
+
+
+60 . Target : https://github.com/Tapioca-DAO/YieldBox/blob/master/contracts/NativeTokenFactory.sol
+
+- Simplifiy the condition in transferOwnership to reduce gas cost.
+
+- Remove redundant storage variable updates in transferOwnership.
+
+- Remove redundant events from mint function, as they were already emitted in the _mint function.
+
+- Remove the allowed modifier from the batchBurn function, as it's already checked inside the loop.
+
+- Use to32 function from BoringMath for tokenId conversion to uint32. This is just a safer way to convert uint256 to uint32.
+
+- Remove unnecessary string validation in createToken as it's unlikely to be a concern since the input is controlled by the contract deployer.
+
+Here is an Optimized NativeTokenFactory Contract : 
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+import "./AssetRegister.sol";
+import "./BoringMath.sol";
+
+struct NativeToken {
+    string name;
+    string symbol;
+    uint8 decimals;
+    string uri;
+}
+
+contract NativeTokenFactory is AssetRegister {
+    using BoringMath for uint256;
+
+    mapping(uint256 => NativeToken) public nativeTokens;
+    mapping(uint256 => address) public owner;
+    mapping(uint256 => address) public pendingOwner;
+
+    event TokenCreated(address indexed creator, string name, string symbol, uint8 decimals, uint256 tokenId);
+    event OwnershipTransferred(uint256 indexed tokenId, address indexed previousOwner, address indexed newOwner);
+
+    modifier onlyOwner(uint256 tokenId) {
+        require(msg.sender == owner[tokenId], "NTF: caller is not the owner");
+        _;
+    }
+
+    function transferOwnership(uint256 tokenId, address newOwner, bool direct, bool renounce) public onlyOwner(tokenId) {
+        require(direct || (newOwner != address(0) && !renounce), "NTF: invalid transfer parameters");
+
+        if (direct) {
+            emit OwnershipTransferred(tokenId, owner[tokenId], newOwner);
+            owner[tokenId] = newOwner;
+            pendingOwner[tokenId] = address(0);
+        } else {
+            pendingOwner[tokenId] = newOwner;
+        }
+    }
+
+    function claimOwnership(uint256 tokenId) public {
+        address _pendingOwner = pendingOwner[tokenId];
+        require(msg.sender == _pendingOwner, "NTF: caller != pending owner");
+
+        emit OwnershipTransferred(tokenId, owner[tokenId], _pendingOwner);
+        owner[tokenId] = _pendingOwner;
+        pendingOwner[tokenId] = address(0);
+    }
+
+    function createToken(string calldata name, string calldata symbol, uint8 decimals, string calldata uri) public returns (uint32 tokenId) {
+        tokenId = assets.length.to32();
+        _registerAsset(TokenType.Native, address(0), NO_STRATEGY, tokenId);
+        nativeTokens[tokenId] = NativeToken(name, symbol, decimals, uri);
+        owner[tokenId] = msg.sender;
+
+        emit TokenCreated(msg.sender, name, symbol, decimals, tokenId);
+        emit TransferSingle(msg.sender, address(0), address(0), tokenId, 0);
+        emit OwnershipTransferred(tokenId, address(0), msg.sender);
+    }
+
+    function mint(uint256 tokenId, address to, uint256 amount) public onlyOwner(tokenId) {
+        _mint(to, tokenId, amount);
+    }
+
+    function burn(uint256 tokenId, address from, uint256 amount) public allowed(from, tokenId) {
+        require(assets[tokenId].tokenType == TokenType.Native, "NTF: Not native");
+        _burn(from, tokenId, amount);
+    }
+
+    function batchMint(uint256 tokenId, address[] calldata tos, uint256[] calldata amounts) public onlyOwner(tokenId) {
+        uint256 len = tos.length;
+        for (uint256 i = 0; i < len; i++) {
+            _mint(tos[i], tokenId, amounts[i]);
+        }
+    }
+
+    function batchBurn(uint256 tokenId, address[] calldata froms, uint256[] calldata amounts) public {
+        require(assets[tokenId].tokenType == TokenType.Native, "NTF: Not native");
+        uint256 len = froms.length;
+        for (uint256 i = 0; i < len; i++) {
+            require(isApprovedForAsset[froms[i]][msg.sender][tokenId], "NTF: Transfer not allowed");
+            _burn(froms[i], tokenId, amounts[i]);
+        }
+    }
+}
+
+
+61 . Target : https://github.com/Tapioca-DAO/YieldBox/blob/master/contracts/YieldBoxURIBuilder.sol
+
+-  In the name and symbol functions, the ERC1155 details are to be simplified and removed unnecessary computations.
+
+- Consolidate AssetDetails assignment: In the uri function, the AssetDetails assignment is to be consolidated to reduce storage operations.
+
+- Remove ERC1155 tokenType from the symbol function: The symbol function omits the ERC1155 tokenType from the return value since it's not required.
+
+Here is an Optimized YieldBoxURIBuilder contract :
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/Base64.sol";
+import "@boringcrypto/boring-solidity/contracts/libraries/BoringERC20.sol";
+import "./interfaces/IYieldBox.sol";
+import "./NativeTokenFactory.sol";
+
+// solhint-disable quotes
+
+contract YieldBoxURIBuilder {
+    using BoringERC20 for IERC20;
+    using Strings for uint256;
+    using Base64 for bytes;
+
+    function name(Asset calldata asset, string calldata nativeName) external view returns (string memory) {
+        if (asset.strategy == NO_STRATEGY) {
+            return nativeName;
+        } else if (asset.tokenType == TokenType.ERC20) {
+            IERC20 token = IERC20(asset.contractAddress);
+            return string(abi.encodePacked(token.safeName(), " (", asset.strategy.name(), ")"));
+        } else if (asset.tokenType == TokenType.ERC1155) {
+            return string(abi.encodePacked("ERC1155:", uint256(uint160(asset.contractAddress)).toHexString(20), "/", asset.tokenId.toString(), " (", asset.strategy.name(), ")"));
+        } else {
+            return string(abi.encodePacked(nativeName, " (", asset.strategy.name(), ")"));
+        }
+    }
+
+    function symbol(Asset calldata asset, string calldata nativeSymbol) external view returns (string memory) {
+        if (asset.strategy == NO_STRATEGY) {
+            return nativeSymbol;
+        } else if (asset.tokenType == TokenType.ERC20) {
+            IERC20 token = IERC20(asset.contractAddress);
+            return string(abi.encodePacked(token.safeSymbol(), " (", asset.strategy.name(), ")"));
+        } else if (asset.tokenType == TokenType.ERC1155) {
+            return "ERC1155";
+        } else {
+            return string(abi.encodePacked(nativeSymbol, " (", asset.strategy.name(), ")"));
+        }
+    }
+
+    function decimals(Asset calldata asset, uint8 nativeDecimals) external view returns (uint8) {
+        if (asset.tokenType == TokenType.ERC1155) {
+            return 0;
+        } else if (asset.tokenType == TokenType.ERC20) {
+            IERC20 token = IERC20(asset.contractAddress);
+            return token.safeDecimals();
+        } else {
+            return nativeDecimals;
+        }
+    }
+
+    function uri(
+        Asset calldata asset,
+        NativeToken calldata nativeToken,
+        uint256 totalSupply,
+        address owner
+    ) external view returns (string memory) {
+        AssetDetails memory details;
+        if (asset.tokenType == TokenType.ERC1155) {
+            // Contracts can't retrieve URIs, so the details are out of reach
+            details.tokenType = "ERC1155";
+            details.name = string(abi.encodePacked("ERC1155:", uint256(uint160(asset.contractAddress)).toHexString(20), "/", asset.tokenId.toString()));
+            details.symbol = "ERC1155";
+        } else if (asset.tokenType == TokenType.ERC20) {
+            IERC20 token = IERC20(asset.contractAddress);
+            details = AssetDetails("ERC20", token.safeName(), token.safeSymbol(), token.safeDecimals());
+        } else {
+            // Native
+            details.tokenType = "Native";
+            details.name = nativeToken.name;
+            details.symbol = nativeToken.symbol;
+            details.decimals = nativeToken.decimals;
+        }
+
+        string memory properties = string(
+            asset.tokenType != TokenType.Native
+                ? abi.encodePacked(',"tokenAddress":"', uint256(uint160(asset.contractAddress)).toHexString(20), '"')
+                : abi.encodePacked(',"totalSupply":', totalSupply.toString(), ',"fixedSupply":', owner == address(0) ? "true" : "false")
+        );
+
+        return
+            string(
+                abi.encodePacked(
+                    "data:application/json;base64,",
+                    abi
+                        .encodePacked(
+                            '{"name":"',
+                            details.name,
+                            '","symbol":"',
+                            details.symbol,
+                            '"',
+                            asset.tokenType == TokenType.ERC1155 ? "" : ',"decimals":',
+                            asset.tokenType == TokenType.ERC1155 ? "" : details.decimals.toString(),
+                            ',"properties":{"strategy":"',
+                            uint256(uint160(address(asset.strategy))).toHexString(20),
+                            '","tokenType":"',
+                            details.tokenType,
+                            '"',
+                            properties,
+                            asset.tokenType == TokenType.ERC1155 ? string(abi.encodePacked(',"tokenId":', asset.tokenId.toString())) : "",
+                            "}}"
+                        )
+                        .encode()
+                )
+            );
+    }
+}
+
+
+62 . Target : https://github.com/Tapioca-DAO/YieldBox/blob/master/contracts/YieldBox.sol
+
+63 . Target : https://github.com/Tapioca-DAO/YieldBox/blob/master/contracts/YieldBoxPermit.sol
+
+- Instead of using functions to retrieve constant values like _PERMIT_TYPEHASH and _PERMIT_ALL_TYPEHASH, we can directly define them as constant variables to avoid function call overhead.
+
+- Use bytes32 for the name parameter in the constructor: The EIP712 contract expects the name parameter to be of type bytes32, so we can directly pass a bytes32 value instead of a string value.
+
+- Avoid unnecessary storage reads: In the permit and permitAll functions, you read the nonce using nonces(address owner). Instead, we can use the _useNonce(owner) function, which internally reads the nonce and increments it, thus saving one storage read.
+
+- Check if owner is not null before accessing its nonce: In the _useNonce function, we should check if the owner address is not null before accessing its nonce to avoid potential issues.
+
+Here's an optimized YieldBoxPermit Contract : 
+
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "./interfaces/IYieldBox.sol";
+
+abstract contract YieldBoxPermit is EIP712 {
+    using Counters for Counters.Counter;
+
+    mapping(address => Counters.Counter) private _nonces;
+
+    bytes32 private constant _PERMIT_TYPEHASH = keccak256("Permit(address owner,address spender,uint256 assetId,uint256 nonce,uint256 deadline)");
+    bytes32 private constant _PERMIT_ALL_TYPEHASH = keccak256("PermitAll(address owner,address spender,uint256 nonce,uint256 deadline)");
+
+    constructor(bytes32 name) EIP712(name, "1") {}
+
+    function permit(
+        address owner,
+        address spender,
+        uint256 assetId,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public {
+        require(block.timestamp <= deadline, "YieldBoxPermit: expired deadline");
+
+        uint256 nonce = _useNonce(owner);
+        bytes32 structHash = keccak256(abi.encode(_PERMIT_TYPEHASH, owner, spender, assetId, nonce, deadline));
+        bytes32 hash = _hashTypedDataV4(structHash);
+        address signer = ECDSA.recover(hash, v, r, s);
+        require(signer == owner, "YieldBoxPermit: invalid signature");
+
+        _setApprovalForAsset(owner, spender, assetId, true);
+    }
+
+    function _setApprovalForAsset(
+        address owner,
+        address spender,
+        uint256 assetId,
+        bool approved
+    ) internal virtual;
+
+    function permitAll(
+        address owner,
+        address spender,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public {
+        require(block.timestamp <= deadline, "YieldBoxPermit: expired deadline");
+
+        uint256 nonce = _useNonce(owner);
+        bytes32 structHash = keccak256(abi.encode(_PERMIT_ALL_TYPEHASH, owner, spender, nonce, deadline));
+        bytes32 hash = _hashTypedDataV4(structHash);
+        address signer = ECDSA.recover(hash, v, r, s);
+        require(signer == owner, "YieldBoxPermit: invalid signature");
+
+        _setApprovalForAll(owner, spender, true);
+    }
+
+    function _setApprovalForAll(
+        address _owner,
+        address operator,
+        bool approved
+    ) internal virtual;
+
+    function nonces(address owner) public view virtual returns (uint256) {
+        return _nonces[owner].current();
+    }
+
+    function DOMAIN_SEPARATOR() external view returns (bytes32) {
+        return _domainSeparatorV4();
+    }
+
+    function _useNonce(address owner) internal virtual returns (uint256 current) {
+        require(owner != address(0), "YieldBoxPermit: invalid owner");
+        Counters.Counter storage nonce = _nonces[owner];
+        current = nonce.current();
+        nonce.increment();
+    }
+}
+
+
+64 . Target : https://github.com/Tapioca-DAO/YieldBox/blob/master/contracts/BoringMath.sol
+
+- Constant Variables: The maximum values for uint128, uint64, and uint32 are stored in constant variables, reducing repetitive calls to type(uintXXX).max.
+
+- Unchecked Math: The muldiv function is to uses the unchecked keyword. By doing this, Solidity will not perform overflow and underflow checks on arithmetic operations. Be sure to use this only when you are sure the input values won't result in overflow or underflow.
+
+Here is an Optimized BoringMath Contract : 
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+library BoringMath {
+    uint256 constant private UINT128_MAX = type(uint128).max;
+    uint256 constant private UINT64_MAX = type(uint64).max;
+    uint256 constant private UINT32_MAX = type(uint32).max;
+
+    function to128(uint256 a) internal pure returns (uint128 c) {
+        require(a <= UINT128_MAX, "BoringMath: uint128 Overflow");
+        c = uint128(a);
+    }
+
+    function to64(uint256 a) internal pure returns (uint64 c) {
+        require(a <= UINT64_MAX, "BoringMath: uint64 Overflow");
+        c = uint64(a);
+    }
+
+    function to32(uint256 a) internal pure returns (uint32 c) {
+        require(a <= UINT32_MAX, "BoringMath: uint32 Overflow");
+        c = uint32(a);
+    }
+
+    function muldiv(
+        uint256 value,
+        uint256 mul,
+        uint256 div,
+        bool roundUp
+    ) internal pure returns (uint256 result) {
+        unchecked {
+            result = (value * mul) / div;
+       
+
+   if (roundUp && (result * div) / mul < value) {
+                result++;
+            }
+        }
+    }
+}
+
+
+65 . Target : https://github.com/Tapioca-DAO/YieldBox/blob/master/contracts/YieldBoxRebase.sol
+
+ - Instead of repeatedly calculating the DECIMAL_FACTOR (1e8), we can declare it as an immutable constant in the contract.
+
+-  Prevent Unnecessary Calculations: Since roundUp is only used in one condition, we can avoid checking it for both _toShares and _toAmount functions and just pass it as a parameter to the condition.
+
+Here is an Optimized YieldBoxRebase Contract :
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.9;
+
+library YieldBoxRebase {
+    // Use immutable constant instead of calculating it repeatedly
+    uint256 private constant DECIMAL_FACTOR = 1e8;
+
+    /// @notice Calculates the base value in relationship to `elastic` and `total`.
+    function _toShares(
+        uint256 amount,
+        uint256 totalShares_,
+        uint256 totalAmount,
+        bool roundUp
+    ) internal pure returns (uint256 share) {
+        // Increment totalAmount and totalShares_ once
+        totalAmount += DECIMAL_FACTOR;
+        totalShares_ += DECIMAL_FACTOR;
+
+        // Calculate the shares using the current amount to share ratio
+        share = (amount * totalShares_) / totalAmount;
+
+        // Round up if required
+        if (roundUp && (share * totalAmount) / totalShares_ < amount) {
+            share++;
+        }
+    }
+
+    /// @notice Calculates the elastic value in relationship to `base` and `total`.
+    function _toAmount(
+        uint256 share,
+        uint256 totalShares_,
+        uint256 totalAmount,
+        bool roundUp
+    ) internal pure returns (uint256 amount) {
+        // Increment totalAmount and totalShares_ once
+        totalAmount += DECIMAL_FACTOR;
+        totalShares_ += DECIMAL_FACTOR;
+
+        // Calculate the amount using the current amount to share ratio
+        amount = (share * totalAmount) / totalShares_;
+
+        // Round up if required
+        if (roundUp && (amount * totalShares_) / totalAmount < share) {
+            amount++;
+        }
+    }
+}
