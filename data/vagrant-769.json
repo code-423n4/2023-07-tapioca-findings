@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "vagrant",
+  "risk": "3",
+  "title": "tapiocaz/contracts/TapiocaWrapper#executeCalls(): msg.value used in for loop can have unintended consequences, such as loss of funds",
+  "issueId": 769,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/769"
+}
