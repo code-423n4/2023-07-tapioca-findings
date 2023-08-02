@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "3",
+  "title": "Infinite approval on `TapiocaOFT` and `mTapiocaOFT` `wrap()` lets spender steal all the funds that the owner possesses and approves to `TapiocaOFT` ",
+  "issueId": 818,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/818"
+}
