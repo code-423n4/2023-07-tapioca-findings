@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "emerald7017",
+  "risk": "2",
+  "title": "The contract could be exploited by an attacker who could use the underflow to gain an unauthorized advantage.",
+  "issueId": 710,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/710"
+}
