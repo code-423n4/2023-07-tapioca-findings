@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "brokerClaim() in oTAP and aoTAP tokens can be called by anyone, anyone can become broker",
+  "issueId": 829,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/829"
+}
