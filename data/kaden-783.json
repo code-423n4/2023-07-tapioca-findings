@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "`LidoEthStrategy._withdraw` will revert if ETH price > stETH price",
+  "issueId": 783,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/783"
+}
