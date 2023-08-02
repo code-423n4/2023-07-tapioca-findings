@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "3",
+  "title": "[H-01] `BigBang/Singularity.liquidate()`: Liquidation mechanism is flawed as there is no actual repayment of borrower's borrowed balance",
+  "issueId": 741,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/741"
+}
