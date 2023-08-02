@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "Multi Hop will always fail since L0 gas fee is not handled properly",
+  "issueId": 706,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/706"
+}
