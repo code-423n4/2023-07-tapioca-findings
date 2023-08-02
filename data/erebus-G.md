@@ -31,7 +31,7 @@ function batchTransfer(address from, address to, uint256[] calldata assetIds_, u
 It's safe to delete because `_transferBatch` is 1) internal and 2) only called by `transferBatch`
 
 # [G-02] Logic optimization
-Consider adding an `else` clause instead of the [return here](https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/modules/MagnetarMarketModule.sol#L698) so that it saves bytecode size by removing one return opcode, that is `if(!dest chain) {...} else {...}` instead of the current implementation (which has three implicit `return` routines, one at the end of the `if`, on the `catch` block and at the end of the function). 
+Consider adding an `else` clause instead of the [return routine in MagnetarMarketModule.sol#L698](https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/modules/MagnetarMarketModule.sol#L698) so that it saves bytecode size by removing one return opcode, that is `if(!dest chain) {...} else {...}` instead of the current implementation (which has three implicit `return` routines, one at the end of the `if`, on the `catch` block and at the end of the function). 
 
 ```
         ...
