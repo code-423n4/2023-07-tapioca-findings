@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "SGLLendingCommon.sol: The totalBorrowCap validation is incorrect",
+  "issueId": 700,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/700"
+}
