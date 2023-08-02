@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "Failed cross chain request should not be permissionlessly retried as user's intention may shift",
+  "issueId": 733,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/733"
+}
