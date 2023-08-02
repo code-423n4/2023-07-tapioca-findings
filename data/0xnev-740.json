@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "[M-01] `BigBang._borrow()`: Variable USDO creation fee not implemented",
+  "issueId": 740,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/740"
+}
