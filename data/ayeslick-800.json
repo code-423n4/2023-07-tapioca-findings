@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ayeslick",
+  "risk": "2",
+  "title": "All fees can be lost due to MEV when `assetId != wethAssetId` and `swapData` sets `minAssetAmount` to zero via `withdrawAllMarketFees()`",
+  "issueId": 800,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/800"
+}
