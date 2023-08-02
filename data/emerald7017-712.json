@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "emerald7017",
+  "risk": "2",
+  "title": "If the overflow results in an incorrect calculation of the output amount of WETH tokens, then the user may receive less WETH tokens than they expected.",
+  "issueId": 712,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/712"
+}
