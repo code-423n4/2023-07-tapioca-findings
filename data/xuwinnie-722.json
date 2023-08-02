@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "`_callApproval` can be DOSed if `allowFailure` is set to `false`",
+  "issueId": 722,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/722"
+}
