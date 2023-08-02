@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "Double accounting of action value in `MagnetarV2.burst(...)`",
+  "issueId": 793,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/793"
+}
