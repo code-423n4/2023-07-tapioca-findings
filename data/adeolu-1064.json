@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "contract natspec comments is not always followed in getDebtRate(), maxDebtRate is returned if _currentDebt == _maxDebtPoint",
+  "issueId": 1064,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1064"
+}
