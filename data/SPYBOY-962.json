@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SPYBOY",
+  "risk": "3",
+  "title": "An attacker can drain Eth from MagnetarMarketModule.sol",
+  "issueId": 962,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/962"
+}
