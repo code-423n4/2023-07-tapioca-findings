@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ACai",
+  "risk": "3",
+  "title": "The `TapiocaWrapper.executeCalls()` function could not transfer the ETH in correctly way",
+  "issueId": 866,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/866"
+}
