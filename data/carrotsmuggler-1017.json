@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HD03] `CurveSwapper.sol` fails to provide slippage protection.",
+  "issueId": 1017,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1017"
+}
