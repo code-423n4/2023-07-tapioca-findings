@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "PASCAL",
+  "risk": "3",
+  "title": "_accrue was never called in the related functions ",
+  "issueId": 984,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/984"
+}
