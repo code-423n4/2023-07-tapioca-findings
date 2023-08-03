@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "2",
+  "title": "(m)TapiocaOFT can be DoSed by sending any message with 1 gas adapterParams",
+  "issueId": 841,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/841"
+}
