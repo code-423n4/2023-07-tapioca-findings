@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xStalin",
+  "risk": "3",
+  "title": "Malicious actors can steal user assets from the YieldBox by using the withdrawToChain() in the Magnetar contract",
+  "issueId": 958,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/958"
+}
