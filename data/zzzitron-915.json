@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "3",
+  "title": "`Market::_isSolvent` and `Market::_computeMaxBorrowableAmount` may overestimate the collateral, resulting in false solvency",
+  "issueId": 915,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/915"
+}
