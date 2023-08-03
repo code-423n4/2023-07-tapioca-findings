@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LinKenji",
+  "risk": "3",
+  "title": "`_claimRewards` function lack a proper reentrancy guard, without properly handling the execution flow, it becomes susceptible to attacks.",
+  "issueId": 948,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/948"
+}
