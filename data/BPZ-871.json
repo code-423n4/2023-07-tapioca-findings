@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BPZ",
+  "risk": "2",
+  "title": "## Liquidation swap having 2 minimum amounts to satisfy in order to swap successfully. ( Possible dos during the market crash )",
+  "issueId": 871,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/871"
+}
