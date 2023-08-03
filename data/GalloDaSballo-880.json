@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "`addRewardToken` allows Unbounded Rewards and duplicate entries",
+  "issueId": 880,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/880"
+}
