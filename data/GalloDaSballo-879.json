@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "`_getDiscountedPaymentAmount` doesn't work for tokens with more than 18 decimals",
+  "issueId": 879,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/879"
+}
