@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HC16] `USDOLeverageModule.sol`: `leverageUpInternal` gives approvals to arbitrary addresses",
+  "issueId": 1011,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1011"
+}
