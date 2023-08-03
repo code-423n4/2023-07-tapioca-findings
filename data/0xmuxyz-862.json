@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xmuxyz",
+  "risk": "3",
+  "title": "Lack of the input validation whether or not the repaid-amount would not exceed the total borrowed-amount, which lead to a bad situation that the exceeded-amount of repayment will be stuck in the Singularity contract forever",
+  "issueId": 862,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/862"
+}
