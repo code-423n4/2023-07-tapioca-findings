@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HF09] `BaseTOFT.sol`: `sendToYBAndBorrow` can be used to manipulate other user's positions and steal tokens due to absent approval check.",
+  "issueId": 1035,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1035"
+}
