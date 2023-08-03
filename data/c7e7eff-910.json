@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "c7e7eff",
+  "risk": "3",
+  "title": "Emergency Withdraw uses wrong calculation to account for slippage and exchange rate",
+  "issueId": 910,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/910"
+}
