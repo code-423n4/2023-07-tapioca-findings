@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "2",
+  "title": "Potential loss of market fees due to missing input validations for `Penrose.withdrawAllMarketFees()`",
+  "issueId": 1041,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1041"
+}
