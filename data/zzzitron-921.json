@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "2",
+  "title": "`Penrose::addBigBang` and `Penrose::addSingularity` does not update `masterContractOf` therefore failing `Penrose::executeMarketFn`",
+  "issueId": 921,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/921"
+}
