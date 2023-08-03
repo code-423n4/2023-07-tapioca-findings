@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Nyx",
+  "risk": "3",
+  "title": "Liquidators can lose funds when liquidating multiple users.",
+  "issueId": 857,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/857"
+}
