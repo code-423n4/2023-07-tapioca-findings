@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "2",
+  "title": "[MB01] Inadvised hardcoding of pool address in `AaveStrategy.sol`",
+  "issueId": 993,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/993"
+}
