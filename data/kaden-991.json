@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "Incorrect `callerFee` causes liquidator to receive 10x intended amount in Singularity market orderbook liquidations",
+  "issueId": 991,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/991"
+}
