@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Audinarey",
+  "risk": "2",
+  "title": "transfer and transferFrom will return true even if conditions are not met",
+  "issueId": 864,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/864"
+}
