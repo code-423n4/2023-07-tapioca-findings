@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zhaojie",
+  "risk": "2",
+  "title": "The sending failure of _lzSend is not considered",
+  "issueId": 894,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/894"
+}
