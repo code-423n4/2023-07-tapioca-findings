@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HB11] `LidoEthStrategy.sol`: `currentBalance`, and therefore collateral amount can be manipulated via flash swaps",
+  "issueId": 992,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/992"
+}
