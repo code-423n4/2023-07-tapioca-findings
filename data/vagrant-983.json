@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "vagrant",
+  "risk": "2",
+  "title": "YieldBox#depositETHAsset() does not check that amount == msg.value and does not refund excess ETH",
+  "issueId": 983,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/983"
+}
