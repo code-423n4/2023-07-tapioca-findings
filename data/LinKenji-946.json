@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LinKenji",
+  "risk": "3",
+  "title": "Integer Underflow and Overflow Vulnerability in `pool.totalParticipants` and `pool.totalDeposited`.",
+  "issueId": 946,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/946"
+}
