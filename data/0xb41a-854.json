@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xb41a",
+  "risk": "2",
+  "title": " Access control failure by improper imports and modifiers [ FileName : BaseUSDO.sol ]",
+  "issueId": 854,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/854"
+}
