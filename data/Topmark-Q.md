@@ -1,0 +1,1 @@
+1. Absence of address(0) check in constructor of TapiocaOptionBroker.sol Contract - There is a need to ensure zero address check at deployment to avoid unnecessary errors
