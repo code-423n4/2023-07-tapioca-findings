@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "2",
+  "title": "[MA01] `YieldBoxPermit.sol`: Missing checks on spender",
+  "issueId": 976,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/976"
+}
