@@ -595,8 +595,30 @@ Constants should be declared with appropriate visibility.
 
 ##
 
-## [L-] 
+## [L-] Incorrect title 
 
+The title suggests its public function but external function implemented 
+
+### POC
+
+```solidity
+FILE: tapiocaz-audit/contracts/TapiocaWrapper.sol
+
+
+// ************************ //
+    // *** PUBLIC FUNCTIONS *** //
+    // ************************ //
+
+    /// @notice Harvest fees from all the deployed TOFT contracts. Fees are transferred to the owner.
+    function harvestFees() external {
+        for (uint256 i = 0; i < harvestableTapiocaOFTs.length; i++) {
+            harvestableTapiocaOFTs[i].harvestFees();
+        }
+        emit HarvestFees(msg.sender);
+    }
+
+```
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/TapiocaWrapper.sol#L92-L102
 
 
 
