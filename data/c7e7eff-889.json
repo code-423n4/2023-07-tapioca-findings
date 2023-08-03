@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "c7e7eff",
+  "risk": "2",
+  "title": "read-only reentrancy in Curve Eth pool can lead to funds being stolen from the Lido strategy",
+  "issueId": 889,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/889"
+}
