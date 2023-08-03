@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HC01] USDO Tokens held by old contract wallets can be easily stolen.",
+  "issueId": 995,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/995"
+}
