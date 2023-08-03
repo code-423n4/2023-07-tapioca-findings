@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "Faulty accounting in `TricryptoNativeStrategy` allows for uncompounded interest to be stolen",
+  "issueId": 925,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/925"
+}
