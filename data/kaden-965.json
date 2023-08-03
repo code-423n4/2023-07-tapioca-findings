@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "LidoEthStrategy.emergencyWithdrawal allows for 99.5% slippage",
+  "issueId": 965,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/965"
+}
