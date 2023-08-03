@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HC02] USDO modules can be selfdestructed due to unsafe delegatecall usage.",
+  "issueId": 996,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/996"
+}
