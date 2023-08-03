@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "BalancerStrategy withdrawal logic passes an amount of BPT tokens to a param that expects an amount of wrapped native tokens to receive",
+  "issueId": 964,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/964"
+}
