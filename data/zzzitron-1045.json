@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "2",
+  "title": "Users can get a flashloan via `USDO.flashLoan()`, without paying fees",
+  "issueId": 1045,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1045"
+}
