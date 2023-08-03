@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hals",
+  "risk": "2",
+  "title": "Some functions in `BigBang` & `Singularity` contracts are inaccessible",
+  "issueId": 961,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/961"
+}
