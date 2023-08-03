@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HB09] `emergencyWithdraw` on all strategy contracts useless without a pause mechanism",
+  "issueId": 989,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/989"
+}
