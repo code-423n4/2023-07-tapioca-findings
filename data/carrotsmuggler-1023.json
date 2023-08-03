@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HE03] `TapOFT.sol`: `emitForWeek` can be called by any user to grief emission rewards",
+  "issueId": 1023,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1023"
+}
