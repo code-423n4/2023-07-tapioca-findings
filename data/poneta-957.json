@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "poneta",
+  "risk": "3",
+  "title": "return values ignored for important transfer functions.",
+  "issueId": 957,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/957"
+}
