@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x007",
+  "risk": "2",
+  "title": "Tokens in AaveStrategy would be locked if lendingPool address changes",
+  "issueId": 888,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/888"
+}
