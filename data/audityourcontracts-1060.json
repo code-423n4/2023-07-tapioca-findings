@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "audityourcontracts",
+  "risk": "2",
+  "title": "ETH can be sent directly to contracts and can't be returned",
+  "issueId": 1060,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1060"
+}
