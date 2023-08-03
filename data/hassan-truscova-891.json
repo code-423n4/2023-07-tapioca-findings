@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hassan-truscova",
+  "risk": "2",
+  "title": "The FullMath abstract contract is unable to handle intermediate overflows due to overflow that's desired but never reached",
+  "issueId": 891,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/891"
+}
