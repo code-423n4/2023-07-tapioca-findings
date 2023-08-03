@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ItsNio",
+  "risk": "3",
+  "title": "Fee for `_getInterestRate()` uses unaccrued interest",
+  "issueId": 1056,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1056"
+}
