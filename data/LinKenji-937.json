@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LinKenji",
+  "risk": "3",
+  "title": " If the .call function fails because the `wrappedNative` contract is out of balance, the calling contract will not be aware of the failure. This could lead to the calling contract thinking that the deposit was successful, when it was not.",
+  "issueId": 937,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/937"
+}
