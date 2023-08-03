@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zhaojie",
+  "risk": "3",
+  "title": "Malicious Strategy contracts can cause user tokens to be locked",
+  "issueId": 867,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/867"
+}
