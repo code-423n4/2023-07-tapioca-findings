@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Nyx",
+  "risk": "3",
+  "title": "Users positions can be directly liquidated when the admin changes thecollateralizationRate from a higher value to a lower value",
+  "issueId": 919,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/919"
+}
