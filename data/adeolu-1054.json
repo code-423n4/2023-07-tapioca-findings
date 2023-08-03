@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "init() in BigBang.sol can be front run or deployment of BigBang contract watched and contract can be initialized wrongly",
+  "issueId": 1054,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1054"
+}
