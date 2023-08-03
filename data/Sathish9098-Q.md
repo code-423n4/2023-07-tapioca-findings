@@ -645,3 +645,5 @@ If the DOMAIN_SEPARATOR contains the chainId and is defined at contract deployme
 
 Implement reentrancy protection in critical functions like addCollateral, removeCollateral, borrow, repay, and others using the nonReentrant modifier bigbang.sol
 
+Use 2StepSetOwner instead of setOwner
+
