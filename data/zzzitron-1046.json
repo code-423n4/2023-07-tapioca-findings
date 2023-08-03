@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "3",
+  "title": "Collateral can be locked in BigBang contract when `debtStartPoint` is nonzero",
+  "issueId": 1046,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1046"
+}
