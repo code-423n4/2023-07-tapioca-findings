@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "2",
+  "title": "[MF02] `BaseTOFT.sol`: `_wrap` allowance checked but not reduced",
+  "issueId": 1038,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1038"
+}
