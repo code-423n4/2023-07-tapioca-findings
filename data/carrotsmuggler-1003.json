@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HC08] `SGLLiquidation`: Liquidations re-use passed swap data, providing no slippage protection.",
+  "issueId": 1003,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1003"
+}
