@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "windhustler",
+  "risk": "3",
+  "title": "TOFT leverageDown always fails for if TOFT is wrapper for native tokens",
+  "issueId": 904,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/904"
+}
