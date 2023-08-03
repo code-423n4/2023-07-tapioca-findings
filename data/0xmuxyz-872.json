@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xmuxyz",
+  "risk": "3",
+  "title": "The outdated-epoch would be stored into the `cachedEpoch`, which lead to the outdated-epoch would be stored into the some variable and used for some calculation",
+  "issueId": 872,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/872"
+}
