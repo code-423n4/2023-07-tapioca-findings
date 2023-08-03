@@ -27,3 +27,29 @@ change `require(block.timestamp > lockedUntil, "Still locked");` to `require(blo
 **Assessed type**
 
 Invalid Validation
+
+
+## 2. Events should be emitted last in function logic 
+**impact**
+
+it is best practice to always emit events last 
+
+
+**lines of code**
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/tokens/TapOFT.sol#L140C1-L164C6
+
+**Proof of concept**
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/tokens/TapOFT.sol#L140C1-L164C6
+
+
+**Tools Used**
+manual review 
+
+
+**Recommended Mitigation Steps**
+emit events last
+
+
+**Assessed type**
+events
