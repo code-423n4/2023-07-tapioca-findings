@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LinKenji",
+  "risk": "2",
+  "title": "Potential Underflow in `lock` and `unlock` Functions.",
+  "issueId": 939,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/939"
+}
