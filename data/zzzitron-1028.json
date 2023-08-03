@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "3",
+  "title": "`Penrose.setUsdoToken()` may cause users funds to be lost",
+  "issueId": 1028,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1028"
+}
