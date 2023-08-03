@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HC11] `SGLLiquidation.sol`: Liquidation can give no rewards to liquidator",
+  "issueId": 1006,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1006"
+}
