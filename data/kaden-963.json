@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "StargateStrategy passes an amount of wrapped native tokens to withdraw to params that expect an amount of stgToken",
+  "issueId": 963,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/963"
+}
