@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HB04] `ConvexTricryptoStrategy.sol`: `compound` does unsafe external calls, can cause loss of tokens",
+  "issueId": 980,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/980"
+}
