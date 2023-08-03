@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "c7e7eff",
+  "risk": "3",
+  "title": "Funds locked in Lido strategy when Curve stETH exchange returns less than 1 ETH",
+  "issueId": 882,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/882"
+}
