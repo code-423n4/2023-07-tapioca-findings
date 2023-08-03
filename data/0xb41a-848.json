@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xb41a",
+  "risk": "3",
+  "title": "in (function execute) DelegateCall used in unsafe manner and caller contract modified by logic inside of this contract [ FileName: BigBang.sol ]",
+  "issueId": 848,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/848"
+}
