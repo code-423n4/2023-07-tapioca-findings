@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LinKenji",
+  "risk": "2",
+  "title": " `distributeReward` function lacks a check to ensure that `totals.netActiveVotes` is not zero before performing a division operation.",
+  "issueId": 942,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/942"
+}
