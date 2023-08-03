@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "rokinot",
+  "risk": "2",
+  "title": "Swaps done by withdrawing yieldbox funds are using unsafe token transfer patterns",
+  "issueId": 1044,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1044"
+}
