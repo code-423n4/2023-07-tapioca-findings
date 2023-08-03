@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "3",
+  "title": "twTAP:  Users can claim the rewards balances of all the tokens in the form of one specific token using `claimAndSendRewards` ",
+  "issueId": 1062,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1062"
+}
