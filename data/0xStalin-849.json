@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xStalin",
+  "risk": "3",
+  "title": "User's assets can be stolen when removing them from the Singularity market through the Magnetar contract",
+  "issueId": 849,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/849"
+}
