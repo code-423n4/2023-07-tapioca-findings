@@ -58,7 +58,7 @@ FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 ```
 ##
 
-## [L-] Add to blacklist function
+## [L-2] Add to blacklist function
 
 As stated in the project:
 
@@ -88,7 +88,7 @@ Add to Blacklist function and modifier.
 
 ##
 
-## [L-2] There is a risk that the ``borrowOpeningFee``,``totalBorrowCap ``,``poolFee `` variables is accidentally initialized to 0 and platform loses money
+## [L-3] There is a risk that the ``borrowOpeningFee``,``totalBorrowCap ``,``poolFee `` variables is accidentally initialized to 0 and platform loses money
 
 ### Impact
 The lack of MIN and MAX value checks in setter functions when assigning values to uint256 can be a security risk. This is because it allows users to set values that are outside of the valid range for uint256. This could lead to a number of problems, including
@@ -128,7 +128,7 @@ Add ``MIN`` and ``MAX``, ``>0`` value checks to setter functions to avid unexpec
 
 ##
 
-## [L-5] ``maxLiquidatorReward``,``minLiquidatorReward`` check not allow exact value. <=,>= should be used instead of ``<,>``
+## [L-4] ``maxLiquidatorReward``,``minLiquidatorReward`` check not allow exact value. <=,>= should be used instead of ``<,>``
 
 ### Impact
 The ``maxLiquidatorReward`` and ``minLiquidatorReward`` variables in the ``Market.sol`` contract do not allow exact values. This is because the require() statements that check the values use the < and > operators. These operators will not allow the values to be equal to the specified value.
@@ -166,7 +166,7 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 ##
 
-## [L-6] There is no clear docs why ``<=`` and ``<`` when checking FEE_PRECISION `` _callerFee <= FEE_PRECISION`` and ``_liquidationBonusAmount < FEE_PRECISION`` 
+## [L-5] There is no clear docs why ``<=`` and ``<`` when checking FEE_PRECISION `` _callerFee <= FEE_PRECISION`` and ``_liquidationBonusAmount < FEE_PRECISION`` 
 
 ### Impact
 The disparity in using <= and < for certain checks in the documentation is not adequately explained and may cause confusion for developers. Some checks utilize <=, while others use <, without providing a clear rationale for the distinction between the two comparison operators.Using different operators for similar checks without proper documentation can lead to misunderstandings and errors in the contract's behavior
@@ -191,7 +191,7 @@ Clearly document why < and <= in different places
 
 ##
 
-## [L-7] ``val != paused `` check could be a problem if the market needs to be ``paused`` or ``unpaused`` for a short period of time
+## [L-6] ``val != paused `` check could be a problem if the market needs to be ``paused`` or ``unpaused`` for a short period of time
 
 ### Impact
 The ``updatePause()`` function in the ``Market.sol`` contract requires that the new paused state be different from the current paused state. This means that the function cannot be used to simply toggle the paused state.
@@ -212,7 +212,7 @@ function updatePause(bool val) external {
 
 ##
 
-## [L-8] ``computeTVLInfo()``function does not handle the case where the ``collateralAmountInAsset`` variable is zero 
+## [L-7] ``computeTVLInfo()``function does not handle the case where the ``collateralAmountInAsset`` variable is zero 
 
 ### Impact
 This could happen if the user's collateral is worth less than the amount they have borrowed. In this case, the function would return incorrect values
@@ -235,7 +235,7 @@ Handle the case where the ``collateralAmountInAsset`` variable is zero. This wou
 
 ## 
 
-## [L-9] Unnecessary or unused return values ``updated, rate`` in updateExchangeRate() function
+## [L-8] Unnecessary or unused return values ``updated, rate`` in updateExchangeRate() function
 
 ### Impact
 The return values (updated, rate) from the ``updateExchangeRate()`` function are unnecessary and not being used in the calling function. Since the solvent modifier does not use the return values, there is no need to return them from the ``updateExchangeRate()`` function.
@@ -283,7 +283,7 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 ##
 
-## [L-10] If the ``reward`` is negative values then ``uint256(reward)`` conversion may returns unexpected results 
+## [L-9] If the ``reward`` is negative values then ``uint256(reward)`` conversion may returns unexpected results 
 
 ### Impact
 
@@ -312,7 +312,7 @@ require(reward >= 0, "Reward must be non-negative");
 
 ##
 
-## [L-11] Avoid shadowing variables. ``ids``variable is shadowed 
+## [L-10] Avoid shadowing variables. ``ids``variable is shadowed 
 
 ### Impact
 Variable shadowing can affect the protocol in DeFi in a number of ways, especially when state and function parameters have the same name. For example, if a function parameter has the same name as a state variable, and the function modifies the parameter, then the state variable will also be modified. This can lead to unexpected behavior, such as funds being transferred to the wrong address
@@ -342,7 +342,7 @@ Choose different name for ``ids`` in ``_transferBatch`` function
 
 ##
 
-## [L-12] NFT ``_tOLPTokenID`` should be generated in a incrementing way
+## [L-11] NFT ``_tOLPTokenID`` should be generated in a incrementing way
 
 ### Impact
 Generate NFT token IDs in an incrementing way instead of allowing users to define their own values. This is because user-defined token IDs can be easily manipulated, and they can also be used to create duplicate or invalid tokens.
@@ -372,7 +372,7 @@ Use state variable generate tokenId. Increment 1 for every new mint
 
 ##
 
-## [L-] ``TapiocaOptionBroker.sol`` contract inherits ``Pausable`` but not implemented any pause mechanism
+## [L-12] ``TapiocaOptionBroker.sol`` contract inherits ``Pausable`` but not implemented any pause mechanism
 
 ### Impact
 The ``TapiocaOptionBroker.sol`` contract inherits from the ``Pausable`` contract, but it does not implement any pause mechanism. This means that the contract cannot be paused, and all of the functions in the contract are always available to be called
@@ -391,7 +391,7 @@ Use pause mechanism or remove safely
 
 ##
 
-## [L-] ``addCollateral()``addAsset() should be allowed even when contract ``paused`` 
+## [L-13] ``addCollateral()``addAsset() should be allowed even when contract ``paused`` 
 
 ### Impact
 The ``addCollateral`` function should be allowed even when the contract is paused. This is because if the liquidation threshold is reached and users positions are liquidated immediately after unpaused, then it is important to allow users to add collateral to prevent their positions from being liquidated.
@@ -421,7 +421,7 @@ Allow addCollateral() even contract ``paused ``
 
 ##
 
-## [L-] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
+## [L-14] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
 
 ### Impact
 Protocol uses the vulnerable versions of openzeppelin,
@@ -464,7 +464,7 @@ Use latest ``openzeppelin`` version ``V4.9.3 ``
 
 ##
 
-## [L-] Token transfer to ``address(0)`` should be avoided in ``removeCollateral()`` function
+## [L-15] Token transfer to ``address(0)`` should be avoided in ``removeCollateral()`` function
 
 ### Impact
 Token transfer to ``address(0)`` should be avoided. This is because ``address(0)`` is the "null address", which is a special address that does not belong to any user. If tokens are transferred to address(0), they are effectively lost.
@@ -514,7 +514,7 @@ require (to != address(0), "null address");
 
 ##
 
-## [L-] ``signer`` should be checked with address(0) before ``signer == owner`` check in ``permit()``,``permitAll()`` functions
+## [L-16] ``signer`` should be checked with address(0) before ``signer == owner`` check in ``permit()``,``permitAll()`` functions
 
 ### Impact
 It is always a good practice to be as safe as possible. By checking if the signer is not address(0) before you compare it to the owner of the contract, you can add an extra layer of security to your contract. This will help to prevent even the most sophisticated malicious actors from exploiting your contract
@@ -544,7 +544,7 @@ FILE: YieldBox/contracts/YieldBoxPermit.sol
 
 ##
 
-## [L-] Recommended to include the ``chain ID`` in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH `` , to prevent malicious actors from ``forging signatures`` on ``other networks``
+## [L-17] Recommended to include the ``chain ID`` in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH `` , to prevent malicious actors from ``forging signatures`` on ``other networks``
 
 ### Impact
 The chain ID is a number that identifies the Ethereum network that the transaction was submitted to. This number is used to prevent malicious actors from forging signatures on other networks.
@@ -572,7 +572,7 @@ Include the chain ID in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH ``
 
 ##
 
-## [L-] ``Constants`` with ``default visibility`` should be avoided. Declare constant with appropriate visibility to avoid unexpected behavior
+## [L-18] ``Constants`` with ``default visibility`` should be avoided. Declare constant with appropriate visibility to avoid unexpected behavior
 
 ### Impact
 This is because constants with default visibility are visible to contracts in the same scope, which can lead to unexpected behavior. If this is already planned please clearly explain this with contract docs. 
@@ -595,7 +595,7 @@ Constants should be declared with appropriate visibility.
 
 ##
 
-## [L-] Incorrect title 
+## [L-19] Incorrect title 
 
 The title suggests its public function but external function implemented 
 
@@ -642,4 +642,6 @@ The standard ERC-20 race condition for approvals applies to permit as well.
 If the DOMAIN_SEPARATOR contains the chainId and is defined at contract deployment instead of reconstructed for every signature, there is a risk of possible replay attacks between chains in the event of a future chain split.
 
 
+
+Implement reentrancy protection in critical functions like addCollateral, removeCollateral, borrow, repay, and others using the nonReentrant modifier bigbang.sol
 
