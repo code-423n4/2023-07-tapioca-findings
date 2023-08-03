@@ -1,8 +1,0 @@
-{
-  "contest": 261,
-  "handle": "popular00",
-  "risk": "3",
-  "title": "Attacker can steal victim's oTAP position contents via `MagnetarMarketModule#_exitPositionAndRemoveCollateral()`",
-  "issueId": 936,
-  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/936"
-}
