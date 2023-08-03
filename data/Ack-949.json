@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ack",
+  "risk": "3",
+  "title": "Swaps in YieldBox Strategies' `compound()` function use spot price when calculating minAmountOut",
+  "issueId": 949,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/949"
+}
