@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ItsNio",
+  "risk": "3",
+  "title": "`utilization` for `_getInterestRate()` does not factor in interest",
+  "issueId": 1057,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1057"
+}
