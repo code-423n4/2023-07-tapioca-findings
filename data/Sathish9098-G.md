@@ -2,23 +2,29 @@
 
 | Gas Count | Issues | Instances  | Gas Saved  |
 | :------------ | :------------ | :------------ |:------------ |
-| [G-1]   | ``State variables`` can be packed into fewer storage slots | 14 |  28000   |
+| [G-1]   | ``State variables`` can be packed into fewer storage slots | 16 |  32000   |
 | [G-2]   | ``Structs`` can be packed into fewer storage slots    | 2   | 4000   |
 | [G-3]   | Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas    |  13  | 3102 |
 | [G-4]   |  Using ``storage`` instead of ``memory`` for structs/arrays saves gas    | 4  | 16800   |
 | [G-5]   | Don't initialize the default values to state or local variables for saving gas      | 15   | 2388 |
-| [G-6]   | Optimizing gas usage Order your checks correctly   | 1   | 12000     |
+| [G-6]   | Optimizing gas usage Order your checks correctly   | 2   | 16000 |
 | [G-7]   | Combine events to save Glogtopic (375 gas)     | 7  | 2450    |
 | [G-8]   | Cache the ``state variables`` outside the ``loop`` to avoid ``SLOD`` in every iterations | 2  | 200 |
 | [G-9]   | Calldata pointer is used instead of memory pointer for loops    | 2   | 34    |
 | [G-10]   | Don't ``emit`` ``state`` variables when ``stack`` variable available      | 1    | 100   |
+| [G-11]   | Multiple accesses of a ``mapping/array`` should use a local variable cache  | 6    | 600   |
+| [G-12]   | ``<x> += <y>`` costs more gas than ``<x> = <x> + <y>`` for state variables ``(SAME TO <x> -= <y>)``  | 13    | 1469 |
 
 
+
+[G-12] Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs
+
+# TRADITIONS GAS FINDINGS 
 ##
 
 ## [G-1] State variables can be packed into fewer storage slots
 
-### Saves ``28000 GAS``, ``14 SLOTs``
+### Saves ``32000 GAS``, ``16 SLOTs``
 
 If variables occupying the same slot are both written the same function or by the constructor, avoids a separate Gsset (20000 gas). Reads of the variables can also be cheaper.
 
@@ -216,6 +222,27 @@ FILE: Breadcrumbstap-token-audit/contracts/Vesting.sol
 25:    /// @notice returns total vesting duration
 - 26:    uint256 public duration;
 + 26:    uint128 public duration;
+```
+
+### ``erc20, hostChainID, _decimalCache`` can be packed with same SLOT : Saves ``4000 GAS, 2 SLOTs``
+
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/tOFT/BaseTOFTStorage.sol#L26-L32
+
+Other protocols using ``uint32`` for ``ChainID``. So its safer to change ``hostChainID`` to ``uint64`` instead of ``uint256``
+
+```diff
+FILE: Breadcrumbstapiocaz-audit/contracts/tOFT/BaseTOFTStorage.sol
+
+26:   IYieldBoxBase public yieldBox;
+27:    /// @notice The ERC20 to wrap.
+28:    address public erc20;
+29:    /// @notice The host chain ID of the ERC20
+- 30:    uint256 public hostChainID;
++ 30:    uint64 public hostChainID;
+31:    /// @notice Decimal cache number of the ERC20.
+32:    uint8 internal _decimalCache;
+
+
 ```
 
 ##
@@ -673,6 +700,45 @@ function init(bytes calldata data) external onlyOnce {
 -        );
 
 ```
+
+### ``_collateral, _oracle`` should be checked top of the function to avoid unwanted failures after storage write : Saves ``4000 GAS``
+
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L133-L138
+
+if we check ``address(_collateral) != address(0), address(_oracle) != address(0)`` after ``penrose,yieldBox `` storage write if address is zero then we need to pay 4000 GAS even after revert.
+
+
+```solidity
+FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
+
+               )
+            );
+
++        require(
++            address(_collateral) != address(0) &&
++                address(_oracle) != address(0),
++            "BigBang: bad pair"
++        );
+
+
+        penrose = tapiocaBar_;
+        yieldBox = YieldBox(tapiocaBar_.yieldBox());
+        owner = address(penrose);
+
+        address _asset = penrose.usdoToken();
+
++        require(address(_asset) != address(0) ,"BigBang: bad pair");
+-        require(
+-            address(_collateral) != address(0) &&
+-                address(_asset) != address(0) &&
+-                address(_oracle) != address(0),
+-            "BigBang: bad pair"
+-        );
+
+```
+
+
 ##
 
 ## [G-7] Combine events to save Glogtopic (375 gas)
@@ -915,12 +981,13 @@ FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
 
 ## [G-11] Multiple accesses of a mapping/array should use a local variable cache
 
+### Saves ``600 GAS,6 SLOD``
+
 The instances below point to the second+ access of a value inside a mapping/array, within a function. Caching a mapping's value in a local storage or calldata variable when the value is accessed multiple times, saves ~42 gas per access due to not having to recalculate the key's keccak256 hash (Gkeccak256 - 30 gas) and that calculation's associated stack operations. Caching an array's struct avoids recalculating the array offsets into memory/calldata
 
 ### ``userCollateralShare[user]`` should be cached : Saves ``200 GAS, 2 SLODs``
 
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L816-L819
-
 
 ```diff
 FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
@@ -935,44 +1002,300 @@ FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
 
 ```
 
+### ``connectedOFTs[_srcOft][_dstChainId].rebalanceable`` should be cached : Saves ``300 GAS, 3 SLOD``
+
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L149-L156
+
+```diff
+FILE: Breadcrumbstapiocaz-audit/contracts/Balancer.sol
+
++ uint256 rebalanceable_ = connectedOFTs[_srcOft][_dstChainId].rebalanceable ;
+-  canExec = connectedOFTs[_srcOft][_dstChainId].rebalanceable > 0;
++  canExec = rebalanceable_ > 0;
+        execPayload = abi.encodeCall(
+            Balancer.rebalance,
+            (
+                _srcOft,
+                _dstChainId,
+                1e3, //1% slippage
+-                 connectedOFTs[_srcOft][_dstChainId].rebalanceable,
++                 rebalanceable_ ,
+                ercData
+            )
+
+
+
++ uint256 rebalanceable_ = connectedOFTs[_srcOft][_dstChainId].rebalanceable ;
+{
+-         if (connectedOFTs[_srcOft][_dstChainId].rebalanceable < _amount)
++         if (rebalanceable_ < _amount)
+
+            revert RebalanceAmountNotSet();
+
+        //check if OFT is still valid
+        if (
+            !_isValidOft(
+                _srcOft,
+                connectedOFTs[_srcOft][_dstChainId].dstOft,
+                _dstChainId
+            )
+        ) revert DestinationOftNotValid();
+
+        //extract
+        ITapiocaOFT(_srcOft).extractUnderlying(_amount);
+
+        //send
+        bool _isNative = ITapiocaOFT(_srcOft).erc20() == address(0);
+        if (_isNative) {
+            if (msg.value <= _amount) revert FeeAmountNotSet();
+            _sendNative(_srcOft, _amount, _dstChainId, _slippage);
+        } else {
+            if (msg.value == 0) revert FeeAmountNotSet();
+            _sendToken(_srcOft, _amount, _dstChainId, _slippage, _ercData);
+        }
+
+-         connectedOFTs[_srcOft][_dstChainId].rebalanceable -= _amount;
++         connectedOFTs[_srcOft][_dstChainId].rebalanceable =rebalanceable_ - _amount;
+
+
+
+function addRebalanceAmount(
+        address _srcOft,
+        uint16 _dstChainId,
+        uint256 _amount
+    ) external onlyValidDestination(_srcOft, _dstChainId) onlyOwner {
++  uint256 rebalanceable_ = connectedOFTs[_srcOft][_dstChainId].rebalanceable ;
+-         connectedOFTs[_srcOft][_dstChainId].rebalanceable += _amount;
++         connectedOFTs[_srcOft][_dstChainId].rebalanceable = rebalanceable_ + _amount;
+        emit RebalanceAmountUpdated(
+            _srcOft,
+            _dstChainId,
+            _amount,
+-             connectedOFTs[_srcOft][_dstChainId].rebalanceable
++             rebalanceable_ 
+        );
+    }
+```
+
+## ``aoTAPCalls[_aoTAPTokenID][cachedEpoch]`` should be cached : Saves ``100 GAS, 1 SLOD``
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/option-airdrop/AirdropBroker.sol#L254-L259
+
+```diff
+FILE: tap-token-audit/contracts/option-airdrop/AirdropBroker.sol
++   uint256 aoTAPCalls_  = aoTAPCalls[_aoTAPTokenID][cachedEpoch] ;
+- 254: eligibleTapAmount -= aoTAPCalls[_aoTAPTokenID][cachedEpoch]; // Subtract already exercised amount
++ 254: eligibleTapAmount = eligibleTapAmount - aoTAPCalls_ ; // Subtract already exercised amount
+255:        require(eligibleTapAmount >= _tapAmount, "adb: Too high");
+256:
+257:        uint256 chosenAmount = _tapAmount == 0 ? eligibleTapAmount : _tapAmount;
+258:        require(chosenAmount >= 1e18, "adb: Too low");
+- 259:        aoTAPCalls[_aoTAPTokenID][cachedEpoch] += chosenAmount; // Adds up exercised amount to current epoch
++ 259:        aoTAPCalls[_aoTAPTokenID][cachedEpoch] =aoTAPCalls_+chosenAmount; // Adds up exercised amount to current epoch
+
+```
+
 ##
 
-## [G-] Internal function calls should be cached instead of repeated calling 
+## [G-12] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME TO <x> -= <y>)
+
+### Saves ``1469 GAS, 13 Instances``
+
+Using the addition operator instead of plus-equals saves [113 gas](https://gist.github.com/IllIllI000/cbbfb267425b898e5be734d4008d4fe8)
+
+### 
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L147
+
+```diff
+FILE: tapioca-bar-audit/contracts/markets/MarketERC20.sol
+
+- 147: balanceOf[to] += amount;
++ 147: balanceOf[to] =balanceOf[to] + amount;
+
+- 82: balanceOf[to] += amount;
++ 82: balanceOf[to] =balanceOf[to] + amount;
+
+- allowance[from][msg.sender] -= share;
++ allowance[from][msg.sender] =allowance[from][msg.sender] - share;
+
+- 89: allowanceBorrow[from][msg.sender] -= share;
++ 89: allowanceBorrow[from][msg.sender] = allowanceBorrow[from][msg.sender] -  share;
+```
+
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/Balancer.sol#L255
+
+```diff
+FILE: tapiocaz-audit/contracts/Balancer.sol
+
+- 255: connectedOFTs[_srcOft][_dstChainId].rebalanceable += _amount;
++ 255: connectedOFTs[_srcOft][_dstChainId].rebalanceable =connectedOFTs[_srcOft][_dstChainId].rebalanceable + _amount;
+
+- 210: connectedOFTs[_srcOft][_dstChainId].rebalanceable -= _amount;
++ 210: connectedOFTs[_srcOft][_dstChainId].rebalanceable =connectedOFTs[_srcOft][_dstChainId].rebalanceable - _amount;
+
+```
+
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/governance/twTAP.sol#L343-L344
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/governance/twTAP.sol
+
+- 343: weekTotals[w0 + 1].netActiveVotes += int256(votes);
+- 344: weekTotals[w1 + 1].netActiveVotes -= int256(votes);
++ 343: weekTotals[w0 + 1].netActiveVotes =weekTotals[w0 + 1].netActiveVotes + int256(votes);
++ 344: weekTotals[w1 + 1].netActiveVotes =weekTotals[w1 + 1].netActiveVotes - int256(votes);
+
+- 412: next.netActiveVotes += prev.netActiveVotes;
++ 412: next.netActiveVotes =next.netActiveVotes + prev.netActiveVotes;
+
+- 414: next.totalDistPerVote[i] += prev.totalDistPerVote[i];
++ 414: next.totalDistPerVote[i] = next.totalDistPerVote[i] + prev.totalDistPerVote[i];
+
+- 445: totals.totalDistPerVote[_rewardTokenId] +=
+-            (_amount * DIST_PRECISION) /
+-            uint256(totals.netActiveVotes);
++ 445: totals.totalDistPerVote[_rewardTokenId] = totals.totalDistPerVote[_rewardTokenId] +
++            (_amount * DIST_PRECISION) /
++            uint256(totals.netActiveVotes);
+
+- 491: claimed[_tokenId][i] += amount;
++ 491: claimed[_tokenId][i] = claimed[_tokenId][i] + amount;
+
+- 513: claimed[_tokenId][claimableIndex] += amount;
++ 513: claimed[_tokenId][claimableIndex] =claimed[_tokenId][claimableIndex] + amount;
+
+```
+##
+
+
+
+# OTHER GAS SUGGESTIONS
+
+## [G-] Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs
+
+By consolidating multiple related operations into a single function call, you can reduce the number of transactions and, consequently, the amount of gas required. This is particularly valuable in Ethereum, where gas costs can have a significant impact on the cost and speed of transactions.
+
+The decision of whether or not to consolidate these functions is a trade-off between gas costs and code complexity. In some cases, the reduction in gas costs may be worth the additional complexity. In other cases, it may be better to keep the functions separate
+
+```Solidity
+FILE: tapioca-bar-audit/contracts/markets/singularity/Singularity.sol
+
+function addAsset(
+        address from,
+        address to,
+        bool skim,
+        uint256 share
+    ) public notPaused allowedLend(from, share) returns (uint256 fraction) {
+        _accrue();
+        fraction = _addAsset(from, to, skim, share);
+    }
+
+ function removeAsset(
+        address from,
+        address to,
+        uint256 fraction
+    ) public notPaused returns (uint256 share) {
+        _accrue();
+        share = _removeAsset(from, to, fraction, true);
+        _allowedLend(from, share);
+    }
+
+
+function addCollateral(
+        address from,
+        address to,
+        bool skim,
+        uint256 amount,
+        uint256 share
+    ) public {
+        _executeModule(
+            Module.Collateral,
+            abi.encodeWithSelector(
+                SGLCollateral.addCollateral.selector,
+                from,
+                to,
+                skim,
+                amount,
+                share
+            )
+        );
+    }
+
+function removeCollateral(address from, address to, uint256 share) public {
+        _executeModule(
+            Module.Collateral,
+            abi.encodeWithSelector(
+                SGLCollateral.removeCollateral.selector,
+                from,
+                to,
+                share
+            )
+        );
+    }
+
+```
+
+### Recommended Mitigation
+
+Consolidated functions as follows,
+
+```solidity
+
+// Consolidated function for asset management
+function manageAsset(
+    address from,
+    address to,
+    bool skim,
+    uint256 share,
+    bool isAddition // True for asset addition, False for removal
+) public notPaused allowedLend(from, share) {
+    _accrue();
+    
+    if (isAddition) {
+        _addAsset(from, to, skim, share);
+    } else {
+        _removeAsset(from, to, share, true);
+        _allowedLend(from, share);
+    }
+}
+
+// Consolidated function for collateral management
+function manageCollateral(
+    address from,
+    address to,
+    bool skim,
+    uint256 amount,
+    uint256 share,
+    bool isAddition // True for collateral addition, False for removal
+) public {
+    _executeModule(
+        Module.Collateral,
+        abi.encodeWithSelector(
+            isAddition ? SGLCollateral.addCollateral.selector : SGLCollateral.removeCollateral.selector,
+            from,
+            to,
+            skim,
+            amount,
+            share
+        )
+    );
+}
+
+```
+
+
+
+
+
+
 
 
 ## Transfer of 0 should be checked  
 
-## A mapping is more efficient than an array
-
-Fetching data from an array is more expensive than fetching data from a mapping. Fetching data from an array will require iterating over the array until you reach your desired data. When using a mapping you only need to know the key in order to fetch the data from the exact slot it is stored in. Source 
- https://twitter.com/pcaversaccio/status/1464523336730480640
-
-Gas Savings for MintingHub.bid, obtained via protocol's tests: Avg 2133 gas
-
-Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
-
-Using true and false will trigger gas-refunds, which after London are 1/5 of what they used to be, meaning using 1 and 2 (keeping the slot non-zero), will cost 5k per change (5k + 5k) vs 20k + 5k, saving you 15k gas per function which uses the modifier.
 
 
-## [G-12] ``if (forceSuccess)`` should be checked only once instead of every iterations 
 
-The ``if (forceSuccess)`` check should be checked only once, instead of every iteration of the loop. This is because the value of ``forceSuccess`` ``does not change`` during the ``loop``. This saves at least ``100 GAS`` for each iterations.
-
-```diff
-FILE: tapioca-bar-audit/contracts/Penrose.sol
-
-Need to research about this 
-
-
-``` 
-
-
-##
-
-## [G-15] 
-
-
-Massive 15k per tx gas savings - use 1 and 2 for Reentrancy guard
 
 
 
