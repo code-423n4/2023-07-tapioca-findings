@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BPZ",
+  "risk": "3",
+  "title": "Malicious user can drain the BigBang contract of it's liquidity",
+  "issueId": 1049,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1049"
+}
