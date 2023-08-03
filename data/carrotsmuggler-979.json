@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HB03] `ConvexTricryptoStrategy.sol`: `emergencyWithdraw` calculates minimum tokens incorrectly",
+  "issueId": 979,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/979"
+}
