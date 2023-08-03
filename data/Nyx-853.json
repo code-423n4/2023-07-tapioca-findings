@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Nyx",
+  "risk": "3",
+  "title": "Hard-coded slippage may freeze vault funds during market turbulence",
+  "issueId": 853,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/853"
+}
