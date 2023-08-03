@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "shirochan",
+  "risk": "3",
+  "title": "No access restriction on harvesting in GlpStrategy.sol",
+  "issueId": 842,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/842"
+}
