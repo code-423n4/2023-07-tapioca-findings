@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "2",
+  "title": "`totalCollateralShare` state variable not updated in `Singularity` market when a liquidation occurs, potentially leading to some issues",
+  "issueId": 1040,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1040"
+}
