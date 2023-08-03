@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "audityourcontracts",
+  "risk": "2",
+  "title": "Renouncing ownership breaks important admin functions like pause",
+  "issueId": 902,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/902"
+}
