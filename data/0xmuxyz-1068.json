@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xmuxyz",
+  "risk": "2",
+  "title": "Due to lack of an input validation, `address(0)` can be stored into the `token`",
+  "issueId": 1068,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1068"
+}
