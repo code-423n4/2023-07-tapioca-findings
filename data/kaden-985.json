@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaden",
+  "risk": "3",
+  "title": "`collateralizationRate` off by a factor of 10 allows for borrowing 10x the intended limit",
+  "issueId": 985,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/985"
+}
