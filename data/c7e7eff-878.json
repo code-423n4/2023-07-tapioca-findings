@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "c7e7eff",
+  "risk": "3",
+  "title": "Penrose executeMarketFn doesn't work on added markets.",
+  "issueId": 878,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/878"
+}
