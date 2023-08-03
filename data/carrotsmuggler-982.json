@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "3",
+  "title": "[HB06] `TricryptoNativeStrategy.sol`: `deposit` and `withdraw` can be gamed/sandwiched for profit",
+  "issueId": 982,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/982"
+}
