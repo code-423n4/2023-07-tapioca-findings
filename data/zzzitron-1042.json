@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "2",
+  "title": "Seer.sol oracle will potentially return a wrong price if the Chainlink aggregator returns a price outside min/max range",
+  "issueId": 1042,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1042"
+}
