@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "2",
+  "title": "[MC03] `BaseUSDO.sol`: `sendForLeverage` can be used to manipulate other user's positions due to absent approval check.",
+  "issueId": 1014,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1014"
+}
