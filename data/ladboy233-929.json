@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "aoTAP.brokerClaim() in AirdropBroker.sol and OptionBroker.sol can be frontrun and anyone can claim to be the broker to mint option token",
+  "issueId": 929,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/929"
+}
