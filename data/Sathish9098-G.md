@@ -1285,15 +1285,32 @@ function manageCollateral(
 ```
 
 
+Nested if is cheaper than single statement
 
 
 
+Check storage check 
 
+Is this possible any variable to declare immutable ? 
 
 
 ## Transfer of 0 should be checked  
 
+State variables should be cached 
 
+Upgrade Solidity’s optimizer
+Make sure Solidity’s optimizer is enabled. It reduces gas costs. If you want to gas optimize for contract deployment (costs less to deploy a contract) then set the Solidity optimizer at a low number. If you want to optimize for run-time gas costs (when functions are called on a contract) then set the optimizer to a high number.
+
+Set the optimization value higher than 800 in your hardhat.config.ts file.
+
+  30:   solidity: {
+  31:     compilers: [
+  32:       {
+  33:         version: "0.8.12",
+  34:         settings: {
+  35:           optimizer: { enabled: true, runs: 200 },
+  36:         },
+  37:       },
 
 
 
