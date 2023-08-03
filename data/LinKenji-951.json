@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "LinKenji",
+  "risk": "2",
+  "title": "Division by Zero Vulnerability in `distributeReward()` Function.",
+  "issueId": 951,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/951"
+}
