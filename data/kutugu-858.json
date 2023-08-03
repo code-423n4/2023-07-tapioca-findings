@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kutugu",
+  "risk": "2",
+  "title": "executeCalls call value implementation error, unable to execute multiple calls",
+  "issueId": 858,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/858"
+}
