@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ack",
+  "risk": "3",
+  "title": "Arbitrary execution in `MagnetarV2#_permit()` can be used to steal tokens approved to Magnetar",
+  "issueId": 927,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/927"
+}
