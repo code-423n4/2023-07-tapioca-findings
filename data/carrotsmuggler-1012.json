@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "carrotsmuggler",
+  "risk": "2",
+  "title": "[MC01] Market liquidations can revert due to arithmetic underflow",
+  "issueId": 1012,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1012"
+}
