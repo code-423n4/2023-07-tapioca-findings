@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "3",
+  "title": "Inaccurate accrued Interest due to borrow fee amount inclusion which is unfair to borrowers",
+  "issueId": 1581,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1581"
+}
