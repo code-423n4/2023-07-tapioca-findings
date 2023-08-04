@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ack",
+  "risk": "2",
+  "title": "oTAP and aoTAP Broker role is claimable by malicious actor",
+  "issueId": 1084,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1084"
+}
