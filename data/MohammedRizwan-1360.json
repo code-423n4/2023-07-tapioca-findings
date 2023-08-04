@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "maxFlashLoan() is not incompliance with EIP-3156",
+  "issueId": 1360,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1360"
+}
