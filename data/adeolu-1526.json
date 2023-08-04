@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "no checks for if msg.sender is address `from` or if msg.sender has allowance to perform removeAsset() function on address `from` in BaseUSDO.sol",
+  "issueId": 1526,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1526"
+}
