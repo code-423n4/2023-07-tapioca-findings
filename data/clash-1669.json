@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "clash",
+  "risk": "2",
+  "title": "Possibly wrong parameters for Stargate router swap methods can lead to user fund",
+  "issueId": 1669,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1669"
+}
