@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "`emitForkWeek` and `sglPools.poolWeight` may desynch causing incorrect reward distribution",
+  "issueId": 1217,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1217"
+}
