@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "clash",
+  "risk": "2",
+  "title": "_sendNative in tapiocaz::Balancer::rebalance() not sending ETH can break service",
+  "issueId": 1641,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1641"
+}
