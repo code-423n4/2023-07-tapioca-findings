@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "3",
+  "title": "`TricryptoLPStrategy.compoundAmount` always returns 0 because it's using staticall vs call",
+  "issueId": 1428,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1428"
+}
