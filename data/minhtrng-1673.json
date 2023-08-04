@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "minhtrng",
+  "risk": "2",
+  "title": "Incorrect parameter for allowedBorrow when repaying",
+  "issueId": 1673,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1673"
+}
