@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "3",
+  "title": "`LidoEthStrategy._currentBalance` is subject to price manipulation, allows overborrowing and liquidations",
+  "issueId": 1432,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1432"
+}
