@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "windhustler",
+  "risk": "3",
+  "title": "TOFT `exerciseOption` fails due to not passing `msg.value` properly",
+  "issueId": 1248,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1248"
+}
