@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "`extractTAP()` incorrectly allows minting more `TAP` than emission",
+  "issueId": 1196,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1196"
+}
