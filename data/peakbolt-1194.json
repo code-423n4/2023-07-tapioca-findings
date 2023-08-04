@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "`TapiocaOptionBroker.exerciseOption()` has an unfair `TAP` distribution",
+  "issueId": 1194,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1194"
+}
