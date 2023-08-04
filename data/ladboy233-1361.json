@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "3",
+  "title": "LidoEthStrategy in YieldBox is not safe to use because it is using the spot price to calculate the balance, then user can inflate the share value to borrow arbitrary amount asset or deny liquidation",
+  "issueId": 1361,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1361"
+}
