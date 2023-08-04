@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "bin2chen",
+  "risk": "2",
+  "title": "setTricryptoLPGetter() lpToken miss approve new lpGetter",
+  "issueId": 1320,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1320"
+}
