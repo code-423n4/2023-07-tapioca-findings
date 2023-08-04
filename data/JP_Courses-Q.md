@@ -22,3 +22,9 @@ QA: updated(22/07/2023): why use _forwardRevert here if it seems to be using a s
 
 8. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/a4793e75a79060f8332927f97c6451362ae30201/contracts/usd0/modules/USDOMarketModule.sol#L242-L243
 QA/LOW: gas griefing attack maybe? but definitely risk of DoS via running out of gas if pending approval array too large... any max length checks somewhere?
+
+9. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/364dead3a42b06a34c802eee951cea1a654d438e/contracts/usd0/BaseUSDO.sol#L90
+QA: Why no max/min limits checks, e.g. require statements?? current max damage? >>> 0 then DoS for (flash) minting USDO. too high then consequences?
+
+10. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/364dead3a42b06a34c802eee951cea1a654d438e/contracts/usd0/BaseUSDO.sol#L99
+QA: Why no min limit check?
