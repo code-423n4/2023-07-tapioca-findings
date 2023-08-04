@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "addCollateral can be front-run that could cause loss of shares for the user when using skim",
+  "issueId": 1600,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1600"
+}
