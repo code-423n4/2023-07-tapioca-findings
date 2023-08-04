@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "`StargateStrategy#_withdraw`: ether becomes trapped in the contract whenever a user withdraws",
+  "issueId": 1519,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1519"
+}
