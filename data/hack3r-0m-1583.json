@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hack3r-0m",
+  "risk": "2",
+  "title": "Missing sequencer online check for chainlink L2 feeds on arbitrum",
+  "issueId": 1583,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1583"
+}
