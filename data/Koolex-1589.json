@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "computeClosingFactor will revert if collateralizationRate is greater than 89285 (approx 89%)",
+  "issueId": 1589,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1589"
+}
