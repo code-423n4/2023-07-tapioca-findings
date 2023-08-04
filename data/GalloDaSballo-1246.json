@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "`TapiocaOptionLiquidityProvision` causes Loss of Yield when depositing and withdrawing from Singularity - should use shares to track balances",
+  "issueId": 1246,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1246"
+}
