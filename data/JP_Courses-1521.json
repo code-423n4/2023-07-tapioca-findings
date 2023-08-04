@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "JP_Courses",
+  "risk": "2",
+  "title": "Potential reentrancy attack vector in _executeModule() via triggerSendFrom() in BaseUSDO contract, due to apparent lack of reentrancy protection.",
+  "issueId": 1521,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1521"
+}
