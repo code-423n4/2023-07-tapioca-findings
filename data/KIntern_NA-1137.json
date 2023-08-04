@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "2",
+  "title": "Function `TapiocaWrapper.executeCalls()` are unable to use if parameter `_call[]` has more than 1 element",
+  "issueId": 1137,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1137"
+}
