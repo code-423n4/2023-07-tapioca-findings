@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "2",
+  "title": "Full repayment for Singularity and BigBang can be grief-attacked by frontrunning it with 1 wei repayment",
+  "issueId": 1200,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1200"
+}
