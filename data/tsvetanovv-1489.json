@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "In `aoTAP.sol` and `oTAP.sol` malicious user can front-run `brokerClaim()` and become a broker",
+  "issueId": 1489,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1489"
+}
