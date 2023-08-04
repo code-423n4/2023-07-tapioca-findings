@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Walter",
+  "risk": "2",
+  "title": "Incorrect Interest Accrual Calculation in 'SGLCommon' Contract",
+  "issueId": 1653,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1653"
+}
