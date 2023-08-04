@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "gizzy",
+  "risk": "2",
+  "title": "Multicall3 contract function multicall reverts even when allowforFailure is enabled",
+  "issueId": 1267,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1267"
+}
