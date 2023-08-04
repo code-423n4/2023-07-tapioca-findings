@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "`_repay` function of BigBang contract burns incorrect amount of USDO tokens",
+  "issueId": 1111,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1111"
+}
