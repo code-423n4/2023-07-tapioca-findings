@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tank",
+  "risk": "2",
+  "title": "if users try to withdraw ERC721 from `YieldBox`, the transaction will revert",
+  "issueId": 1490,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1490"
+}
