@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "jasonxiale",
+  "risk": "2",
+  "title": "StargateStrategy.compound might use wrong `lpStakingPid` because of type",
+  "issueId": 1378,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1378"
+}
