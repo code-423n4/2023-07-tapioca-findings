@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "SPYBOY",
+  "risk": "2",
+  "title": "Improper Validation Of create2 Return Value",
+  "issueId": 1323,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1323"
+}
