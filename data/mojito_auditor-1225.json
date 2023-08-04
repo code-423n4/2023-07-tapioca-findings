@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "2",
+  "title": "`_currentDebt` Could Be Smaller Than `debtStartPoint` Causing DOS for the Whole Market",
+  "issueId": 1225,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1225"
+}
