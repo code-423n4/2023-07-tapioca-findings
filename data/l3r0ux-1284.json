@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "l3r0ux",
+  "risk": "2",
+  "title": "Broker role in OTAP and AOTAP tokens can be taken over leading to loss of tokens and DoS of the contracts",
+  "issueId": 1284,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1284"
+}
