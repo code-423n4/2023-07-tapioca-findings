@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "Cross chain signature replay attack",
+  "issueId": 1250,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1250"
+}
