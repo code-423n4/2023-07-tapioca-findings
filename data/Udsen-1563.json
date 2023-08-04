@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Udsen",
+  "risk": "2",
+  "title": "USE OF ERC20 `transfer` and `transferFrom` WITHOUT VERIFYING THE RETURN BOOLEAN VALUE CAN LEAD TO LOSS OF FUNDS",
+  "issueId": 1563,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1563"
+}
