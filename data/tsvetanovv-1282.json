@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "Several functions in `seer.sol` may return erroneous data from Chainlink Oracle because it does not check if Sequencer is active",
+  "issueId": 1282,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1282"
+}
