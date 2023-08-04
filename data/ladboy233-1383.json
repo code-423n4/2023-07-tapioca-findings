@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "3",
+  "title": "malicious user can drain the allowance of \"from\" account using addCollateral in BigBang.sol",
+  "issueId": 1383,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1383"
+}
