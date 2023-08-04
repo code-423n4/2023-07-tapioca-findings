@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "Missing deadline check on several functions in the protocol",
+  "issueId": 1513,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1513"
+}
