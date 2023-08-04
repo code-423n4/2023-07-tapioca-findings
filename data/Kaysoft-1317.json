@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "No Excess ETHER refund by the YeildBox.sol#depositETHAsset() function",
+  "issueId": 1317,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1317"
+}
