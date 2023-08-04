@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BPZ",
+  "risk": "3",
+  "title": "Malicious user can drain the Singularity contract of it's liquidity",
+  "issueId": 1621,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1621"
+}
