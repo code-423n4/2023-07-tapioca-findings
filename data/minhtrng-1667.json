@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "minhtrng",
+  "risk": "2",
+  "title": "Setting debtStartPoint > 0 breaks many BigBang actions",
+  "issueId": 1667,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1667"
+}
