@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "3",
+  "title": "`YieldBoxPermit#permit`, `YieldBoxPermit#permitAll` are vulnerable to cross chain replay attacks",
+  "issueId": 1528,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1528"
+}
