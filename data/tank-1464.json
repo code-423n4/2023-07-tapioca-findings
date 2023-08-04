@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tank",
+  "risk": "3",
+  "title": "owner can lose a lot of funds from `emergencyWithdraw` in `ConvexTricryptoStrategy `",
+  "issueId": 1464,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1464"
+}
