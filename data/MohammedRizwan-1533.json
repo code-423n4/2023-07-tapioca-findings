@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "In USDOMarketModule.sol, Lack of a code existence check leads to incorrect assumption of code execution",
+  "issueId": 1533,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1533"
+}
