@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "`_unlockTwTapPosition` doesn't work because all functions calling it are not payable",
+  "issueId": 1216,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1216"
+}
