@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "JP_Courses",
+  "risk": "2",
+  "title": "Rounding error risk in flashFee() function in USDO.sol contract, which could result in flashminting USDO tokens without paying any protocol flash fee.",
+  "issueId": 1444,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1444"
+}
