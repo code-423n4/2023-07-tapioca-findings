@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "c7e7eff",
+  "risk": "2",
+  "title": "Governance chain setting can be concurrent on multiple chains and dso_supply is not tracked across chains.",
+  "issueId": 1339,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1339"
+}
