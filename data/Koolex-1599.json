@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "3",
+  "title": "No protection for the protocol swap on _liquidateUser which could cause a possible fund loss",
+  "issueId": 1599,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1599"
+}
