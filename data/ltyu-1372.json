@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ltyu",
+  "risk": "2",
+  "title": "Chainlink Oracle does not check sequencer uptime",
+  "issueId": 1372,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1372"
+}
