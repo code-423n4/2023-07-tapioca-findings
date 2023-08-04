@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "seerether",
+  "risk": "3",
+  "title": "An attacker can take out a flash loan of the borrowed asset, manipulate prices during the swap, repay loan, and profit",
+  "issueId": 1431,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1431"
+}
