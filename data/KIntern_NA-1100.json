@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "The `eligibleTapAmount` calculation should be updated to utilize the AML model, rather than solely relying on the original amount of position",
+  "issueId": 1100,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1100"
+}
