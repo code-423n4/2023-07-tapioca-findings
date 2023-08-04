@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "3",
+  "title": "The `LTap.sol#setLockedUntil()` can only be called when the initial time set  for `_maxLockedUntil` is not reached ",
+  "issueId": 1499,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1499"
+}
