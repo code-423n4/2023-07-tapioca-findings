@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "3",
+  "title": "Hard-Coded slippage in many strategies will cause blockage of funds ",
+  "issueId": 1435,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1435"
+}
