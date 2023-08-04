@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "3",
+  "title": "TOFT in (m)TapiocaOft contracts can be stolen by calling removeCollateral() with a malicious removeParams.market",
+  "issueId": 1695,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1695"
+}
