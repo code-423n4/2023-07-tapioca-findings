@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "3",
+  "title": "Using Address.send() function may fail and cause loss of funds",
+  "issueId": 1454,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1454"
+}
