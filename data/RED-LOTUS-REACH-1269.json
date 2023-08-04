@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "RED-LOTUS-REACH",
+  "risk": "3",
+  "title": "Malicious user can use an excessively large `sendFromData` to break layerZero communication and cause massive loss of funds and completely cripple the entire protocol.",
+  "issueId": 1269,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1269"
+}
