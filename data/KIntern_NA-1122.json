@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "`_orderBookLiquidation` function in Singularity liquidates more collateral of users than it needed",
+  "issueId": 1122,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1122"
+}
