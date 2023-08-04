@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "2",
+  "title": "The UniswapV3Swapper contract uses a fixed poolFee to obtain the pool of all pairs, resulting in obtaining pools with low volumes.",
+  "issueId": 1130,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1130"
+}
