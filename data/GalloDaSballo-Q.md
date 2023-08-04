@@ -63,7 +63,7 @@
 * 51. [L - Swappers are Single Segment](#L-SwappersareSingleSegment)
 * 52. [L - Duplicate Markets can be added by mistake](#L-DuplicateMarketscanbeaddedbymistake)
 * 53. [L - The above looks unnecessary, it's done automatically by `deploy`](#L-Theabovelooksunnecessaryitsdoneautomaticallybydeploy)
-
+* 54. [L - Widespread usage of block.time while system is meant to be on Arbitrum]
 
 # Executive Summary
 
@@ -1024,5 +1024,14 @@ Limiting them to a single swap will reduce arbitrage opportunities, increase the
 
 ##  53. <a name='L-Theabovelooksunnecessaryitsdoneautomaticallybydeploy'></a>L - The above looks unnecessary, it's done automatically by `deploy`
 https://github.com/boringcrypto/BoringSolidity/blob/78f4817d9c0d95fe9c45cd42e307ccd22cf5f4fc/contracts/BoringFactory.sol#L61C7-L62
+##  54. Widespread usage of block.time while system is meant to be on Arbitrum
 
+
+Arbitrum Block Time is not "the usual one", it coincides with the time on L1, meaning it can change in ways that are not typical
+
+### More info
+
+https://docs.arbitrum.io/for-devs/troubleshooting-building#:~:text=timestamp%20on%20Arbitrum%20will%20return,typically%20updated%20roughly%20every%20second.
+
+https://docs.arbitrum.io/time
 
