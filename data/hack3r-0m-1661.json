@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hack3r-0m",
+  "risk": "2",
+  "title": "Lack of slippage checks on public withdraw fees function",
+  "issueId": 1661,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1661"
+}
