@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ayeslick",
+  "risk": "2",
+  "title": "Cannot use CurveSwapper when calling compound due to mismatched data parameter",
+  "issueId": 1280,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1280"
+}
