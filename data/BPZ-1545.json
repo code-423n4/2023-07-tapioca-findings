@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "BPZ",
+  "risk": "3",
+  "title": "##  _totalBorrow.elastic is increased number of the accrue() function called by the users. So attacker is able to liquidate the users by frequently calling accrue() function. ",
+  "issueId": 1545,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1545"
+}
