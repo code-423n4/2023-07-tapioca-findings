@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "3",
+  "title": "Exchange rates from Compound are assumed to have 18 decimals",
+  "issueId": 1417,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1417"
+}
