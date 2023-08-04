@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "seerether",
+  "risk": "3",
+  "title": "An attacker could batch calls to execute any state changing function in the contract, like transferring assets or liquidating accounts",
+  "issueId": 1532,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1532"
+}
