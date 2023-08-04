@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Lack of support for payment token that is more than 18 decimals in OptionBroker.sol and AirdroppedBroker.sol",
+  "issueId": 1079,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1079"
+}
