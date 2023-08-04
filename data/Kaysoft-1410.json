@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "The transfer code on line 180 of the USDOLeverageModule.sol#multiHop function will never be executed whether the returned `success` variable is true or false.",
+  "issueId": 1410,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1410"
+}
