@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "seerether",
+  "risk": "3",
+  "title": "liquidate() is vulnerable to frontrunning attacks due to the sequential liquidation logic.",
+  "issueId": 1558,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1558"
+}
