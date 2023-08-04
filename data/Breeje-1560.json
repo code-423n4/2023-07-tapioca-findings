@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Breeje",
+  "risk": "3",
+  "title": "Arbitrary `delegatecall` allows stealing of funds from `BaseTOFTLeverageModule`",
+  "issueId": 1560,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1560"
+}
