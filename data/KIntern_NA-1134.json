@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "Unable to `rebalance` due to lack of fee for Stargate to pay for the cross chain message",
+  "issueId": 1134,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1134"
+}
