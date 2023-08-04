@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "RedOneN",
+  "risk": "2",
+  "title": "Underflow Vulnerability in getDebtRate() Function May Halt ‘BigBang’ Contract Operations",
+  "issueId": 1554,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1554"
+}
