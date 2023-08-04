@@ -1,9 +1,11 @@
 # GAS OPTIMIZATIONS
 
+Gas is determined based on ``protocol tests`` and ``EVM opcodes``,``Remix sample tests``.
+
 | Gas Count | Issues | Instances  | Gas Saved  |
 | :------------ | :------------ | :------------ |:------------ |
 | [G-1]   | ``State variables`` can be packed into fewer storage slots | 16 |  32000   |
-| [G-2]   | ``Structs`` can be packed into fewer storage slots    | 2   | 4000   |
+| [G-2]   | ``Structs`` can be packed into fewer storage slots    | 7   | 14000   |
 | [G-3]   | Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas    |  13  | 3102 |
 | [G-4]   |  Using ``storage`` instead of ``memory`` for structs/arrays saves gas    | 4  | 16800   |
 | [G-5]   | Don't initialize the default values to state or local variables for saving gas      | 15   | 2388 |
@@ -14,12 +16,13 @@
 | [G-10]   | Don't ``emit`` ``state`` variables when ``stack`` variable available      | 1    | 100   |
 | [G-11]   | Multiple accesses of a ``mapping/array`` should use a local variable cache  | 6    | 600   |
 | [G-12]   | ``<x> += <y>`` costs more gas than ``<x> = <x> + <y>`` for state variables ``(SAME TO <x> -= <y>)``  | 13    | 1469 |
+| [G-13]   | ``Nested if`` is ``cheaper`` than single statement  | 10   | 130 |
+| [G-14]   | ``Transfer`` of ``0`` should be checked  | -   | - |
+|   |  | ||
+| [G-15]  | Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs |- |- |
+| G-16  | Ordering ``struct members`` in ``decreasing size`` can reduce operations gas cost  |- |- |
 
 
-
-[G-12] Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs
-
-# TRADITIONS GAS FINDINGS 
 ##
 
 ## [G-1] State variables can be packed into fewer storage slots
@@ -249,18 +252,52 @@ FILE: Breadcrumbstapiocaz-audit/contracts/tOFT/BaseTOFTStorage.sol
 
 ## [G-2] Structs can be packed into fewer storage slots
 
-### Saves ``4000 GAS``, ``2 SLOTs``
+### Saves ``14000 GAS``, ``7 SLOTs``
 
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
+
+### ``deadline`` can be uint96 instead of uint256: Saves ``4000 GAS, 2 SLOT``
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/MagnetarV2Storage.sol#L101-L108
+
+The ``uint96`` type is safe for approximately ``2.510588971096165e+21 years``. 
+The exact number of years that a uint96 type is safe for is ``251058897109617 years``.
+
+
+```diff
+
+91: struct PermitData {
+92:        address owner;
+93:        address spender;
++ 95:        uint96 deadline;
+94:        uint256 value;
+- 95:        uint256 deadline;
+96:        uint8 v;
+97:        bytes32 r;
+98:        bytes32 s;
+99:    }
+
+
+101: struct PermitAllData {
+102:        address owner;
+103:        address spender;
++ 104:        uint96 deadline;
+- 104:        uint256 deadline;
+106:        uint8 v;
+107:        bytes32 r;
+108:        bytes32 s;
+109:    }
+
+```
 
 ### ``Vesting.sol`` :``latestClaimTimestamp`` and ``revoked`` can be packed same ``SLOT`` . Saves ``2000 ``, ``1 SLOT``
 
 https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/Vesting.sol#L32-L37
 
+``latestClaimTimestamp`` can be ``uint248 `` to accommodate  ``revoked`` in same SLOT. Down casting is not affect protocol in any way . This way followed many of the protocols to avoid extra ``SLOT`` and ``GAS ``
+
 ```diff
 FILE: tap-token-audit/contracts/Vesting.sol
-
-``latestClaimTimestamp`` can be ``uint248 `` to accommodate  ``revoked`` in same SLOT. Down casting is not affect protocol in any way . This way followed many of the protocols to avoid extra ``SLOT`` and ``GAS ``
 
 31: /// @notice user vesting data
 32:    struct UserData {
@@ -294,6 +331,48 @@ FILE: tap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
 38: }
 
 ```
+### ``minAmountOut``,``fraction`` can uint96 instead of uint256 : Saves ``6000 GAS, 3 SLOTs``
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/MagnetarV2Storage.sol#L243-L250
+
+The ``minAmountOut`` parameter in the transfer function is the minimum amount of ether that must be transferred to the recipient.The ``minAmountOut`` parameter is used to prevent dust attacks. uint96 alone stores 1 ETH . The minimum amount going to exceeds the 1 ETH so its safe 
+
+The ``uint96`` type is a safe type for storing fractions, because it has enough precision to store fractions with up to ``18 decimal`` places of precision.
+
+```diff
+FILE: Breadcrumbstapioca-periph-audit/contracts/Magnetar/MagnetarV2Storage.sol
+
+233: struct HelperBuyCollateral {
+234:        address market;
+235:        address from;
++ 237:      uint96  minAmountOut;
+236:        uint256 borrowAmount;
+237:        uint256 supplyAmount;
+- 237:        uint256 minAmountOut;
+239:        ISwapper swapper;
+240:        bytes dexData;
+241:    }
+
+
+243: struct HelperSellCollateral {
+244:        address market;
+245:        address from;
++ 247:        uint96 minAmountOut;
+246:        uint256 share;
+- 247:        uint256 minAmountOut;
+248:        ISwapper swapper;
+249:        bytes dexData;
+250:    }
+
+196:    struct HelperRemoveAssetData {
+197:        address market;
+198:        address user;
++ 199:        uint96 fraction;
+- 199:        uint256 fraction;
+200:    }
+
+```
+
 ##
 
 ## [G-3] Using ``calldata`` instead of ``memory`` for read-only arguments in ``external`` functions saves gas
@@ -590,7 +669,7 @@ FILE: tap-token-audit/contracts/Vesting.sol
 
 ```
 
-### Default values initialization in loops : Saves ``182 GAS``, ``14 Instances```
+### Default values initialization in loops : Saves ``182 GAS``, ``14 Instances``
 
 ```solidity
 FILE: Breadcrumbstapioca-bar-audit/contracts/markets/Market.sol
@@ -709,7 +788,7 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 if we check ``address(_collateral) != address(0), address(_oracle) != address(0)`` after ``penrose,yieldBox `` storage write if address is zero then we need to pay 4000 GAS even after revert.
 
 
-```solidity
+```diff
 FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
 
                )
@@ -1168,11 +1247,119 @@ FILE: Breadcrumbstap-token-audit/contracts/governance/twTAP.sol
 ```
 ##
 
+## [G-14] Nested if is cheaper than single statement
+
+### Saves ``130 GAS, 10 Instances``
+
+Saves 13 Gas per instance 
+
+```solidity
+FILE: tapioca-bar-audit/contracts/usd0/BaseUSDO.sol
+
+370: if (!success && !_forwardRevert) {
+
+FILE: tapiocaz-audit/contracts/tOFT/BaseTOFT.sol
+
+412: if (!success && !_forwardRevert) {
+
+FILE: tapiocaz-audit/contracts/Balancer.sol
+
+226: if (!isNative && _ercData.length == 0) revert PoolInfoRequired();
+
+FILE: tapiocaz-audit/contracts/TapiocaWrapper.sol
+
+121: if (_revertOnFailure && !success) {
+
+144: if (_call[i].revertOnFailure && !success) {
+
+FILE: tapioca-periph-audit/contracts/Magnetar/MagnetarV2.sol
+
+1046: if (!success && !allowFailure) {
+
+FILE: tapioca-periph-audit/contracts/Magnetar/modules/MagnetarMarketModule.sol
+
+402: if (lendAmount == 0 && depositData.deposit) {
+
+611: if (
+612:            !removeAndRepayData.assetWithdrawData.withdraw &&
+613:            removeAndRepayData.repayAssetOnBB
+614:        ) {
+
+FILE: YieldBox/contracts/YieldBoxRebase.sol
+
+35: if (roundUp && (share * totalAmount) / totalShares_ < amount) {
+
+58: if (roundUp && (amount * totalShares_) / totalAmount < share) {
+
+```
+##
+
+## [G-14] Transfer of 0 should be checked
+
+When you transfer 0 ether, the transaction still costs gas, even though no ether is actually transferred. The gas cost of a transfer transaction is determined by the amount of ether being transferred, plus a base gas cost. So, even though you're transferring 0 ether, you still have to pay the base gas cost
+
+```solidity
+FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
+
+596: yieldBox.transfer(
+            address(this),
+            address(swapper),
+            collateralId,
+            collateralShare
+        );
+
+648: yieldBox.transfer(address(this), penrose.feeTo(), assetId, feeShare);
+
+649:  yieldBox.transfer(address(this), msg.sender, assetId, callerShare);
+
+704: yieldBox.transfer(from, address(this), _tokenId, share);
+
+717: yieldBox.transfer(address(this), to, collateralId, share);
+
+```  
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L596
+
+```solidity
+FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
+
+166: yieldBox.transfer(
+            address(this),
+            address(liquidationQueue),
+            collateralId,
+            allCollateralShare
+        );
+
+193:  yieldBox.transfer(address(this), msg.sender, assetId, callerShare);
+
+281: yieldBox.transfer(address(this), penrose.feeTo(), assetId, feeShare);
+
+282: yieldBox.transfer(address(this), msg.sender, assetId, callerShare);
+
+330: yieldBox.transfer(
+            address(this),
+            address(swapper),
+            collateralId,
+            collateralShare
+        );
+
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLiquidation.sol#L166
+
+```solidity
+FILE: tapioca-bar-audit/contracts/markets/singularity/SGLCommon.sol
+
+192: yieldBox.transfer(from, address(this), _assetId, share);
+
+243: yieldBox.transfer(address(this), to, assetId, share);
+
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L192
+
 
 
 # OTHER GAS SUGGESTIONS
 
-## [G-] Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs
+## [G-15] Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs
 
 By consolidating multiple related operations into a single function call, you can reduce the number of transactions and, consequently, the amount of gas required. This is particularly valuable in Ethereum, where gas costs can have a significant impact on the cost and speed of transactions.
 
@@ -1283,34 +1470,240 @@ function manageCollateral(
 }
 
 ```
+##
+
+## [G-16] Ordering struct members in decreasing size can reduce operations gas cost
+
+Ordering the members of a struct by size can help ensure that they are aligned to word boundaries as much as possible. By placing larger members before smaller members, it can reduce the amount of unused space within each 32-byte word and increase the likelihood that each member will be aligned to a word boundary.
+
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/Magnetar/MagnetarV2Storage.sol#L31-L58
+
+```diff
+FILE: Breadcrumbstapioca-periph-audit/contracts/Magnetar/MagnetarV2Storage.sol
+
+struct MarketInfo {
+-        address collateral;
+-        uint256 collateralId;
+        address asset;
+        uint256 assetId;
+        IOracle oracle;
+        bytes oracleData;
++        Rebase totalBorrow;
++        address collateral;
++        uint256 collateralId;
+        uint256 totalCollateralShare;
+        uint256 userCollateralShare;
+-        Rebase totalBorrow;
+        uint256 userBorrowPart;
++        uint256 totalBorrowCap;
+        uint256 currentExchangeRate;
+        uint256 spotExchangeRate;
+        uint256 oracleExchangeRate;
+-        uint256 totalBorrowCap;
++        uint256 yieldBoxAssetTokenId;
++        uint256 totalYieldBoxAssetShare;
++        uint256 totalYieldBoxAssetAmount;
++        TokenType yieldBoxCollateralTokenType;
+        uint256 totalYieldBoxCollateralShare;
+        uint256 totalYieldBoxCollateralAmount;
+-        uint256 totalYieldBoxAssetShare;
+-        uint256 totalYieldBoxAssetAmount;
+-        TokenType yieldBoxCollateralTokenType;
+        address yieldBoxCollateralContractAddress;
+        address yieldBoxCollateralStrategyAddress;
+        uint256 yieldBoxCollateralTokenId;
+        TokenType yieldBoxAssetTokenType;
+        address yieldBoxAssetContractAddress;
+        address yieldBoxAssetStrategyAddress;
+-        uint256 yieldBoxAssetTokenId;
+    }
 
 
-Nested if is cheaper than single statement
+    struct SingularityInfo {
+        MarketInfo market;
+        Rebase totalAsset;
++        uint256 utilization;
+        uint256 userAssetFraction;
+        ISingularity.AccrueInfo accrueInfo;
+-        uint256 utilization;
+    }
+
+
+    struct BigBangInfo {
+        MarketInfo market;
+-        IBigBang.AccrueInfo accrueInfo;
+        uint256 minDebtRate;
+        uint256 maxDebtRate;
+-        uint256 debtRateAgainstEthMarket;
+        address mainBBMarket;
+        uint256 mainBBDebtRate;
+        uint256 currentDebtRate;
++        IBigBang.AccrueInfo accrueInfo;
++        uint256 debtRateAgainstEthMarket;
+    }
+
+
+    // --- ACTIONS DATA ----
+    struct Call {
+        uint16 id;
+        address target;
++        bytes call;
+        uint256 value;
+        bool allowFailure;
+-        bytes call;
+    }
+
+    struct Result {
+        bool success;
+        bytes returnData;
+    }
+
+    struct PermitData {
++        bytes32 r;
++        bytes32 s;
++        uint8 v;
+        address owner;
+        address spender;
+        uint256 value;
+        uint256 deadline;
+-        uint8 v;
+-        bytes32 r;
+-        bytes32 s;
+    }
+
+    struct PermitAllData {
++        bytes32 r;
++        bytes32 s;
++        uint8 v;
+        address owner;
+        address spender;
+        uint256 deadline;
+-        uint8 v;
+-        bytes32 r;
+-        bytes32 s;
+    }
+
+ struct TOFTSendAndBorrowData {
+        address from;
+        address to;
+        uint16 lzDstChainId;
+        bytes airdropAdapterParams;
++        ICommonData.ISendOptions options;
++        ICommonData.IApproval[] approvals;
+        ITapiocaOFT.IBorrowParams borrowParams;
+        ICommonData.IWithdrawParams withdrawParams;
+-        ICommonData.ISendOptions options;
+-        ICommonData.IApproval[] approvals;
+    }
+
+  
+   struct YieldBoxDepositData {
++        address to;
+-       uint256 assetId;
+        address from;
+-        address to;
+        uint256 amount;
+        uint256 share;
++       uint256 assetId;
+    }
+
+    struct SGLAddCollateralData {
++        address to;
++        bool skim;      
+         address from;
+-        address to;
+-        bool skim;
+        uint256 amount;
+        uint256 share;
+    }
+
+    struct SGLBorrowData {
++        address to;
+        address from;
+-        address to;
+        uint256 amount;
+    }
+
+struct HelperDepositRepayRemoveCollateral {
+        address market;
+        address user;
++        uint256 repayAmount;
+        uint256 depositAmount;
+-        uint256 repayAmount;
+        uint256 collateralAmount;
+        bool extractFromSender;
+        ICommonData.IWithdrawParams withdrawCollateralParams;
+    }
+
+    struct HelperBuyCollateral {
+        address market;
+        address from;
++        bytes dexData;
++        ISwapper swapper;
+        uint256 borrowAmount;
+        uint256 supplyAmount;
+        uint256 minAmountOut;
+-        ISwapper swapper;
+-        bytes dexData;
+    }
+
+    struct HelperSellCollateral {
+        address market;
+        address from;
+        uint256 share;
++        bytes dexData;
++        ISwapper swapper;
+        uint256 minAmountOut;
+-        ISwapper swapper;
+-        bytes dexData;
+    }
+
+    struct HelperExerciseOption {
++        ICommonData.IApproval[] approvals;
++        ITapiocaOptionsBrokerCrossChain.IExerciseLZData lzData;
+        ITapiocaOptionsBrokerCrossChain.IExerciseOptionsData optionsData;
+-        ITapiocaOptionsBrokerCrossChain.IExerciseLZData lzData;
+        ITapiocaOptionsBrokerCrossChain.IExerciseLZSendTapData tapSendData;
+-        ICommonData.IApproval[] approvals;
+    }
+
+   
+
+    struct HelperMultiHopSell {
+        address from;
+        uint256 share;
++        bytes airdropAdapterParams;
+        IUSDOBase.ILeverageSwapData swapData;
+        IUSDOBase.ILeverageLZData lzData;
+        IUSDOBase.ILeverageExternalContractsData externalData;
+-        bytes airdropAdapterParams;
+        ICommonData.IApproval[] approvals;
+    }
+
+    struct HelperMarketRemoveAndRepayAsset {
+        address user;
++        IUSDOBase.IRemoveAndRepay removeAndRepayData;
+        ICommonData.ICommonExternalContracts externalData;
+-        IUSDOBase.IRemoveAndRepay removeAndRepayData;
+    }
+
+    struct HelperTOFTRemoveAndRepayAsset {
+        address from;
+        address to;
+        uint16 lzDstChainId;
++        bytes adapterParams;
+        address zroPaymentAddress;
+-        bytes adapterParams;
++        ICommonData.IApproval[] approvals;
+        ICommonData.ICommonExternalContracts externalData;
+        IUSDOBase.IRemoveAndRepay removeAndRepayData;
+-        ICommonData.IApproval[] approvals;
+    }
+
+ ```  
 
 
 
-Check storage check 
-
-Is this possible any variable to declare immutable ? 
-
-
-## Transfer of 0 should be checked  
-
-State variables should be cached 
-
-Upgrade Solidity’s optimizer
-Make sure Solidity’s optimizer is enabled. It reduces gas costs. If you want to gas optimize for contract deployment (costs less to deploy a contract) then set the Solidity optimizer at a low number. If you want to optimize for run-time gas costs (when functions are called on a contract) then set the optimizer to a high number.
-
-Set the optimization value higher than 800 in your hardhat.config.ts file.
-
-  30:   solidity: {
-  31:     compilers: [
-  32:       {
-  33:         version: "0.8.12",
-  34:         settings: {
-  35:           optimizer: { enabled: true, runs: 200 },
-  36:         },
-  37:       },
 
 
 
