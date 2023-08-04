@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "gizzy",
+  "risk": "2",
+  "title": "UniswapV3swapper uses hardcorded poolfee  to swap which may not be the most liquid pool and users suffer price impact.",
+  "issueId": 1231,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1231"
+}
