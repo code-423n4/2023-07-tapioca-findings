@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "A revert will occur in `removeAsset` method when a user has a lending allowance from a lender in some cases",
+  "issueId": 1607,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1607"
+}
