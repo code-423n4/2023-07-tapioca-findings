@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "`approve()`  and `approveBorrow()` in `MarketERC20.sol` can be front-run",
+  "issueId": 1494,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1494"
+}
