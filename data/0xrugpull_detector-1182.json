@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xrugpull_detector",
+  "risk": "3",
+  "title": "Missing `onlyOwner` modifier for `BigBang.init(). Prone to frontrunning by malicious actors.",
+  "issueId": 1182,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1182"
+}
