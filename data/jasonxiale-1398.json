@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "jasonxiale",
+  "risk": "2",
+  "title": "TapiocaWrapper.executeCalls will always revert if `_call.length` is more than one",
+  "issueId": 1398,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1398"
+}
