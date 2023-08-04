@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "3",
+  "title": "Wrong decimals in AirdropBroker results in all phase 3 users getting incorrect amount of tokens",
+  "issueId": 1357,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1357"
+}
