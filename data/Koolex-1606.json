@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "ERC1155 tokenOut doesn't have approve and it will cause a revert in swap at UniswappV3Swapper",
+  "issueId": 1606,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1606"
+}
