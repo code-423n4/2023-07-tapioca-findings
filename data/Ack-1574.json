@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Ack",
+  "risk": "2",
+  "title": "Broken functionality for ERC1155 `safeTransferFrom` with individual asset approvals in AssetRegister",
+  "issueId": 1574,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1574"
+}
