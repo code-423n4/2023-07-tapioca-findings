@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "3",
+  "title": "Lack of slippage protection in `GlpStrategy#_buyGlp` leads to loss of funds through MEV",
+  "issueId": 1516,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1516"
+}
