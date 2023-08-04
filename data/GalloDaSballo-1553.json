@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "Single UniswapV3Swapper using a single fee makes it highly likely to be suboptimal",
+  "issueId": 1553,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1553"
+}
