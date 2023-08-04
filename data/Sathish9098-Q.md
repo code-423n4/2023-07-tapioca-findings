@@ -1,14 +1,119 @@
 # LOW FINDINGS
 
+| Issue NO     | Issues | Instances |
+|------------|-----------------|-----------------|
+| [L-1]| Addressing the Danger of ``minAmountOut`` Set at 0: Ensuring Slippage Protection in Token Swaps| 4|
+| [L-2]   | Lack of ``checks-effects-interactions (CEI)`` when transfer            | 6             |
+| [L-3]   | Add to blacklist function           | 1            |
+| [L-4]   | ``forceSuccess`` parameter is ``set`` to ``false``, and the ``.call`` function fails for any of the market contracts, then creates unexpected behavior           | 1             |
+| [L-5]   | There is a risk that the ``borrowOpeningFee``,``totalBorrowCap ``,``poolFee `` variables is accidentally initialized to 0 and platform loses money         | 3             |
+| [L-6]   | ``maxLiquidatorReward``,``minLiquidatorReward`` check not allow exact value. <=,>= should be used instead of ``<,>``          | 2             |
+| [L-7]   | There is no clear docs why ``<=`` and ``<`` when checking FEE_PRECISION `` _callerFee <= FEE_PRECISION`` and ``_liquidationBonusAmount < FEE_PRECISION``          | 2             |
+| [L-8]   | ``val != paused `` check could be a problem if the market needs to be ``paused`` or ``unpaused`` for a short period of time            | 1           |
+| [L-9]   | ``computeTVLInfo()``function does not handle the case where the ``collateralAmountInAsset`` variable is zero            | 1              |
+| [L-10]   | Unnecessary or unused return values ``updated, rate`` in updateExchangeRate() function         | 1         |
+| [L-11]   | Avoid shadowing variables. ``ids``variable is shadowed    | 2           |
+| [L-12]   | NFT ``_tOLPTokenID`` should be generated in a incrementing way          | 1         |
+| [L-13]   | ``TapiocaOptionBroker.sol`` contract inherits ``Pausable`` but not implemented any pause mechanism            | -             |
+| [L-14]   | ``addCollateral()``,``addAsset()`` should be allowed even when contract ``paused``   | 2  |
+| [L-15]   | Project has NPM Dependency which uses a vulnerable version : ``@openzeppelin`` |4 |
+| [L-16]   |  Token transfer to ``address(0)`` should be avoided in ``removeCollateral()`` function | 1|
+| [L-17]   | ``signer`` should be checked with address(0) before ``signer == owner`` check in ``permit()``,``permitAll()`` functions          | 2             |
+| [L-18]   | Recommended to include the ``chain ID`` in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH `` , to prevent malicious actors from ``forging signatures`` on ``other networks``   | 1            |
+| [L-19]   | ``Constants`` with ``default visibility`` should be avoided. Declare constant with appropriate visibility to avoid unexpected behavior        | 4            |
+| [L-20]   | Inappropriate Title          | 1       |
+| [L-21]   | Lack of ``same value`` input ``control`` for setter functions         | 3      |
+| [L-22]   | Unwanted ``break`` statement         | 1       |
+| [L-23]   | It is possible to ``replay`` the ``_permit`` function if the deadline has not expired| 1       |
+| [L-24]   | Don’t use ``payable(address).call() ``      | 2      |
+| [L-25]   |  Lack of control for ``withdrawFees()`` . Anyone can call ``withdrawFees()`` send pending fees to ``feeRecipient``          | 1       |
+| [L-26]   | Implement reentrancy protection in critical functions like ``addCollateral()``, ``removeCollateral()``,borrow()  ``repay()`` functions          | 4       |
+| [L-27]   | ``address(this).balance >= amount`` contract's balance might change between the ``time`` the ``require`` statement is executed          | 1       |
+| [L-28]   | ``create2`` assembly may not be executed correctly if the ``salt`` is not unique    | 1    |
+| [L-29]   | ``salt`` and ``bytecodeHash`` values should be unique for every call in computeAddress() function          | 1       |
 
 
-###
+##
 
-
-## [L-1] Lack of checks-effects-interactions (CEI) when transfer 
+## [L-1] Addressing the Danger of ``minAmountOut`` Set at 0: Ensuring Slippage Protection in Token Swaps
 
 ### Impact
 
+The parameter ``minAmountOut`` assumes a pivotal role in the token swapping process, primarily functioning as a safeguard against ``potential slippage-induced`` losses for the user. However, there exists a concerning scenario wherein the user ``inadvertently`` assigns a value of ``0`` to the ``minAmountOut`` parameter.
+
+This susceptibility exposes the user to an alarming vulnerability, whereby they become susceptible to severe financial losses stemming from manipulative activities such as ``MEV bot sandwich attacks``. 
+
+### POC
+
+```solidity
+FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
+
+ function buyCollateral(
+        address from,
+        uint256 borrowAmount,
+        uint256 supplyAmount,
+        uint256 minAmountOut, //@audit without check vulnerable to MEV attacks
+        ISwapper swapper,
+        bytes calldata dexData
+    ) external notPaused solvent(from) returns (uint256 amountOut) {
+        require(penrose.swappers(swapper), "SGL: Invalid swapper");
+
+        // Let this fail first to save gas:
+        uint256 supplyShare = yieldBox.toShare(assetId, supplyAmount, true);
+        if (supplyShare > 0) {
+            yieldBox.transfer(from, address(swapper), assetId, supplyShare);
+        }
+
+        uint256 borrowShare;
+        (, borrowShare) = _borrow(from, address(swapper), borrowAmount);
+
+        ISwapper.SwapData memory swapData = swapper.buildSwapData(
+            assetId,
+            collateralId,
+            0,
+            supplyShare + borrowShare,
+            true,
+            true
+        );
+
+        uint256 collateralShare;
+        (amountOut, collateralShare) = swapper.swap(
+            swapData,
+            minAmountOut,
+            from,
+            dexData
+        );
+        require(amountOut >= minAmountOut, "SGL: not enough");
+
+        _allowedBorrow(from, collateralShare);
+        _addCollateral(from, from, false, 0, collateralShare);
+    }
+
+
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L336-L375
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L384-L424
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLeverage.sol#L117-L122
+
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L529-L534
+
+### Recommended Mitigation
+Add the checks to ``minAmountOut`` value
+
+```solidity
+Require(minAmountOut > 0 , " Minout not zero");
+
+```
+
+##
+
+## [L-2] Lack of checks-effects-interactions (CEI) when transfer 
+
+### Impact
+
+``Checks-Effects-Interactions (CEI)`` is a crucial principle in smart contract development that helps ensure the proper order of operations and prevents reentrancy vulnerabilities. Some of the contracts not followed the ``CEI`` Pattern vulnerable to reentrancy attacks
 
 ### POC
 
@@ -16,8 +121,9 @@
 FILE: Breadcrumbstapioca-yieldbox-strategies-audit/contracts/glp/GlpStrategy.sol
 
 123:  }
++ 125:            feesPending -= feeAmount;
 124:            weth.safeTransfer(feeRecipient, feeAmount);
-125:            feesPending -= feeAmount;
+- 125:            feesPending -= feeAmount;
 126:        }
 
 ```
@@ -26,25 +132,27 @@ https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a8
 ```solidity
 FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 
++ 195:    totalAsset.elastic += uint128(returnedShare - callerShare);
 193:    yieldBox.transfer(address(this), msg.sender, assetId, callerShare);
 194:
-195:    totalAsset.elastic += uint128(returnedShare - callerShare);
+- 195:    totalAsset.elastic += uint128(returnedShare - callerShare);
 
-
++ 284:  totalAsset.elastic += uint128(returnedShare - feeShare - callerShare);
 281:  yieldBox.transfer(address(this), penrose.feeTo(), assetId, feeShare);
 282:  yieldBox.transfer(address(this), msg.sender, assetId, callerShare);
 283:
-284:  totalAsset.elastic += uint128(returnedShare - feeShare - callerShare);
+- 284:  totalAsset.elastic += uint128(returnedShare - feeShare - callerShare);
 
 ```
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLLiquidation.sol#L193-L195
 
-```solidity
+```diff
 FILE: Breadcrumbstap-token-audit/contracts/tokens/LTap.sol
 
 41:   function deposit(uint256 amount) external {
++ 43:        _mint(msg.sender, amount);
 42:        tapToken.transferFrom(msg.sender, address(this), amount);
-43:        _mint(msg.sender, amount);
+- 43:        _mint(msg.sender, amount);
 44:    }
 
 ```
@@ -73,7 +181,7 @@ Change code as per ``CEI`` Pattern
 
 ##
 
-## [L-2] Add to blacklist function
+## [L-3] Add to blacklist function
 
 As stated in the project:
 
@@ -103,7 +211,7 @@ Add to Blacklist function and modifier.
 
 ## 
 
-## [L-] ``forceSuccess`` parameter is ``set`` to ``false``, and the ``.call`` function fails for any of the market contracts, then creates unexpected behavior  
+## [L-4] ``forceSuccess`` parameter is ``set`` to ``false``, and the ``.call`` function fails for any of the market contracts, then creates unexpected behavior  
 
 ### Impact
 The low level calls like .call return values must be checked . If we not checked return status we don't know the outcome of .call functions. 
@@ -152,7 +260,7 @@ This code will now ensure that the ``.call`` function succeeds for all of the ma
  
 ##
 
-## [L-3] There is a risk that the ``borrowOpeningFee``,``totalBorrowCap ``,``poolFee `` variables is accidentally initialized to 0 and platform loses money
+## [L-5] There is a risk that the ``borrowOpeningFee``,``totalBorrowCap ``,``poolFee `` variables is accidentally initialized to 0 and platform loses money
 
 ### Impact
 The lack of MIN and MAX value checks in setter functions when assigning values to uint256 can be a security risk. This is because it allows users to set values that are outside of the valid range for uint256. This could lead to a number of problems, including
@@ -192,7 +300,7 @@ Add ``MIN`` and ``MAX``, ``>0`` value checks to setter functions to avid unexpec
 
 ##
 
-## [L-4] ``maxLiquidatorReward``,``minLiquidatorReward`` check not allow exact value. <=,>= should be used instead of ``<,>``
+## [L-6] ``maxLiquidatorReward``,``minLiquidatorReward`` check not allow exact value. <=,>= should be used instead of ``<,>``
 
 ### Impact
 The ``maxLiquidatorReward`` and ``minLiquidatorReward`` variables in the ``Market.sol`` contract do not allow exact values. This is because the require() statements that check the values use the < and > operators. These operators will not allow the values to be equal to the specified value.
@@ -230,7 +338,7 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 ##
 
-## [L-5] There is no clear docs why ``<=`` and ``<`` when checking FEE_PRECISION `` _callerFee <= FEE_PRECISION`` and ``_liquidationBonusAmount < FEE_PRECISION`` 
+## [L-7] There is no clear docs why ``<=`` and ``<`` when checking FEE_PRECISION `` _callerFee <= FEE_PRECISION`` and ``_liquidationBonusAmount < FEE_PRECISION`` 
 
 ### Impact
 The disparity in using <= and < for certain checks in the documentation is not adequately explained and may cause confusion for developers. Some checks utilize <=, while others use <, without providing a clear rationale for the distinction between the two comparison operators.Using different operators for similar checks without proper documentation can lead to misunderstandings and errors in the contract's behavior
@@ -255,7 +363,7 @@ Clearly document why < and <= in different places
 
 ##
 
-## [L-6] ``val != paused `` check could be a problem if the market needs to be ``paused`` or ``unpaused`` for a short period of time
+## [L-8] ``val != paused `` check could be a problem if the market needs to be ``paused`` or ``unpaused`` for a short period of time
 
 ### Impact
 The ``updatePause()`` function in the ``Market.sol`` contract requires that the new paused state be different from the current paused state. This means that the function cannot be used to simply toggle the paused state.
@@ -276,7 +384,7 @@ function updatePause(bool val) external {
 
 ##
 
-## [L-7] ``computeTVLInfo()``function does not handle the case where the ``collateralAmountInAsset`` variable is zero 
+## [L-9] ``computeTVLInfo()``function does not handle the case where the ``collateralAmountInAsset`` variable is zero 
 
 ### Impact
 This could happen if the user's collateral is worth less than the amount they have borrowed. In this case, the function would return incorrect values
@@ -299,7 +407,7 @@ Handle the case where the ``collateralAmountInAsset`` variable is zero. This wou
 
 ## 
 
-## [L-8] Unnecessary or unused return values ``updated, rate`` in updateExchangeRate() function
+## [L-10] Unnecessary or unused return values ``updated, rate`` in updateExchangeRate() function
 
 ### Impact
 The return values (updated, rate) from the ``updateExchangeRate()`` function are unnecessary and not being used in the calling function. Since the solvent modifier does not use the return values, there is no need to return them from the ``updateExchangeRate()`` function.
@@ -347,36 +455,7 @@ https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657
 
 ##
 
-## [L-9] If the ``reward`` is negative values then ``uint256(reward)`` conversion may returns unexpected results 
-
-### Impact
-
-There is a possibility that the ``diff``,``reward`` calculation can result in a negative value .
-When you convert a negative signed integer to an unsigned integer (uint256), the two's complement representation can result in a very large positive number. The magnitude of the number will depend on the original negative value and the bit width of the unsigned integer.
-
-uint256(-12) = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4
-
-### POC
-
-```solidity
-FILE: Breadcrumbstapioca-bar-audit/contracts/markets/Market.sol
-
-461: return uint256(reward);
-
-```
-https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/Market.sol#L461
-
-### Recommended Mitigation
- Include require check to avoid negative values 
-
-```
-require(reward >= 0, "Reward must be non-negative");
-
-```
-
-##
-
-## [L-10] Avoid shadowing variables. ``ids``variable is shadowed 
+## [L-11] Avoid shadowing variables. ``ids``variable is shadowed 
 
 ### Impact
 Variable shadowing can affect the protocol in DeFi in a number of ways, especially when state and function parameters have the same name. For example, if a function parameter has the same name as a state variable, and the function modifies the parameter, then the state variable will also be modified. This can lead to unexpected behavior, such as funds being transferred to the wrong address
@@ -406,7 +485,7 @@ Choose different name for ``ids`` in ``_transferBatch`` function
 
 ##
 
-## [L-11] NFT ``_tOLPTokenID`` should be generated in a incrementing way
+## [L-12] NFT ``_tOLPTokenID`` should be generated in a incrementing way
 
 ### Impact
 Generate NFT token IDs in an incrementing way instead of allowing users to define their own values. This is because user-defined token IDs can be easily manipulated, and they can also be used to create duplicate or invalid tokens.
@@ -436,7 +515,7 @@ Use state variable generate tokenId. Increment 1 for every new mint
 
 ##
 
-## [L-12] ``TapiocaOptionBroker.sol`` contract inherits ``Pausable`` but not implemented any pause mechanism
+## [L-13] ``TapiocaOptionBroker.sol`` contract inherits ``Pausable`` but not implemented any pause mechanism
 
 ### Impact
 The ``TapiocaOptionBroker.sol`` contract inherits from the ``Pausable`` contract, but it does not implement any pause mechanism. This means that the contract cannot be paused, and all of the functions in the contract are always available to be called
@@ -455,7 +534,7 @@ Use pause mechanism or remove safely
 
 ##
 
-## [L-13] ``addCollateral()``addAsset() should be allowed even when contract ``paused`` 
+## [L-14] ``addCollateral()``addAsset() should be allowed even when contract ``paused`` 
 
 ### Impact
 The ``addCollateral`` function should be allowed even when the contract is paused. This is because if the liquidation threshold is reached and users positions are liquidated immediately after unpaused, then it is important to allow users to add collateral to prevent their positions from being liquidated.
@@ -485,7 +564,7 @@ Allow addCollateral() even contract ``paused ``
 
 ##
 
-## [L-14] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
+## [L-15] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
 
 ### Impact
 Protocol uses the vulnerable versions of openzeppelin,
@@ -528,7 +607,7 @@ Use latest ``openzeppelin`` version ``V4.9.3 ``
 
 ##
 
-## [L-15] Token transfer to ``address(0)`` should be avoided in ``removeCollateral()`` function
+## [L-16] Token transfer to ``address(0)`` should be avoided in ``removeCollateral()`` function
 
 ### Impact
 Token transfer to ``address(0)`` should be avoided. This is because ``address(0)`` is the "null address", which is a special address that does not belong to any user. If tokens are transferred to address(0), they are effectively lost.
@@ -578,7 +657,7 @@ require (to != address(0), "null address");
 
 ##
 
-## [L-16] ``signer`` should be checked with address(0) before ``signer == owner`` check in ``permit()``,``permitAll()`` functions
+## [L-17] ``signer`` should be checked with address(0) before ``signer == owner`` check in ``permit()``,``permitAll()`` functions
 
 ### Impact
 It is always a good practice to be as safe as possible. By checking if the signer is not address(0) before you compare it to the owner of the contract, you can add an extra layer of security to your contract. This will help to prevent even the most sophisticated malicious actors from exploiting your contract
@@ -608,7 +687,7 @@ FILE: YieldBox/contracts/YieldBoxPermit.sol
 
 ##
 
-## [L-17] Recommended to include the ``chain ID`` in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH `` , to prevent malicious actors from ``forging signatures`` on ``other networks``
+## [L-18] Recommended to include the ``chain ID`` in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH `` , to prevent malicious actors from ``forging signatures`` on ``other networks``
 
 ### Impact
 The chain ID is a number that identifies the Ethereum network that the transaction was submitted to. This number is used to prevent malicious actors from forging signatures on other networks.
@@ -636,7 +715,7 @@ Include the chain ID in the ``_PERMIT_TYPEHASH``,``_PERMIT_ALL_TYPEHASH ``
 
 ##
 
-## [L-18] ``Constants`` with ``default visibility`` should be avoided. Declare constant with appropriate visibility to avoid unexpected behavior
+## [L-19] ``Constants`` with ``default visibility`` should be avoided. Declare constant with appropriate visibility to avoid unexpected behavior
 
 ### Impact
 This is because constants with default visibility are visible to contracts in the same scope, which can lead to unexpected behavior. If this is already planned please clearly explain this with contract docs. 
@@ -659,7 +738,7 @@ Constants should be declared with appropriate visibility.
 
 ##
 
-## [L-19] Inappropriate Title 
+## [L-20] Inappropriate Title 
 
 The title suggests its public function but external function implemented 
 
@@ -686,7 +765,7 @@ https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e
 
 ##
 
-## [L-] Lack of ``same value`` input ``control`` for setter functions 
+## [L-21] Lack of ``same value`` input ``control`` for setter functions 
 
 ### Impact
 There is a lack of ``same value`` input ``control`` for setter functions in Solidity. This means that a ``setter function`` can be called with the ``same value`` as the current value of the variable being set. This can lead to ``unexpected behavior``, as the variable will not be changed.
@@ -716,7 +795,7 @@ require(_paymentTokenBeneficiary !=paymentTokenBeneficiary , " Not possible for 
 ```
 ##
 
-## [L-] Unwanted ``break`` statement
+## [L-22] Unwanted ``break`` statement
 
 The break statement can be removed from the for loop without affecting the code's functionality. The code will still work the same way, without the break statement
 
@@ -748,7 +827,7 @@ https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc2
 
 ## 
 
-## [L-] It is possible to ``replay`` the ``_permit`` function if the deadline has not expired
+## [L-23] It is possible to ``replay`` the ``_permit`` function if the deadline has not expired
 
 ### Impact
 This is because the permit function does not store any nonce information. This means that the same permit can be used multiple times, as long as the deadline has not expired. 
@@ -768,7 +847,7 @@ To prevent ``replay attacks``, the ``_permit`` function could be modified to sto
 
 ##
 
-## [L-] Don’t use payable(address).call()
+## [L-24] Don’t use payable(address).call()
 
 ### Impact
 
@@ -795,7 +874,7 @@ Use OpenZeppelin’s Address.sendValue()
 
 ##
 
-## [L-] Lack of control for ``withdrawFees()`` . Anyone can call ``withdrawFees()`` send pending fees to ``feeRecipient``
+## [L-25] Lack of control for ``withdrawFees()`` . Anyone can call ``withdrawFees()`` send pending fees to ``feeRecipient``
 
 ### Impact
 The attacker could call the ``withdrawFees`` function ``repeatedly``, which could ``destabilize`` the protocol and make it difficult for users to use the protocol.
@@ -815,7 +894,132 @@ Implement access control and time based fee emits
 
 ##
 
-## [L-] 
+## [L-26] Implement reentrancy protection in critical functions like ``addCollateral()``, ``removeCollateral()``,borrow()  ``repay()`` functions
+
+### Impact
+Implementing reentrancy protection is crucial to prevent potential attacks where an attacker tries to exploit the contract by repeatedly entering and exiting functions to manipulate state and potentially drain funds. Below, I'll provide a general guideline for adding reentrancy protection to critical functions like ``addCollateral()``, ``removeCollateral()``, ``borrow()``, and ``repay()`` using the "Checks-Effects-Interactions" pattern and the ``nonReentrant`` modifier
+
+
+```solidity
+FILE: tapioca-bar-audit/contracts/markets/bigBang/BigBang.sol
+
+263: function repay(
+        address from,
+        address to,
+        bool,
+        uint256 part
+    ) public notPaused allowedBorrow(from, part) returns (uint256 amount) {
+
+242: function borrow(
+        address from,
+        address to,
+        uint256 amount
+    ) public notPaused solvent(from) returns (uint256 part, uint256 share) {
+
+282: function addCollateral(
+        address from,
+        address to,
+        bool skim,
+        uint256 amount,
+        uint256 share
+    ) public allowedBorrow(from, share) notPaused {
+
+296: function removeCollateral(
+        address from,
+        address to,
+        uint256 share
+    ) public notPaused solvent(from) allowedBorrow(from, share) {
+
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/bigBang/BigBang.sol#L282-L288
+
+### Recommended Mitigation
+add ``nonReentrant`` modifier for critical functions 
+
+##
+
+## [L-27] ``address(this).balance >= amount`` contract's balance might change between the ``time`` the ``require`` statement is executed
+
+### Impact
+The ``address(this).balance >= amount`` statement might not be accurate because the contract's balance might change between the ``time`` the require statement is executed and the time the ``create2`` assembly is executed. This is because ``other transactions`` might be executed in the ``meantime``
+
+### POC
+
+```solidity
+FILE: tapioca-periph-audit/contracts/TapiocaDeployer/TapiocaDeployer.sol
+
+29: require(
+            address(this).balance >= amount,
+            "Create2: insufficient balance"
+        );
+
+```
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/TapiocaDeployer/TapiocaDeployer.sol#L28-L31
+
+### Recommended Mitigation
+Use a nonce .The nonce can be used to ensure that the require statement only checks the balance of the contract at the time the transaction is executed
+
+##
+
+## [L-28] ``create2`` assembly may not be executed correctly if the ``salt`` is not unique
+
+### Impact
+The ``create2`` assembly may not be executed correctly if the salt is not unique. This is because the create2 assembly uses the salt to prevent collisions. If the salt is not unique, then it is possible that two different contracts will be created with the same address.
+
+### POC
+```solidity
+FILE: tapioca-periph-audit/contracts/TapiocaDeployer/TapiocaDeployer.sol
+
+41: addr := create2(amount, add(bytecode, 0x20), mload(bytecode), salt) 
+
+```
+
+## Recommended Mitigation
+it is important to use a ``unique salt`` for each ``create2 call``. The salt can be any ``arbitrary value``, but it is important to make sure that it is ``unique``
+
+##
+
+## [L-29] ``salt`` and ``bytecodeHash`` values should be unique for every call in computeAddress() function
+
+### Impact
+If the ``bytecodeHash`` and ``salt`` values are not unique, then the function will produce the same address for ``multiple contracts``.
+
+### POC
+```solidity
+FILE: tapioca-periph-audit/contracts/TapiocaDeployer/TapiocaDeployer.sol
+
+ function computeAddress(
+        bytes32 salt,
+        bytes32 bytecodeHash,
+        address deployer
+    ) public pure returns (address addr) {
+        /// @solidity memory-safe-assembly
+        assembly {
+            let ptr := mload(0x40) // Get free memory pointer
+
+            // |                   | ↓ ptr ...  ↓ ptr + 0x0B (start) ...  ↓ ptr + 0x20 ...  ↓ ptr + 0x40 ...   |
+            // |-------------------|---------------------------------------------------------------------------|
+            // | bytecodeHash      |                                                        CCCCCCCCCCCCC...CC |
+            // | salt              |                                      BBBBBBBBBBBBB...BB                   |
+            // | deployer          | 000000...0000AAAAAAAAAAAAAAAAAAA...AA                                     |
+            // | 0xFF              |            FF                                                             |
+            // |-------------------|---------------------------------------------------------------------------|
+            // | memory            | 000000...00FFAAAAAAAAAAAAAAAAAAA...AABBBBBBBBBBBBB...BBCCCCCCCCCCCCC...CC |
+            // | keccak(start, 85) |            ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ |
+
+            mstore(add(ptr, 0x40), bytecodeHash)
+            mstore(add(ptr, 0x20), salt)
+            mstore(ptr, deployer) // Right-aligned with 12 preceding garbage bytes
+            let start := add(ptr, 0x0b) // The hashed data starts at the final garbage byte which we will set to 0xff
+            mstore8(start, 0xff)
+            addr := keccak256(start, 85)
+        }
+
+```
+https://github.com/Tapioca-DAO/tapioca-periph-audit/blob/023751a4e987cf7c203ab25d3abba58f7344f213/contracts/TapiocaDeployer/TapiocaDeployer.sol#L67
+
+### Recommended Mitigation
+Ensure both ``bytecodeHash``,``salt`` unique for every call 
 
 
 
@@ -824,32 +1028,5 @@ Implement access control and time based fee emits
 
 
 
-When ever we using ERC4494.sol we need to consider this 
-Security Considerations
 
-Extra care should be taken when creating transfer functions in which permit and a transfer function can be used in one function to make sure that invalid permits cannot be used in any way. This is especially relevant for automated NFT platforms, in which a careless implementation can result in the compromise of a number of user assets.
-
-The remaining considerations have been copied from ERC-2612 with minor adaptation, and are equally relevant here:
-
-Though the signer of a Permit may have a certain party in mind to submit their transaction, another party can always front run this transaction and call permit before the intended party. The end result is the same for the Permit signer, however.
-
-Since the ecrecover precompile fails silently and just returns the zero address as signer when given malformed messages, it is important to ensure ownerOf(tokenId) != address(0) to avoid permit from creating an approval to any tokenId which does not have an approval set.
-
-Signed Permit messages are censorable. The relaying party can always choose to not submit the Permit after having received it, withholding the option to submit it. The deadline parameter is one mitigation to this. If the signing party holds ETH they can also just submit the Permit themselves, which can render previously signed Permits invalid.
-
-The standard ERC-20 race condition for approvals applies to permit as well.
-
-If the DOMAIN_SEPARATOR contains the chainId and is defined at contract deployment instead of reconstructed for every signature, there is a risk of possible replay attacks between chains in the event of a future chain split.
-
-
-
-Implement reentrancy protection in critical functions like addCollateral, removeCollateral, borrow, repay, and others using the nonReentrant modifier bigbang.sol
-
-Use 2StepSetOwner instead of setOwner
-
-## [L-] tokenURI() should return null string instead of revert 
-
-Payable(address).call should be avoided 
-
-.abi.encodePacked vulnerable to hash collision 
 
