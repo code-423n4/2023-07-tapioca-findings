@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ck",
+  "risk": "2",
+  "title": "`BigBang::setBigBangConfig` can cause user liquidations without notice when various parameters are updated",
+  "issueId": 1157,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1157"
+}
