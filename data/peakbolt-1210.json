@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "2",
+  "title": "`MagnetarV2.burst()` will fail when performing cross chain withdrawal for action id `MARKET_YBDEPOSIT_COLLATERAL_AND_BORROW`  ",
+  "issueId": 1210,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1210"
+}
