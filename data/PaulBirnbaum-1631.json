@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "PaulBirnbaum",
+  "risk": "3",
+  "title": "Broker Address can be Claim by a MEV Bot",
+  "issueId": 1631,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1631"
+}
