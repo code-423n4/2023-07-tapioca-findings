@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ck",
+  "risk": "2",
+  "title": "When `BigBang::repay` is paused, users will be unfairly liquidated",
+  "issueId": 1135,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1135"
+}
