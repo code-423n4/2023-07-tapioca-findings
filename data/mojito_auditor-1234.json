@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "2",
+  "title": "`BaseTOFTStrategyModule.depositToYieldBox()` always reverts due to incorrect rounding direction in calculating `_amount`",
+  "issueId": 1234,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1234"
+}
