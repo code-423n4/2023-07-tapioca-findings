@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "There is not any permission check for `removeCollateral` function and other functions of BaseTOFT contract, resulting in attacker being able to steal user's funds",
+  "issueId": 1133,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1133"
+}
