@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "Incorrect calculation of `_getDiscountedPaymentAmount` function in TapiocaOptionBroker contract due to wrong decimals",
+  "issueId": 1107,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1107"
+}
