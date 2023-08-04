@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ayeslick",
+  "risk": "2",
+  "title": "`_withdraw` is susceptible to MEV",
+  "issueId": 1298,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1298"
+}
