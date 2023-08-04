@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "The catch block of the try...catch of `GlpStrategy.sol#_vestByGlp()` should revert.",
+  "issueId": 1586,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1586"
+}
