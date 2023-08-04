@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "3",
+  "title": "YearnStrategy rounding down when calculating `toWithdraw` could result in insufficient withdrawal amount",
+  "issueId": 1239,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1239"
+}
