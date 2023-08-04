@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Breeje",
+  "risk": "2",
+  "title": "Hard-coded slippage may freeze user funds during market turbulence",
+  "issueId": 1564,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1564"
+}
