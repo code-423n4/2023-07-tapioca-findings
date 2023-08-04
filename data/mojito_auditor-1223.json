@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "3",
+  "title": "Attacker can specify any `receiver` in `USD0.flashLoan()` to drain `receiver` balance",
+  "issueId": 1223,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1223"
+}
