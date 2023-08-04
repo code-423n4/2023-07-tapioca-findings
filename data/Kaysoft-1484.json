@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "The LidoEthStrategy.sol#compoundAmount() returns the wrong amount.",
+  "issueId": 1484,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1484"
+}
