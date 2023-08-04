@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Mstyv3003",
+  "risk": "3",
+  "title": "Reentrancy vulnerability in SGLLendingCommon._removeCollateral",
+  "issueId": 1639,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1639"
+}
