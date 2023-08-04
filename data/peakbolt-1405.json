@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "2",
+  "title": "`exitPositionAndRemoveCollateral()` will fail as `MagnetarV2` does not implement `onERC721Received()`",
+  "issueId": 1405,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1405"
+}
