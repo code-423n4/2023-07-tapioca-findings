@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "jaraxxus",
+  "risk": "2",
+  "title": "ARBTriCryptoOracle.sol uses Chainlink's latestAnswer, which is deprecated",
+  "issueId": 1252,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1252"
+}
