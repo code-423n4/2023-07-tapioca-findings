@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "2",
+  "title": "Insufficient Verification of create2 return value in TapiocaDeployer",
+  "issueId": 1422,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1422"
+}
