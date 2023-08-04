@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "SGLLeverage.sol: The function buyCollateral does not check for allowance over the supplyAmount",
+  "issueId": 1155,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1155"
+}
