@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "paweenp",
+  "risk": "3",
+  "title": "attacker can drain asset in StargateStrategy",
+  "issueId": 1418,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1418"
+}
