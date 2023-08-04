@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Hama",
+  "risk": "2",
+  "title": "Potential Underflow Vulnerability in Asset Removal Function",
+  "issueId": 1375,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1375"
+}
