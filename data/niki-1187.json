@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "niki",
+  "risk": "2",
+  "title": "Missing checks for whether the L2 Sequencer is active",
+  "issueId": 1187,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1187"
+}
