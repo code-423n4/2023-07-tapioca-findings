@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "2",
+  "title": "`Singularity.liquidate()` might be DOS due to missing `maxBorrowParts` in `_orderBookLiquidation` function",
+  "issueId": 1121,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1121"
+}
