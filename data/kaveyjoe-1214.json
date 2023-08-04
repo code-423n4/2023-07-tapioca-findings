@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaveyjoe",
+  "risk": "3",
+  "title": " Incorrect calculation of amount out for amount in due to pool fee not being taken into account",
+  "issueId": 1214,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1214"
+}
