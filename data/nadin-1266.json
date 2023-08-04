@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "nadin",
+  "risk": "3",
+  "title": "All LayerZero requests will fail in `Balancer.sol`",
+  "issueId": 1266,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1266"
+}
