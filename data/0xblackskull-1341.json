@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xblackskull",
+  "risk": "2",
+  "title": "Not following the Checks-Effects-Interactions pattern",
+  "issueId": 1341,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1341"
+}
