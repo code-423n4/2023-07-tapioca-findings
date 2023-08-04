@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "seerether",
+  "risk": "3",
+  "title": "LiquidationQueue brings centralization risk in the contract. ",
+  "issueId": 1612,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1612"
+}
