@@ -6,6 +6,8 @@ If the array is passed to an internal function which passes the array to another
 
 Note that I’ve also flagged instances where the function is public but can be marked as external since it’s not called by the contract, and cases where a constructor is involved
 
+There are 15 instances of this issue in 13 files:
+
     File: tapioca-bar-audit/contracts/usd0/BaseUSDO.sol 💰 👥	
 
     215: function initMultiHopBuy(
@@ -242,6 +244,8 @@ https://github.com/Tapioca-DAO/tapioca-periph-audit/tree/master/contracts/Magnet
 
 When writing value for variables whose type is address, make use of assembly code instead of solidity code.
 
+There are 23 instances of this issue in 15 files:
+
     File: tapioca-bar-audit/contracts/Penrose.sol 🖥 💰 📤 🌀 Σ	
 
     94: owner = _owner;
@@ -401,6 +405,8 @@ https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/tree/master/con
 
 Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
 
+There are 13 instances of this issue in 10 issues:
+
     File: tapioca-bar-audit/contracts/usd0/BaseUSDO.sol 💰 👥	
 
     370: if (!success && !_forwardRevert) {
@@ -538,6 +544,8 @@ Given 4 variables a, b, c and d represented as such:
 
 To have a == b means that every 0 and 1 match on both variables. Meaning that a XOR (operator ^) would evaluate to 0 ((a ^ b) == 0), as it excludes by definition any equalities.Now, if a != b, this means that there’s at least somewhere a 1 and a 0 not matching between a and b, making (a ^ b) != 0.Both formulas are logically equivalent and using the XOR bitwise operator costs actually the same amount of gas.However, it is much cheaper to use the bitwise OR operator (|) than comparing the truthy or falsy values.These are logically equivalent too, as the OR bitwise operator (|) would result in a 1 somewhere if any value is not 0 between the XOR (^) statements, meaning if any XOR (^) statement verifies that its arguments are different.
 
+There are 6 instances o fthis issue in 4 files:
+
     File: tapioca-bar-audit/contracts/markets/Market.sol 🖥	
 
     485: if (numerator == 0 || denominator == 0) {
@@ -613,6 +621,8 @@ https://github.com/Tapioca-DAO/Yieldbox/tree/master/contracts/YieldBox.sol
 ## [G-05] Instead of counting down in for statements, count up
 
 Counting down is more gas efficient than counting up because neither we are making zero variable to non-zero variable and also we will get gas refund in the last transaction when making non-zero to zero variable.
+
+There are 49 instances of this issue in 22 files:
 
     File: tapioca-bar-audit/contracts/usd0/modules/USDOMarketModule.sol 💰 👥 ♻️ Σ	
 
