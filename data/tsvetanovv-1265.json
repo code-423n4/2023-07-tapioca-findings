@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "A malicious user can prevent another user from using `distributeReward()` in `twTAP.sol`",
+  "issueId": 1265,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1265"
+}
