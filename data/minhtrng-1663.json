@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "minhtrng",
+  "risk": "2",
+  "title": "ConvexTriCryptoStrategy might not compound all rewards",
+  "issueId": 1663,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1663"
+}
