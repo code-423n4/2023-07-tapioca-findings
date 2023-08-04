@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "Attacker can borrow on behalf of user by `multiHopBuyCollateral` function of Singularity",
+  "issueId": 1119,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1119"
+}
