@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "3",
+  "title": "Accounting for Fees in BigBang Market is Incorrect and Allows Infinite Minting of USD0",
+  "issueId": 1232,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1232"
+}
