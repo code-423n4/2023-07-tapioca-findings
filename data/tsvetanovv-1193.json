@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "In several places, the returned value from the Oracle is not checked",
+  "issueId": 1193,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1193"
+}
