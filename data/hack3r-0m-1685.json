@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hack3r-0m",
+  "risk": "3",
+  "title": "Miusing empty string insteaf of oracleData in updateExchangeRate",
+  "issueId": 1685,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1685"
+}
