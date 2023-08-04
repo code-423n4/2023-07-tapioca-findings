@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Udsen",
+  "risk": "2",
+  "title": "ACCOUNTING ERROR INTRODUCED IN ARITHMETIC CALCULATION OF THE `_computeMaxAndMinLTVInAsset` FUNCTION",
+  "issueId": 1543,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1543"
+}
