@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "`StargateStrategy#_currentBalance` calculation is incorrect and may lead to DoS",
+  "issueId": 1520,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1520"
+}
