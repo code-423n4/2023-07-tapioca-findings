@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Walter",
+  "risk": "2",
+  "title": "Signature Validation Bypass in 'permit' Function of MarketERC20.sol",
+  "issueId": 1650,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1650"
+}
