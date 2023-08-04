@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "jaraxxus",
+  "risk": "2",
+  "title": "Uniswapv3Swapper.sol does not set sqrtPriceLimitX96 as part of the swap, which may cause unnecessary price impact/slippage",
+  "issueId": 1260,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1260"
+}
