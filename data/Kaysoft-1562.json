@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "`BaseTOFT.sol#_executeModule` will revert when the `_forwardRevert` variable is set to false",
+  "issueId": 1562,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1562"
+}
