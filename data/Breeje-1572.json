@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Breeje",
+  "risk": "2",
+  "title": "No check if Arbitrum L2 sequencer is down in Chainlink feeds.",
+  "issueId": 1572,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1572"
+}
