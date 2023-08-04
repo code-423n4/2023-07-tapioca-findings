@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "hack3r-0m",
+  "risk": "3",
+  "title": "ARBTriCryptoOracle is prone to manipulation",
+  "issueId": 1632,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1632"
+}
