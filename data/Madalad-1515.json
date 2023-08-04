@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "`MagnetarV2`: operations involving a call to `MagnetarMarketModule#_withdraw` always revert if called using `MagnetarV2#burst` along with other operations that use `msg.value`",
+  "issueId": 1515,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1515"
+}
