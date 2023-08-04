@@ -28,3 +28,6 @@ QA: Why no max/min limits checks, e.g. require statements?? current max damage? 
 
 10. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/364dead3a42b06a34c802eee951cea1a654d438e/contracts/usd0/BaseUSDO.sol#L99
 QA: Why no min limit check?
+
+11. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/364dead3a42b06a34c802eee951cea1a654d438e/contracts/usd0/BaseUSDO.sol#L126
+QA: is intended to have multiple allowed minters at same time for same chainId, or not?
