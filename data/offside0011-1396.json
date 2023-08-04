@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "offside0011",
+  "risk": "3",
+  "title": "Option signature can be hijacked in-flight ",
+  "issueId": 1396,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1396"
+}
