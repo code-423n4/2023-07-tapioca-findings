@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xRobocop",
+  "risk": "3",
+  "title": "TapiocaOptionBroker: An attacker can make epochs to distribute 0 TAP",
+  "issueId": 1511,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1511"
+}
