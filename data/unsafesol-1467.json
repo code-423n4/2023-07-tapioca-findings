@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "3",
+  "title": "Malicious users can bypass emergency withdraws in strategies by depositing a minute amount of shares in yieldBox via the Singularity or BigBang markets",
+  "issueId": 1467,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1467"
+}
