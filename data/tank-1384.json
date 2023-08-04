@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tank",
+  "risk": "3",
+  "title": "in `TricryptoLPStrategy`, attacker can steals `wrappedNative`",
+  "issueId": 1384,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1384"
+}
