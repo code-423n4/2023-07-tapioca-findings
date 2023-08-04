@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "clash",
+  "risk": "2",
+  "title": "_sendToken in tapiocaz::Balancer::rebalance() not sending native fee will lead to revert",
+  "issueId": 1648,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1648"
+}
