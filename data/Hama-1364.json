@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Hama",
+  "risk": "2",
+  "title": " Frontrunning Vulnerability in brokerClaim() Function",
+  "issueId": 1364,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1364"
+}
