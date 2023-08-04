@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "Combined Chainlink/Unsiwap oracle design fails to protect against DoS",
+  "issueId": 1509,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1509"
+}
