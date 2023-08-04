@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "gizzy",
+  "risk": "3",
+  "title": "removeBid in liquidationQueue tries to access deleted mapping boolean infor and will always skip the part of code it governs because it will always be false.",
+  "issueId": 1297,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1297"
+}
