@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Matue",
+  "risk": "3",
+  "title": "Overflow allows you to borrow more than the limit, lock borrows and repayments.",
+  "issueId": 1445,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1445"
+}
