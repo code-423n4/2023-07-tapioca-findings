@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "bin2chen",
+  "risk": "2",
+  "title": "StargateStrategy._withdraw() the calculations are wrong.",
+  "issueId": 1463,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1463"
+}
