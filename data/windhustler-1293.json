@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "windhustler",
+  "risk": "3",
+  "title": "TOFT `removeCollateral` can be used to steal all the balance",
+  "issueId": 1293,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1293"
+}
