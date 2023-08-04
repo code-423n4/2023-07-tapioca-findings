@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "Incorrect formula used in function `Market.computeClosingFactor()`",
+  "issueId": 1145,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1145"
+}
