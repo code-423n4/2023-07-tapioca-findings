@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "2",
+  "title": "`Balancer.checker()` will fail for rebalancing of TOFT ERC20 tokens",
+  "issueId": 1206,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1206"
+}
