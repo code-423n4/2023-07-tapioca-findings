@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "There is no decrease for the share allowance from _addCollateral when share passed zero",
+  "issueId": 1597,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1597"
+}
