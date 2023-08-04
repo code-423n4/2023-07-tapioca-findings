@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tank",
+  "risk": "3",
+  "title": "`StargateStrategy`: reward tokens can be stole in `compound` function",
+  "issueId": 1472,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1472"
+}
