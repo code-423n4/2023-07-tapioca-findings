@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Udsen",
+  "risk": "2",
+  "title": "THE `rewardTokens` ARRAY CAN GROW AND `DoS` CRITICAL TRANSACTIONS SINCE NO FUNCTIONALITY TO REMOVE UNUSED REWARD TOKENS FROM THE ARRAY",
+  "issueId": 1571,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1571"
+}
