@@ -1356,7 +1356,6 @@ FILE: tapioca-bar-audit/contracts/markets/singularity/SGLCommon.sol
 https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/singularity/SGLCommon.sol#L192
 
 
-
 # OTHER GAS SUGGESTIONS
 
 ## [G-15] Consider consolidating the ``addAsset`` and ``removeAsset`` , ``addCollateral``and ``removeCollateral`` related functions that could potentially be consolidated to reduce gas costs
