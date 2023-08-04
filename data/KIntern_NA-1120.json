@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "2",
+  "title": "`_getInterestRate` function in SGLCommon contract accrues incorrect fee",
+  "issueId": 1120,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1120"
+}
