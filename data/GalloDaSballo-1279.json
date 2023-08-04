@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "MaxFlashloan is not coded to spec, always returns `maxFlashMint`",
+  "issueId": 1279,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1279"
+}
