@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "TapiocaOptionBrokers - Lack of Minimum Duration for `tOLP` means people can lock for 1 block to get access to Options",
+  "issueId": 1245,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1245"
+}
