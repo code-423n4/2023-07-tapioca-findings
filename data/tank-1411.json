@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tank",
+  "risk": "3",
+  "title": "users can get more shares when `deposit` than usual in `YieldBox` that integrates with `TricryptoLPStrategy` and other users can get less shares when `deposit`",
+  "issueId": 1411,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1411"
+}
