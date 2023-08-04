@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "`twTAP.participate()` can be permanently frozen due to lack of access control on host-chain-only operations",
+  "issueId": 1170,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1170"
+}
