@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "jasonxiale",
+  "risk": "2",
+  "title": "stale amount of value by using ctoken.exchangeRateStored",
+  "issueId": 1362,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1362"
+}
