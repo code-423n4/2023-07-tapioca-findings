@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "Users of swap contracts inheriting from `BaseSwapper` are vulnerable to having their funds stolen by frontrunning",
+  "issueId": 1514,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1514"
+}
