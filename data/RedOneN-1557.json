@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "RedOneN",
+  "risk": "2",
+  "title": "Total Collateral Shares Not Updated on Liquidation: Leads to Inaccurate Accounting",
+  "issueId": 1557,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1557"
+}
