@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaveyjoe",
+  "risk": "2",
+  "title": " _swapTokensForTokens() function does not properly handle the case where the amount of tokens received is less than the minimum amount specified by the caller.",
+  "issueId": 1197,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1197"
+}
