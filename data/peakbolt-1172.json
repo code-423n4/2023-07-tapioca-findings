@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "Inconsistent use of `allowedBorrow` could allow spender to spend more than owner intended",
+  "issueId": 1172,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1172"
+}
