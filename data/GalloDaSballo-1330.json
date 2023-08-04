@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "CompoundStrategy `_currentBalance` uses `exchangeRateStored` which is leaks value",
+  "issueId": 1330,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1330"
+}
