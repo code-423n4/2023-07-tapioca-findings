@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "3",
+  "title": "Inaccurate/Incorrect calculation of returned shares by `_borrow` method",
+  "issueId": 1579,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1579"
+}
