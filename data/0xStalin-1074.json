@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xStalin",
+  "risk": "2",
+  "title": "Logic to wrap the native token using the Magnetar contract is broken, because the valAccumulator accrues twice the _action.value, which will cause the value of the `valAccumulator` to not be equals to the value of `msg.value` causing the tx to be reverted (or force users to pay more native token to not get the tx reverted)",
+  "issueId": 1074,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1074"
+}
