@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ak1",
+  "risk": "2",
+  "title": "aoTAP.sol : `brokerClaim()` can be called by anyone as soon as the contract is deployed.",
+  "issueId": 1651,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1651"
+}
