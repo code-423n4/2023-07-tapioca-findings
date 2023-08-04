@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "3",
+  "title": "borrowInternal() of BaseTOFTMarketModule.sol has phantom permit functions",
+  "issueId": 1677,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1677"
+}
