@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "The try...catch in the `USDOLeverageModule.sol#_callApproval()` function will only catch string errors",
+  "issueId": 1633,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1633"
+}
