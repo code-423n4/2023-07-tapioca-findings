@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "gizzy",
+  "risk": "3",
+  "title": "Owner or minter if set to EOA for any reason and any given time  can mint more than capped 100,000,000 total supply of Tap tokens",
+  "issueId": 1080,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1080"
+}
