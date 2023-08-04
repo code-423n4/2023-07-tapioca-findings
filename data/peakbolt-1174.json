@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "Incorrect refund address for `BaseTOFT.retrieveFromStrategy()` prevents gas refund to user",
+  "issueId": 1174,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1174"
+}
