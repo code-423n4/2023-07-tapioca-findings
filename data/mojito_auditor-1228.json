@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "2",
+  "title": "`_depositFeesToYieldBox()` is vulnerable to sandwich attack as `dexData` is set by sender and sender could be anyone",
+  "issueId": 1228,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1228"
+}
