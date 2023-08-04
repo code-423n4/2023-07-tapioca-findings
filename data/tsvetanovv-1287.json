@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "`ARBTriCryptoOracle.sol` uses the deprecated function to take the price feed",
+  "issueId": 1287,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1287"
+}
