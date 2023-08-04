@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "3",
+  "title": "`BigBang::addCollateral` and `SGLCollateral::addCollateral` will pull collateral from anybody without their approval",
+  "issueId": 1289,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1289"
+}
