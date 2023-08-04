@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "2",
+  "title": "`Balancer.rebalance()` will not work due to missing fee payment for Stargate swaps",
+  "issueId": 1204,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1204"
+}
