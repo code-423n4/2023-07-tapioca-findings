@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "3",
+  "title": "In the BaseTOFT, removeCollateral(), any marketHelper can be specified, allowing all the ETH to be stolen from a mTapiocaOFT with ETH as erc",
+  "issueId": 1643,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1643"
+}
