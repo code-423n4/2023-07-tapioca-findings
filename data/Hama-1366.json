@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Hama",
+  "risk": "3",
+  "title": "Frontrunning Attack on Balancer State Update and Extraction leads to fund loss",
+  "issueId": 1366,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1366"
+}
