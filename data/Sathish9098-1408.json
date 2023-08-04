@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Sathish9098",
+  "risk": "2",
+  "title": "Missing deadline checks allow pending transactions to be maliciously executed",
+  "issueId": 1408,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1408"
+}
