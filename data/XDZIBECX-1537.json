@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "XDZIBECX",
+  "risk": "2",
+  "title": " Unintended Overflow in initMultiSell function",
+  "issueId": 1537,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1537"
+}
