@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "niki",
+  "risk": "2",
+  "title": "ChainlinkUtils.sol will return the wrong price for asset if underlying aggregator hits minAnswer",
+  "issueId": 1191,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1191"
+}
