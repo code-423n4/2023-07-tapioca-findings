@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ak1",
+  "risk": "2",
+  "title": "TapOFT.sol: Incorrect emission value due to division by higher decimal value",
+  "issueId": 1629,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1629"
+}
