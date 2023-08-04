@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "paweenp",
+  "risk": "3",
+  "title": "Attacker can drain asset in AaveStrategy",
+  "issueId": 1399,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1399"
+}
