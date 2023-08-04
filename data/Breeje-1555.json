@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Breeje",
+  "risk": "3",
+  "title": "Curve oracle manipulation possible with read only reentrancy in `get_virtual_price`",
+  "issueId": 1555,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1555"
+}
