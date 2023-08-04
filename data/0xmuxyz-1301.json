@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xmuxyz",
+  "risk": "2",
+  "title": "`lendingPool.withdraw()` in the AaveStrategy#`_withdraw()` would be reverted if the withdrawal amount (`toWithdraw`) from the Aave v2's LendingPool would be `0`",
+  "issueId": 1301,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1301"
+}
