@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xrugpull_detector",
+  "risk": "3",
+  "title": "`BigBang.sol._borrow()` does not collect borrowing fee. It does not mint enough USDO token including borrowing fee.",
+  "issueId": 1180,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1180"
+}
