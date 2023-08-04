@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "2",
+  "title": "Anyone can withdraw from a strategy on behalf of a user using a retrieveFromStrategy() cross chain message of (m)TapiocaOFT",
+  "issueId": 1078,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1078"
+}
