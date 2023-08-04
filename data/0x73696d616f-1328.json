@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "3",
+  "title": "Lost funds due to selfdestruct of modules of (m)TapiocaOFT  by calling directly one of the functions that has an argument address module",
+  "issueId": 1328,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1328"
+}
