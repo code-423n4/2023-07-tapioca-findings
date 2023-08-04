@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "IllIllI",
+  "risk": "3",
+  "title": "`ARBTriCryptoOracle` is vulnerable to read-only reentrancy",
+  "issueId": 1211,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1211"
+}
