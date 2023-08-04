@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "MohammedRizwan",
+  "risk": "3",
+  "title": "flashLoan(() doesn't pass/authenticate the initiator/receiver address per EIP-3156",
+  "issueId": 1152,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1152"
+}
