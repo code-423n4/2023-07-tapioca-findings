@@ -23,6 +23,10 @@ require(IERC20(collateral).allowance(from, address(this)) >= amount, "Not enough
 - The function _repay does not check for overpayment. This could lead to more tokens being repaid than were originally borrowed.
 
 
+3 . Target : https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/master/contracts/yearn/YearnStrategy.sol
 
+The _withdraw() function in the YearnStrategy contract has a rounding error. When the amount parameter to the function is greater than the queued amount of tokens that are currently held by the contract, the function will withdraw the toWithdraw amount of tokens from the Yearn vault. However, the wrappedNative.safeTransfer() function will only transfer amount - 1 tokens to the to address, due to rounding errors. This means that the to address will not receive the full amount of tokens that they were expecting.
+
+The _withdraw() function can be modified to use the safeTransferFrom() function instead of the safeTransfer() function. This will ensure that the full amount of tokens is transferred to the to address, even if there are rounding errors.
 
 
