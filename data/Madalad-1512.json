@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "`latestAnswer` is deprecated and may return stale or incorrect price",
+  "issueId": 1512,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1512"
+}
