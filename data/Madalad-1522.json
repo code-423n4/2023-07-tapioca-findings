@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "Strategy contracts `emergencyWithdraw` function can be griefed",
+  "issueId": 1522,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1522"
+}
