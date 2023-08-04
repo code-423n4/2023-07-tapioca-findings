@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "poneta",
+  "risk": "2",
+  "title": "functions that can receive ether but have no withdraw function",
+  "issueId": 1294,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1294"
+}
