@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "unsafesol",
+  "risk": "3",
+  "title": "Reentrancy in USDO#flashLoan results in user being able to mint more than max allowed mint value",
+  "issueId": 1356,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1356"
+}
