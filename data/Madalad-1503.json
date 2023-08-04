@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Madalad",
+  "risk": "2",
+  "title": "Cross chain transfers involving certain assets may result in ether being trapped in `MagnetarV2`",
+  "issueId": 1503,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1503"
+}
