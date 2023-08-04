@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaveyjoe",
+  "risk": "3",
+  "title": "Insufficient gas when calling swap() in UniswapV2Swapper",
+  "issueId": 1203,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1203"
+}
