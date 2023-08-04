@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaveyjoe",
+  "risk": "2",
+  "title": "Seer contract returns incorrect rate in peekSpot() function",
+  "issueId": 1183,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1183"
+}
