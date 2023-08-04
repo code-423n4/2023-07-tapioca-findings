@@ -1,13 +1,27 @@
 # LOW FINDINGS
 
-## 
+
+
+###
+
 
 ## [L-1] Lack of checks-effects-interactions (CEI) when transfer 
 
 ### Impact
-The code not following the ``CEI`` pattern because the ``totalAsset.elastic`` variable is modified after the ``yieldBox.transfer`` function is called. This means that if an attacker were to call the withdraw function from within another function, they could modify the ``totalAsset.elastic`` variable before the ``yieldBox.transfer`` function has finished executing.
+
 
 ### POC
+
+```solidity
+FILE: Breadcrumbstapioca-yieldbox-strategies-audit/contracts/glp/GlpStrategy.sol
+
+123:  }
+124:            weth.safeTransfer(feeRecipient, feeAmount);
+125:            feesPending -= feeAmount;
+126:        }
+
+```
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L123-L126
 
 ```solidity
 FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
@@ -37,9 +51,6 @@ FILE: Breadcrumbstap-token-audit/contracts/tokens/LTap.sol
 https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/tokens/LTap.sol#L41-L44
 
 
-### Recommended Mitigation
-Change code as per ``CEI`` Pattern
-
 ```diff
 FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 
@@ -56,6 +67,10 @@ FILE: tapioca-bar-audit/contracts/markets/singularity/SGLLiquidation.sol
 - 284:  totalAsset.elastic += uint128(returnedShare - feeShare - callerShare);
 
 ```
+
+### Recommended Mitigation
+Change code as per ``CEI`` Pattern
+
 ##
 
 ## [L-2] Add to blacklist function
@@ -86,6 +101,55 @@ Manifold Contract https://etherscan.io/address/0xe4e4003afe3765aca8149a82fc064c0
 Recommended Mitigation Steps
 Add to Blacklist function and modifier.
 
+## 
+
+## [L-] ``forceSuccess`` parameter is ``set`` to ``false``, and the ``.call`` function fails for any of the market contracts, then creates unexpected behavior  
+
+### Impact
+The low level calls like .call return values must be checked . If we not checked return status we don't know the outcome of .call functions. 
+
+- The contract could lose funds. If the function that is being called transfers funds, and the .call return value is not checked, then the contract could lose funds
+
+- If the function that is being called fails, and the .call return value is not checked, then the contract could be rendered unusable. This could prevent users from interacting with the contract, or it could prevent the contract from performing its intended functions
+
+### POC
+```solidity
+FILE: Breadcrumbstapioca-bar-audit/contracts/Penrose.sol
+
+function executeMarketFn(
+        address[] calldata mc,
+        bytes[] memory data,
+        bool forceSuccess
+    )
+        external
+        onlyOwner
+        notPaused
+        returns (bool[] memory success, bytes[] memory result)
+    {
+        uint256 len = mc.length;
+        success = new bool[](len);
+        result = new bytes[](len);
+        for (uint256 i = 0; i < len; ) {
+            require(
+                isSingularityMasterContractRegistered[
+                    masterContractOf[mc[i]]
+                ] || isBigBangMasterContractRegistered[masterContractOf[mc[i]]],
+                "Penrose: MC not registered"
+            );
+            (success[i], result[i]) = mc[i].call(data[i]);
+            if (forceSuccess) {
+                require(success[i], _getRevertMsg(result[i]));
+            }
+            ++i;
+        }
+    }
+
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/Penrose.sol#L424-L450
+
+### Recommended Mitigation
+This code will now ensure that the ``.call`` function succeeds for all of the market contracts, regardless of the value of the ``forceSuccess`` parameter
+ 
 ##
 
 ## [L-3] There is a risk that the ``borrowOpeningFee``,``totalBorrowCap ``,``poolFee `` variables is accidentally initialized to 0 and platform loses money
@@ -595,7 +659,7 @@ Constants should be declared with appropriate visibility.
 
 ##
 
-## [L-19] Incorrect title 
+## [L-19] Inappropriate Title 
 
 The title suggests its public function but external function implemented 
 
@@ -619,6 +683,142 @@ FILE: tapiocaz-audit/contracts/TapiocaWrapper.sol
 
 ```
 https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/TapiocaWrapper.sol#L92-L102
+
+##
+
+## [L-] Lack of ``same value`` input ``control`` for setter functions 
+
+### Impact
+There is a lack of ``same value`` input ``control`` for setter functions in Solidity. This means that a ``setter function`` can be called with the ``same value`` as the current value of the variable being set. This can lead to ``unexpected behavior``, as the variable will not be changed.
+
+### POC
+
+```solidity
+FILE: Breadcrumbstap-token-audit/contracts/options/TapiocaOptionBroker.sol
+
+function setPaymentTokenBeneficiary(
+        address _paymentTokenBeneficiary
+    ) external onlyOwner {
+        paymentTokenBeneficiary = _paymentTokenBeneficiary;
+    }
+
+
+```
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionBroker.sol#L471-L475
+
+### Recommended Mitigation
+Add same value input check 
+
+```solidity
+
+require(_paymentTokenBeneficiary !=paymentTokenBeneficiary , " Not possible for same value" );
+
+```
+##
+
+## [L-] Unwanted ``break`` statement
+
+The break statement can be removed from the for loop without affecting the code's functionality. The code will still work the same way, without the break statement
+
+```diff
+FILE: Breadcrumbstap-token-audit/contracts/options/TapiocaOptionLiquidityProvision.sol
+
+for (uint256 i = 0; i < sglLength; i++) {
+                // If last element, just pop
+                if (i == sglLastIndex) {
+                    delete activeSingularities[singularity];
+                    delete sglAssetIDToAddress[sglAssetID];
+                    singularities.pop();
+                } else if (
+                    _singularities[i] == sglAssetID && i < sglLastIndex
+                ) {
+                    // If in the middle, copy last element on deleted element, then pop
+                    delete activeSingularities[singularity];
+                    delete sglAssetIDToAddress[sglAssetID];
+
+                    singularities[i] = _singularities[sglLastIndex];
+                    singularities.pop();
+-                     break;
+                }
+
+```
+https://github.com/Tapioca-DAO/tap-token-audit/blob/59749be5bc2286f0bdbf59d7ddc258ddafd49a9f/contracts/options/TapiocaOptionLiquidityProvision.sol#L323
+
+##
+
+## 
+
+## [L-] It is possible to ``replay`` the ``_permit`` function if the deadline has not expired
+
+### Impact
+This is because the permit function does not store any nonce information. This means that the same permit can be used multiple times, as long as the deadline has not expired. 
+
+### POC
+
+```solidity
+FILE: Breadcrumbstapioca-bar-audit/contracts/markets/MarketERC20.sol
+
+261: require(block.timestamp <= deadline, "ERC20Permit: expired deadline");
+
+```
+https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/2286f80f928f41c8bc189d0657d74ba83286c668/contracts/markets/MarketERC20.sol#L261
+
+### Recommended Mitigation
+To prevent ``replay attacks``, the ``_permit`` function could be modified to store a ``nonce``
+
+##
+
+## [L-] Don’t use payable(address).call()
+
+### Impact
+
+``payable(address).call()`` is a low-level method that can be used to send ether to a contract, but it has some limitations and risks as you've pointed out. One of the primary risks of using ``payable(address).call()`` is that it doesn't guarantee that the contract's payable function will be called successfully. This can lead to funds being lost or stuck in the contract
+
+The contract does not have a payable callback The contract’s payable callback spends more than 2300 gas (which is only enough to emit something) The contract is called through a proxy which itself uses up the 2300 gas Use OpenZeppelin’s Address.sendValue() instead
+
+### POC
+
+```solidity
+FILE: tapiocaz-audit/contracts/TapiocaWrapper.sol
+
+120: (success, result) = payable(_toft).call{value: msg.value}(_bytecode);
+
+141: (success, results[i]) = payable(_call[i].toft).call{
+142:                value: msg.value
+143:            }(_call[i].bytecode);
+
+```
+https://github.com/Tapioca-DAO/tapiocaz-audit/blob/bcf61f79464cfdc0484aa272f9f6e28d5de36a8f/contracts/TapiocaWrapper.sol#L120
+
+### Recommended Mitigation
+Use OpenZeppelin’s Address.sendValue()
+
+##
+
+## [L-] Lack of control for ``withdrawFees()`` . Anyone can call ``withdrawFees()`` send pending fees to ``feeRecipient``
+
+### Impact
+The attacker could call the ``withdrawFees`` function ``repeatedly``, which could ``destabilize`` the protocol and make it difficult for users to use the protocol.
+
+### POC
+
+```solidity
+FILE: Breadcrumbstapioca-yieldbox-strategies-audit/contracts/glp/GlpStrategy.sol
+
+117: function withdrawFees() external {
+
+```
+https://github.com/Tapioca-DAO/tapioca-yieldbox-strategies-audit/blob/05ba7108a83c66dada98bc5bc75cf18004f2a49b/contracts/glp/GlpStrategy.sol#L117
+
+### Recommended Mitigation
+Implement access control and time based fee emits 
+
+##
+
+## [L-] 
+
+
+
 
 
 
@@ -646,4 +846,10 @@ If the DOMAIN_SEPARATOR contains the chainId and is defined at contract deployme
 Implement reentrancy protection in critical functions like addCollateral, removeCollateral, borrow, repay, and others using the nonReentrant modifier bigbang.sol
 
 Use 2StepSetOwner instead of setOwner
+
+## [L-] tokenURI() should return null string instead of revert 
+
+Payable(address).call should be avoided 
+
+.abi.encodePacked vulnerable to hash collision 
 
