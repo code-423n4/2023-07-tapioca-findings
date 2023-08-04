@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xhacksmithh",
+  "risk": "2",
+  "title": "Absence Of Zero Address Checks For Return Value From `ECDSA.recover`",
+  "issueId": 1491,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1491"
+}
