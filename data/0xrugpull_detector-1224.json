@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xrugpull_detector",
+  "risk": "2",
+  "title": "Wrong oracle price used in case L2 sequencer uptime feed is down or restarted in less than grace period. ",
+  "issueId": 1224,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1224"
+}
