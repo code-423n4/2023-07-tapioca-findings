@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "3",
+  "title": "`multiHopSellCollateral()` will fail due to call on an invalid market address causing bridged collateral to be locked up",
+  "issueId": 1202,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1202"
+}
