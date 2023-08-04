@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "peakbolt",
+  "risk": "2",
+  "title": "Missing value parameter for `sendFrom()` prevents withdrawal of exercised `TAP` on another chain",
+  "issueId": 1199,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1199"
+}
