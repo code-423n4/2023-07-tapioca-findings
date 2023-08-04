@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Breeje",
+  "risk": "3",
+  "title": "Anyone can call `withdrawAllMarketFees` and steal Majority of the fees",
+  "issueId": 1551,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1551"
+}
