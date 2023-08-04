@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "_extractModule() doesnt recognise module.base type in enum Module",
+  "issueId": 1475,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1475"
+}
