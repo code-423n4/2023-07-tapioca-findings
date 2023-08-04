@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "ItsNio",
+  "risk": "3",
+  "title": "`exitPosition` in `TapiocaOptionBroker` may incorrectly inflate position weights",
+  "issueId": 1623,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1623"
+}
