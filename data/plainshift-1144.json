@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "plainshift",
+  "risk": "2",
+  "title": "No check that currentDebt exceeds debtStartPoint when BigBang is first deployed",
+  "issueId": 1144,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1144"
+}
