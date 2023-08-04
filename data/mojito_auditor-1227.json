@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "2",
+  "title": "`_depositFeesToYieldBox()` Documentation Incorrectly Refers to Swapping Asset into TAP Instead of WETH",
+  "issueId": 1227,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1227"
+}
