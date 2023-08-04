@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0x73696d616f",
+  "risk": "3",
+  "title": "All assets of (m)TapiocaOFT can be stealed by depositing to strategy cross chain call with 1 amount but maximum shares possible",
+  "issueId": 1281,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1281"
+}
