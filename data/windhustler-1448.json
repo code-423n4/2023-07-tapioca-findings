@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "windhustler",
+  "risk": "2",
+  "title": "`latestAnswer()` from Chainlink is deprecated and can return inaccurate price",
+  "issueId": 1448,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1448"
+}
