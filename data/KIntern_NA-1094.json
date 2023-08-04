@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "3",
+  "title": "Attacker can pass duplicated reward token addresses to steal the reward of contract `twTAP.sol`",
+  "issueId": 1094,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1094"
+}
