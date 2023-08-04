@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaveyjoe",
+  "risk": "2",
+  "title": " _createTOFT function in TapiocaWrapper contract does not properly check the value of the _salt parameter.",
+  "issueId": 1150,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1150"
+}
