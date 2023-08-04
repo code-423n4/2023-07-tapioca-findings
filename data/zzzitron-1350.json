@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "zzzitron",
+  "risk": "2",
+  "title": "`TapiocaOptionLiquidityProvision.registerSingularity()` not checking for duplicate assetIds leading to multiple issues.",
+  "issueId": 1350,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1350"
+}
