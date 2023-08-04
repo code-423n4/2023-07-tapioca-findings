@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "mojito_auditor",
+  "risk": "2",
+  "title": "`msg.value` in a loop in the function `executeCalls()`",
+  "issueId": 1230,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1230"
+}
