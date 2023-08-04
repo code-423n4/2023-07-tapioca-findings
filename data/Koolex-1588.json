@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "3",
+  "title": "borrowPart is not denormalized before deducting it from userBorrowPart on liquidation",
+  "issueId": 1588,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1588"
+}
