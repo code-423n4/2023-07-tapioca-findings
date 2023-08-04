@@ -31,3 +31,6 @@ QA: Why no min limit check?
 
 11. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/364dead3a42b06a34c802eee951cea1a654d438e/contracts/usd0/BaseUSDO.sol#L126
 QA: is intended to have multiple allowed minters at same time for same chainId, or not?
+
+12. https://github.com/Tapioca-DAO/tapioca-bar-audit/blob/364dead3a42b06a34c802eee951cea1a654d438e/contracts/usd0/BaseUSDO.sol#L135
+QA: is intended to have multiple allowed burners at same time for same chainId, or not?
