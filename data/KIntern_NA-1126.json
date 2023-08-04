@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "2",
+  "title": "`MagnetarMarketModule` should deposit into yieldBox with amount instead of share in the params.",
+  "issueId": 1126,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1126"
+}
