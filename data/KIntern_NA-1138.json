@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "KIntern_NA",
+  "risk": "2",
+  "title": "Function `TapiocaWrapper.harvestFees()` is unable to use ",
+  "issueId": 1138,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1138"
+}
