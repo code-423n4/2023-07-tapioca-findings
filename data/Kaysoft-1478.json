@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Kaysoft",
+  "risk": "3",
+  "title": "The `aoTap.sol#brokerClaim()` function can be frontrun by an attacker.",
+  "issueId": 1478,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1478"
+}
