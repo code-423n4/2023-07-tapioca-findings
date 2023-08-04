@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "3",
+  "title": "Usage of `BalancerStrategy.updateCache` will cause single sided Loss, discount to Depositor and to OverBorrow from Singularity",
+  "issueId": 1447,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1447"
+}
