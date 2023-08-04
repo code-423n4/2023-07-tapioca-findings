@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Walter",
+  "risk": "2",
+  "title": "Missing update in 'borrow' Function of SGLborrow.sol Leads to Inaccurate Exchange Rates",
+  "issueId": 1601,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1601"
+}
