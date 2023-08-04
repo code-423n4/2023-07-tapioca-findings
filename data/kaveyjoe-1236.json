@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kaveyjoe",
+  "risk": "2",
+  "title": " _buildSwapData() function does not correctly handle tokens that are not in the YieldBox",
+  "issueId": 1236,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1236"
+}
