@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "3",
+  "title": "Incorrect solvency check because it multiplies collateralizationRate by share not amount when calculating liquidation threshold",
+  "issueId": 1582,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1582"
+}
