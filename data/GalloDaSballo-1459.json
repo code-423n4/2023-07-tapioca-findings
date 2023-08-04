@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "GalloDaSballo",
+  "risk": "2",
+  "title": "`YearnStrategy` is ignoring the `lockedProfits`, giving away all of the Yield to laggard depositors",
+  "issueId": 1459,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1459"
+}
