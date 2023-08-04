@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "0xrugpull_detector",
+  "risk": "2",
+  "title": "LiquidationQueue.init() can be frontrun with wrong singularity address and metadata.",
+  "issueId": 1222,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1222"
+}
