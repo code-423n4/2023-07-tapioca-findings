@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "gizzy",
+  "risk": "3",
+  "title": "Onchain slippage calculation is same as Zero slippage and doest not protect against frontrunning",
+  "issueId": 1219,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1219"
+}
