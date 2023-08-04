@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "Koolex",
+  "risk": "3",
+  "title": "maxBorrowPart is not scaled to 18 decimals before comparing it to closing factor (i.e. availableBorrowPart)",
+  "issueId": 1584,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1584"
+}
