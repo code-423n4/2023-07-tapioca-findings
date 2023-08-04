@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "When a user calls `initMultiSell`, attacker can frontrun to force the user to `removeCollateral`, vice versa",
+  "issueId": 1379,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1379"
+}
