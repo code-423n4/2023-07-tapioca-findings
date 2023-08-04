@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "kutugu",
+  "risk": "2",
+  "title": "Empty calldata should use \"\" instead of \"0x\"",
+  "issueId": 1192,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1192"
+}
