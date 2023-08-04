@@ -1,0 +1,8 @@
+{
+  "contest": 261,
+  "handle": "tsvetanovv",
+  "risk": "3",
+  "title": "A Malicious user can call `twTAP.sol.exitPosition()` and release someone else tokens against his wishes",
+  "issueId": 1257,
+  "issueUrl": "https://github.com/code-423n4/2023-07-tapioca-findings/issues/1257"
+}
