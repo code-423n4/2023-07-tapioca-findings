@@ -9564,7 +9564,7 @@ For this audit, 20 analysis reports were submitted by wardens. An analysis repor
 
 *View all Audit Analyses [here](https://github.com/code-423n4/2023-07-tapioca-findings/issues?q=is%3Aissue+is%3Aopen+%22analysis%22+label%3Aanalysis-advanced).*
 
-## Executive Summary
+### Executive Summary
 
 The Tapioca system is comprised of multiple interdependent smart-contract systems.
 
